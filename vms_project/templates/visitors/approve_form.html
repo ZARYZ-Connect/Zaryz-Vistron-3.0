@@ -1,0 +1,400 @@
+<!-- templates/visitors/approve_form.html -->
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link href="{% static 'css/visitor-pages.css' %}" rel="stylesheet">
+<style>
+
+/* ── Visitor Approval — Premium Compact Design ── */
+
+body {
+    background:
+        radial-gradient(1200px 600px at 10% -10%, rgba(99, 102, 241, 0.35), transparent 60%),
+        radial-gradient(800px 500px at 90% 10%, rgba(139, 92, 246, 0.35), transparent 55%),
+        linear-gradient(180deg, #0b1020 0%, #0f172a 40%, #111827 100%) !important;
+    min-height: 100vh;
+    margin: 0;
+}
+
+.approval-container {
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Centered vertically for laptop view */
+    min-height: calc(100vh - 64px);
+    padding: 40px 12px; /* Uniform padding since it's centered */
+}
+
+/* ── Card — Glassmorphism ── */
+.approval-card-new {
+    max-width: 380px; /* Ensured compact size on all views */
+    width: 100%;
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 32px 80px rgba(0,0,0,0.4), 0 4px 12px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.1);
+}
+
+/* ── Card Banner ── */
+.apv-banner {
+    background: linear-gradient(135deg, #1e1b4b 0%, #3730a3 70%, #4c1d95 100%);
+    padding: 12px 10px 10px;
+    position: relative;
+    overflow: hidden;
+}
+.apv-banner::before {
+    content: '';
+    position: absolute;
+    top:-20px; right:-20px;
+    width:100px; height:100px;
+    background: radial-gradient(circle, rgba(196,181,253,0.2) 0%, transparent 70%);
+    border-radius: 50%;
+}
+.apv-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #c4b5fd;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-size: 0.55rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+}
+.apv-title {
+    color: white;
+    font-size: 1rem;
+    font-weight: 800;
+    margin: 0;
+    letter-spacing: -0.02em;
+}
+
+/* ── Visitor Profile Strip ── */
+.apv-profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 10px;
+    background: rgba(255,255,255,0.05);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.apv-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 9px;
+    object-fit: cover;
+    border: 2px solid rgba(124,77,255,0.2);
+    box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+    flex-shrink: 0;
+}
+.apv-visitor-name {
+    font-size: 0.8rem;
+    color: #e2e8f0 !important;
+    font-weight: 800;
+    line-height: 1.1;
+    margin: 0 0 2px;
+}
+.apv-meeting-tag {
+    font-size: 0.65rem;
+    color: rgba(255,255,255,0.5);
+    font-weight: 500;
+    margin: 0;
+}
+.apv-meeting-tag span {
+    color: #7c4dff;
+    font-weight: 700;
+}
+
+/* ── Details Grid ── */
+.apv-body { padding: 12px 10px; }
+
+.apv-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    margin-bottom: 10px;
+}
+
+.apv-field {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px;
+    padding: 5px 8px;
+    transition: all 0.2s;
+}
+.apv-field:hover {
+    border-color: rgba(124,77,255,0.3);
+    background: rgba(255,255,255,0.1);
+    box-shadow: 0 2px 6px rgba(124,77,255,0.1);
+    transform: translateY(-1px);
+}
+.apv-field.full { grid-column: span 2; }
+
+.apv-field-label {
+    font-size: 0.55rem;
+    font-weight: 700;
+    color: rgba(255,255,255,0.45);
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    margin-bottom: 2px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+.apv-field-label i { color: #b388ff; font-size: 0.5rem; }
+
+.apv-field-value {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #e2e8f0;
+    line-height: 1.2;
+}
+
+/* ── Divider ── */
+.apv-divider {
+    height: 1px;
+    background: rgba(255,255,255,0.08);
+    margin: 10px 0;
+}
+
+/* ── Comments ── */
+.apv-comments-label {
+    font-size: 0.58rem;
+    font-weight: 700;
+    color: rgba(255,255,255,0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 4px;
+    display: block;
+}
+.apv-textarea {
+    width: 100%;
+    background: rgba(255,255,255,0.06);
+    border: 1.5px solid rgba(255,255,255,0.12);
+    border-radius: 8px;
+    padding: 6px 10px;
+    font-size: 0.75rem;
+    color: #e2e8f0;
+    resize: vertical;
+    min-height: 50px;
+    outline: none;
+    transition: all 0.2s;
+    font-family: 'Inter', sans-serif;
+}
+.apv-textarea:focus {
+    border-color: #7c4dff;
+    background: rgba(255,255,255,0.1);
+    box-shadow: 0 0 0 3px rgba(124,77,255,0.15);
+}
+.apv-textarea::placeholder { color: rgba(255,255,255,0.3); font-size: 0.7rem; }
+
+/* ── Action Buttons ── */
+.apv-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    margin-top: 10px;
+}
+.btn-approve-new {
+    height: 36px;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #7c4dff, #b388ff);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    cursor: pointer;
+    box-shadow: 0 3px 10px rgba(124,77,255,0.3);
+    transition: all 0.2s;
+}
+.btn-approve-new:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(124,77,255,0.4); }
+
+.btn-reject-new {
+    height: 36px;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #ef4444, #f87171);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    cursor: pointer;
+    box-shadow: 0 3px 10px rgba(239,68,68,0.3);
+    transition: all 0.2s;
+}
+.btn-reject-new:hover { 
+    transform: translateY(-2px); 
+    background: linear-gradient(135deg, #dc2626, #ef4444); 
+    box-shadow: 0 5px 15px rgba(239, 68, 68, 0.45);
+}
+
+/* ── Notice ── */
+.apv-notice {
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    background: rgba(124,77,255,0.08);
+    border: 1px solid rgba(124,77,255,0.15);
+    border-radius: 8px;
+    padding: 6px 10px;
+    margin-top: 10px;
+}
+.apv-notice i { color: #7c4dff; font-size: 0.65rem; margin-top: 1px; flex-shrink: 0; }
+.apv-notice p {
+    font-size: 0.65rem;
+    color: rgba(255,255,255,0.55);
+    line-height: 1.4;
+    margin: 0;
+}
+.apv-notice strong { color: rgba(255,255,255,0.8); }
+
+/* ── Card Footer ── */
+.apv-footer {
+    padding: 6px 10px;
+    background: rgba(255,255,255,0.03);
+    border-top: 1px solid rgba(255,255,255,0.06);
+    text-align: center;
+    font-size: 0.55rem;
+    color: rgba(255,255,255,0.3);
+    font-weight: 600;
+    letter-spacing: 0.05em;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 820px) {
+    .approval-container { 
+        padding: 20px 24px; 
+    }
+    .approval-card-new { 
+        max-width: 360px; 
+    }
+}
+@media (max-width: 480px) {
+    .approval-container { 
+        padding: 10px 14px; 
+    }
+    .approval-card-new { 
+        max-width: 340px; 
+    }
+}
+@media (max-width: 360px) {
+    .apv-grid { grid-template-columns: 1fr; }
+    .apv-field.full { grid-column: span 1; }
+    .apv-actions { grid-template-columns: 1fr; }
+}
+
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="approval-container">
+    <div class="approval-card-new">
+
+        <!-- ── Banner Header ── -->
+        <div class="apv-banner">
+            <div class="apv-badge"><i class="fas fa-shield-alt"></i> Authorization</div>
+            <h1 class="apv-title">Visitor Approval</h1>
+        </div>
+
+        <!-- ── Visitor Profile ── -->
+        <div class="apv-profile">
+            <img src="{% url 'visitors:visitor_photo' visit.uuid %}"
+                 alt="{{ visit.full_name }}"
+                 class="apv-avatar">
+            <div>
+                <p class="apv-visitor-name">{{ visit.full_name }}</p>
+                <p class="apv-meeting-tag">
+                    Meeting:
+                    <span>
+                        {% if visit.whom_to_meet_employee %}
+                            {{ visit.whom_to_meet_employee.name }}
+                        {% else %}
+                            {{ visit.whom_to_meet|default:"(None)" }}
+                        {% endif %}
+                    </span>
+                </p>
+            </div>
+        </div>
+
+        <!-- ── Body ── -->
+        <div class="apv-body">
+
+            <!-- Details Grid -->
+            <div class="apv-grid">
+                <div class="apv-field">
+                    <div class="apv-field-label"><i class="fas fa-calendar"></i> Visit Date</div>
+                    <div class="apv-field-value">{{ visit.visit_date|date:"M d, Y" }}</div>
+                </div>
+                <div class="apv-field">
+                    <div class="apv-field-label"><i class="fas fa-clock"></i> Time Slot</div>
+                    <div class="apv-field-value">{% if visit.start_time %}{{ visit.start_time|time:"g:i A" }}{% else %}All Day{% endif %}</div>
+                </div>
+                <div class="apv-field">
+                    <div class="apv-field-label"><i class="fas fa-phone"></i> Phone No</div>
+                    <div class="apv-field-value">{{ visit.phone }}</div>
+                </div>
+                <div class="apv-field">
+                    <div class="apv-field-label"><i class="fas fa-tag"></i> Visit Type</div>
+                    <div class="apv-field-value">{{ visit.visit_type.name|default:"General" }}</div>
+                </div>
+                <div class="apv-field full">
+                    <div class="apv-field-label"><i class="fas fa-align-left"></i> Purpose</div>
+                    <div class="apv-field-value">{{ visit.purpose|default:"General Meeting" }}</div>
+                </div>
+            </div>
+
+            <div class="apv-divider"></div>
+
+            <!-- Form -->
+            <form method="post" id="approvalForm">
+                {% csrf_token %}
+                <input type="hidden" name="token" value="{{ token }}">
+                <input type="hidden" name="decision" id="decisionField">
+
+                <label class="apv-comments-label">Comments (Optional)</label>
+                <textarea name="reason" class="apv-textarea" placeholder="Add instructions or notes..."></textarea>
+
+                <div class="apv-actions">
+                    <button type="submit" class="btn-approve-new"
+                            onclick="document.getElementById('decisionField').value='accept'">
+                        <i class="fas fa-check"></i> Approve
+                    </button>
+                    <button type="submit" class="btn-reject-new"
+                            onclick="document.getElementById('decisionField').value='reject'">
+                        <i class="fas fa-times"></i> Reject
+                    </button>
+                </div>
+            </form>
+
+            <!-- Notice -->
+            <div class="apv-notice">
+                <i class="fas fa-info-circle"></i>
+                <p><strong>Note:</strong> The visitor will be notified by email. Ensure all details are correct before authorizing.</p>
+            </div>
+
+        </div><!-- /apv-body -->
+
+        <!-- Footer -->
+        <div class="apv-footer">ZARYZ VISTRON &nbsp;·&nbsp; VISITOR MANAGEMENT</div>
+
+    </div><!-- /approval-card-new -->
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/visitor-pages.js' %}"></script>
+{% endblock %}

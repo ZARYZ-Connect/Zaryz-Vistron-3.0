@@ -1,0 +1,558 @@
+<!-- dashboard.html -->
+{% extends "security/security_base.html" %}
+{% load static %}
+
+{% block security_css %}
+<link href="{% static 'css/security.css' %}" rel="stylesheet">
+<style>
+.security-main-wrapper {
+    padding: 24px;
+    min-height: calc(100vh - 64px);
+    background: #f8fafc !important;
+}
+
+.dashboard-title {
+    color: #1e1b4b !important;
+}
+
+.dashboard-title-box p {
+    color: #64748b !important;
+}
+.btn-today-all {
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: #6366f1 !important;
+    background: rgba(99, 102, 241, 0.05);
+    padding: 6px 16px;
+    border-radius: 10px;
+    transition: all 0.2s ease;
+}
+.btn-today-all:hover {
+    background: #6366f1;
+    color: white !important;
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+}
+.mini-stat-box {
+    border: 1px solid rgba(255, 255, 255, 0.6) !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+    transition: all 0.3s ease;
+    cursor: default;
+}
+.mini-stat-box:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+.modern-table thead th {
+    background: rgba(248, 250, 252, 0.9);
+    color: #64748b;
+    font-weight: 700;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    border-bottom: 1px solid #f1f5f9;
+    padding: 10px 12px;
+}
+.modern-table tbody td {
+    padding: 10px 12px;
+    vertical-align: middle;
+}
+.modern-table tbody tr {
+    transition: all 0.2s ease;
+}
+.modern-table tbody tr:hover {
+    background: rgba(99, 102, 241, 0.02);
+}
+.btn-view {
+    background: rgba(99, 102, 241, 0.08);
+    color: #6366f1;
+    font-weight: 700;
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+}
+.btn-view:hover {
+    background: #6366f1;
+    color: white;
+}
+
+/* ── MOBILE FIXES ── */
+@media (max-width: 576px) {
+    .dashboard-card {
+        padding: 16px 14px;
+        border-radius: 16px;
+    }
+    .dashboard-header {
+        flex-direction: row !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        margin-bottom: 30px !important;
+    }
+    .dashboard-title {
+        font-size: 1.2rem !important;
+        line-height: 1.3;
+    }
+    .dashboard-title-box p {
+        font-size: 0.78rem;
+        margin-top: 2px;
+    }
+    .header-actions .btn-primary-modern {
+        padding: 6px 12px !important;
+        font-size: 0.78rem !important;
+    }
+    /* Stats: 2x2 grid on mobile */
+    .stats-row {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 10px !important;
+        margin-bottom: 24px !important;
+    }
+    .stats-row > div {
+        width: 100% !important;
+        max-width: 100% !important;
+        flex: none !important;
+    }
+    .mini-stat-box {
+        padding: 14px 12px !important;
+    }
+    .mini-stat-box h3 {
+        font-size: 1.3rem !important;
+    }
+    .stat-icon {
+        width: 36px !important;
+        height: 36px !important;
+        font-size: 0.9rem !important;
+        border-radius: 10px !important;
+        flex-shrink: 0;
+    }
+    /* Metrics: 2x2 grid */
+    .row.g-4.mb-5 > div {
+        padding-left: 6px !important;
+        padding-right: 6px !important;
+    }
+    .metric-card {
+        padding: 12px 10px !important;
+        min-height: 120px !important;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        border-radius: 12px !important;
+    }
+    .metric-card h3 {
+        font-size: 1.25rem !important;
+        margin: 4px 0 !important;
+    }
+    .metric-label {
+        font-size: 0.7rem !important;
+        margin-bottom: 2px !important;
+    }
+    .metric-card small {
+        font-size: 0.6rem !important;
+        display: none; /* Hide small text for more space */
+    }
+    .metric-icon {
+        width: 32px !important;
+        height: 32px !important;
+        margin-bottom: 6px !important;
+        font-size: 0.85rem !important;
+    }
+    .metric-icon i { font-size: 0.85rem !important; }
+
+    .section-header {
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 16px !important;
+    }
+    .section-header h4 {
+        font-size: 0.95rem !important;
+    }
+    .btn-today-all {
+        font-size: 0.78rem;
+        padding: 5px 12px;
+    }
+}
+
+/* PAGINATION STYLES FROM ADMIN DASHBOARD */
+.pagination-footer-ticket {
+    padding-top: 16px;
+    margin-top: 16px;
+    border-top: 1px solid #f1f5f9;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #64748b;
+    font-size: 0.85rem;
+    font-weight: 550;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+.footer-left-ticket {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+.footer-right-ticket {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.page-nav-btn {
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+    background: white;
+    color: #475569;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+.page-nav-btn:hover:not(.disabled) {
+    border-color: #6366f1;
+    color: #6366f1;
+    background: rgba(99, 102, 241, 0.05);
+}
+.page-nav-btn.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+.page-indicator-ticket {
+    font-weight: 700;
+    color: #1e293b;
+}
+.expandable-pagination-wrapper {
+    display: flex;
+    align-items: center;
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    border-radius: 20px;
+    padding: 3px;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    overflow: hidden;
+    height: 38px;
+    width: 44px;
+}
+.expandable-pagination-wrapper.expanded {
+    width: 180px;
+    background: white;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+.expand-trigger .active-val {
+    width: 32px;
+    height: 32px;
+    background: white;
+    color: #6366f1;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 0.8rem;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+.expandable-pagination-wrapper.expanded .expand-trigger .active-val {
+    background: #6366f1;
+    color: white;
+}
+.expand-drawer {
+    display: flex;
+    gap: 4px;
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: all 0.3s ease;
+    pointer-events: none;
+    margin-left: 10px;
+}
+.expandable-pagination-wrapper.expanded .expand-drawer {
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: auto;
+}
+.pill-option {
+    width: 30px;
+    height: 30px;
+    border-radius: 15px;
+    border: none;
+    background: transparent;
+    color: #64748b;
+    font-weight: 700;
+    font-size: 0.75rem;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.pill-option:hover {
+    background: #f1f5f9;
+    color: #6366f1;
+}
+</style>
+{% endblock %}
+
+{% block security_content %}
+<div class="security-dashboard-content">
+    
+
+    <div class="dashboard-card pt-4 pb-4">
+        <!-- Dashboard Header -->
+        <div class="dashboard-header d-flex flex-column flex-md-row align-items-md-center text-center text-md-start mb-5 gap-3">
+            <div class="dashboard-title-box">
+                <h1 class="dashboard-title m-0 justify-content-center justify-content-md-start d-flex align-items-center gap-2">
+                    <i class="fas fa-shield-alt text-dark-purple"></i> 
+                    Receptionist Dashboard
+                </h1>
+                <p class="text-muted m-0 mt-1">Real-time visitor management and security hub</p>
+            </div>
+            
+            <div class="header-actions mt-2 mt-md-0 d-flex justify-content-center ms-md-auto">
+                <a href="{% url 'security:scan_qr' %}" class="btn-primary-modern px-3 py-2 d-flex align-items-center justify-content-center" style="background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%); min-width: 44px; height: 44px; border-radius: 12px; font-weight: 600; color: white;">
+                    <i class="fas fa-qrcode {% if todays %}me-sm-2{% else %}me-0{% endif %}"></i> 
+                    <span class="d-none d-sm-inline">Scan QR</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- METRIC CARDS matching Admin Dashboard style -->
+        <div class="row g-4 mb-5">
+            <!-- Total Today -->
+            <div class="col-lg-3 col-md-6 col-6">
+                <a href="{% url 'security:all_today_list' %}" class="text-decoration-none">
+                    <div class="metric-card visitor">
+                        <div class="metric-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <span class="metric-label">Total Today</span>
+                        <h3>{{ security_counts.total }}</h3>
+                        <small>All visitors today</small>
+                    </div>
+                </a>
+            </div>
+            <!-- Inside -->
+            <div class="col-lg-3 col-md-6 col-6">
+                <a href="{% url 'security:checked_in_list' %}" class="text-decoration-none">
+                    <div class="metric-card approved">
+                        <div class="metric-icon">
+                            <i class="fas fa-sign-in-alt"></i>
+                        </div>
+                        <span class="metric-label">Inside</span>
+                        <h3>{{ security_counts.checked_in }}</h3>
+                        <small>Currently present</small>
+                    </div>
+                </a>
+            </div>
+            <!-- Awaiting -->
+            <div class="col-lg-3 col-md-6 col-6">
+                <a href="{% url 'security:awaiting_list' %}" class="text-decoration-none">
+                    <div class="metric-card pending">
+                        <div class="metric-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <span class="metric-label">Awaiting</span>
+                        <h3>{{ security_counts.awaiting }}</h3>
+                        <small>Expected arrival</small>
+                    </div>
+                </a>
+            </div>
+            <!-- Exited -->
+            <div class="col-lg-3 col-md-6 col-6">
+                <a href="{% url 'security:checked_out_list' %}" class="text-decoration-none">
+                    <div class="metric-card employee">
+                        <div class="metric-icon">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </div>
+                        <span class="metric-label">Exited</span>
+                        <h3>{{ security_counts.checked_out }}</h3>
+                        <small>Checked out today</small>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <div class="visitors-section">
+            <div class="section-header d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+                <h4 class="m-0 fw-bold section-title">
+                    <i class="fas fa-history me-2" style="color: #6366f1;"></i> 
+                    Recent Visitor Activity
+                </h4>
+                <a href="{% url 'security:all_today_list' %}" class="btn-primary-modern text-decoration-none">
+                    <i class="fas fa-external-link-alt me-1" style="font-size: 0.75rem;"></i> View All Today
+                </a>
+            </div>
+
+            {% if todays %}
+            <div class="table-responsive">
+                <table class="modern-table">
+                    <thead>
+                        <tr>
+                            <th>Visitor</th>
+                            <th>Schedule</th>
+                            <th>Check-in</th>
+                            <th>Status</th>
+                            <th class="text-end">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for v in todays %}
+                        <tr>
+                            <td>
+                                <div>
+                                    <div class="fw-bold">{{ v.full_name }}</div>
+                                    <small class="text-muted">{{ v.visit_type.name|default:"General Visit" }}</small>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="time-slot">
+                                    <i class="far fa-clock"></i>
+                                    {% if v.start_time %}{{ v.start_time|time:"h:i A" }}{% else %}Not set{% endif %}
+                                </div>
+                            </td>
+                            <td>
+                                {% if v.actual_checkin %}
+                                    <span class="badge bg-soft-success text-success" style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.15);">
+                                        {{ v.actual_checkin|time:"h:i A" }}
+                                    </span>
+                                {% else %}
+                                    <span class="text-muted">—</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <span class="status-badge status-{{ v.status }}">
+                                    {{ v.display_status }}
+                                </span>
+                            </td>
+                            <td class="text-end">
+                                <a href="{% url 'security:badge_detail' v.id %}" 
+                                   class="btn-view btn-sm-modern">
+                                    <i class="fas fa-id-badge"></i> Details
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- PAGINATION FOOTER -->
+            <div class="pagination-footer-ticket">
+                <!-- Desktop View: Full Pagination -->
+                <div class="d-none d-md-flex justify-content-between align-items-center w-100">
+                    <div class="footer-left-ticket">
+                        <span>Showing <strong>{{ todays.start_index }}</strong> to <strong>{{ todays.end_index }}</strong> of <strong>{{ todays.paginator.count }}</strong></span>
+                        <div class="per-page-container d-flex align-items-center ms-3">
+                            <span class="small text-muted me-2" style="font-size: 0.7rem; font-weight: 700; text-transform: uppercase;">Per page:</span>
+                            <div class="expandable-pagination-wrapper" id="pageExpanderDesktop">
+                                <div class="expand-trigger">
+                                    <div class="active-val">{{ todays.paginator.per_page }}</div>
+                                </div>
+                                <div class="expand-drawer">
+                                    {% if todays.paginator.per_page != 5 %}<button class="pill-option" data-value="5">5</button>{% endif %}
+                                    {% if todays.paginator.per_page != 10 %}<button class="pill-option" data-value="10">10</button>{% endif %}
+                                    {% if todays.paginator.per_page != 25 %}<button class="pill-option" data-value="25">25</button>{% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="footer-right-ticket">
+                        <a href="{% if todays.has_previous %}?page={{ todays.previous_page_number }}&per_page={{ todays.paginator.per_page }}{% else %}#{% endif %}" 
+                           class="page-nav-btn {% if not todays.has_previous %}disabled{% endif %}">
+                            <i class="fas fa-chevron-left"></i>
+                        </a>
+                        <div class="page-indicator-ticket mx-2">{{ todays.number }} / {{ todays.paginator.num_pages }}</div>
+                        <a href="{% if todays.has_next %}?page={{ todays.next_page_number }}&per_page={{ todays.paginator.per_page }}{% else %}#{% endif %}" 
+                           class="page-nav-btn {% if not todays.has_next %}disabled{% endif %}">
+                            <i class="fas fa-chevron-right"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Mobile View: Compact Pagination -->
+                <div class="d-flex d-md-none justify-content-between align-items-center w-100 flex-wrap gap-y-2 px-1">
+                    <div class="results-text text-muted" style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; white-space: nowrap;">
+                        {{ todays.paginator.count }} results
+                    </div>
+                    <div class="d-flex align-items-center gap-2">
+                        <!-- Compact Per Page Pill -->
+                        <div class="per-page-container d-flex align-items-center">
+                            <span class="small text-muted me-1" style="font-size: 0.65rem; font-weight: 800; text-transform: uppercase; white-space: nowrap;">PP:</span>
+                            <div class="expandable-pagination-wrapper expandable-pill" style="width: 38px; height: 38px;">
+                                <div class="expand-trigger">
+                                    <div class="active-val" style="width: 28px; height: 28px; font-size: 0.75rem;">{{ todays.paginator.per_page }}</div>
+                                </div>
+                                <div class="expand-drawer" style="margin-left: 6px;">
+                                    {% if todays.paginator.per_page != 5 %}<button class="pill-option" data-value="5" style="width:28px; height:28px;">5</button>{% endif %}
+                                    {% if todays.paginator.per_page != 10 %}<button class="pill-option" data-value="10" style="width:28px; height:28px;">10</button>{% endif %}
+                                    {% if todays.paginator.per_page != 25 %}<button class="pill-option" data-value="25" style="width:28px; height:28px;">25</button>{% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Compact Nav -->
+                        <div class="d-flex align-items-center gap-1 bg-light p-1 rounded-pill border" style="background: #f8fafc !important;">
+                            <a href="{% if todays.has_previous %}?page={{ todays.previous_page_number }}&per_page={{ todays.paginator.per_page }}{% else %}#{% endif %}" 
+                               class="page-nav-btn sm-btn {% if not todays.has_previous %}disabled{% endif %}" style="width: 30px; height: 30px; border: none; background: transparent;">
+                                <i class="fas fa-chevron-left" style="font-size: 0.7rem;"></i>
+                            </a>
+                            <div class="page-indicator-ticket px-1" style="font-size: 0.75rem; font-weight: 700; color: #1e293b; min-width: 36px; text-align: center;">
+                                {{ todays.number }}/{{ todays.paginator.num_pages }}
+                            </div>
+                            <a href="{% if todays.has_next %}?page={{ todays.next_page_number }}&per_page={{ todays.paginator.per_page }}{% else %}#{% endif %}" 
+                               class="page-nav-btn sm-btn {% if not todays.has_next %}disabled{% endif %}" style="width: 30px; height: 30px; border: none; background: transparent;">
+                                <i class="fas fa-chevron-right" style="font-size: 0.7rem;"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div class="empty-state">
+                <div class="empty-icon text-muted">
+                    <i class="fas fa-user-clock opacity-50"></i>
+                </div>
+                <h4 class="empty-title">Clean Slate</h4>
+                <p class="empty-message">No visitor activity recorded for today yet.</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block security_js %}
+<script src="{% static 'js/security.js' %}"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const expanders = document.querySelectorAll('.expandable-pagination-wrapper');
+    expanders.forEach(pageExpander => {
+        pageExpander.addEventListener('click', function(e) {
+            e.stopPropagation();
+            expanders.forEach(ex => { if(ex !== this) ex.classList.remove('expanded'); });
+            this.classList.toggle('expanded');
+        });
+        
+        const pillOptions = pageExpander.querySelectorAll('.pill-option');
+        pillOptions.forEach(opt => {
+            opt.addEventListener('click', function(e) {
+                e.stopPropagation();
+                navigatePerPage(this.dataset.value);
+            });
+        });
+    });
+
+    function navigatePerPage(val) {
+        const urlParams = new URLSearchParams(window.location.search);
+        urlParams.set('per_page', val);
+        urlParams.set('page', 1);
+        window.location.search = urlParams.toString();
+    }
+
+    document.addEventListener('click', () => {
+        expanders.forEach(ex => ex.classList.remove('expanded'));
+    });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,747 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guide Videos | Zaryz Vistron</title>
+  <meta name="description" content="Step-by-step video tutorials to master the Zaryz Vistron visitor management platform.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/landing.css' %}">
+
+  <style>
+    /* ─── Page hero ─── */
+    .vp-hero {
+      padding: 160px 0 72px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .vp-hero-blob {
+      position: absolute; pointer-events: none;
+    }
+    .vp-hero-blob-1 {
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(94,114,228,.22), transparent 70%);
+      top: -160px; left: -140px; border-radius: 50%;
+    }
+    .vp-hero-blob-2 {
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(130,94,228,.18), transparent 70%);
+      top: -80px; right: -100px; border-radius: 50%;
+    }
+    .vp-tag {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: .7rem; font-weight: 800; letter-spacing: .18em;
+      text-transform: uppercase; color: var(--purple-l);
+      border: 1px solid rgba(130,94,228,.25);
+      background: rgba(130,94,228,.08);
+      padding: 6px 18px; border-radius: 100px; margin-bottom: 22px;
+    }
+    .vp-tag .live-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--purple-l); animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%,100%{ opacity:1; transform:scale(1); }
+      50%{ opacity:.5; transform:scale(1.5); }
+    }
+    .vp-title {
+      font-size: clamp(2.4rem, 5vw, 4rem);
+      font-weight: 900; letter-spacing: -.04em;
+      line-height: 1.05; margin-bottom: 18px; color: var(--text);
+    }
+    .vp-title em {
+      font-style: italic; font-family: var(--serif);
+      background: var(--grad-text); -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .vp-sub {
+      font-size: 1.05rem; color: var(--text-muted); line-height: 1.7;
+      max-width: 540px; margin: 0 auto 52px;
+    }
+
+    /* ─── Stats strip ─── */
+    .vp-stats {
+      display: inline-flex; align-items: center; gap: 32px;
+      padding: 20px 36px;
+      background: rgba(255,255,255,.04);
+      border: 1px solid var(--border); border-radius: 100px;
+      margin-bottom: 80px; flex-wrap: wrap; justify-content: center;
+    }
+    .vp-stat { text-align: center; }
+    .vp-stat-num {
+      display: block; font-size: 1.5rem; font-weight: 900;
+      letter-spacing: -.03em;
+      background: var(--grad); -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .vp-stat-lbl {
+      font-size: .68rem; font-weight: 700; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--text-subtle);
+    }
+    .vp-stat-div { width: 1px; height: 32px; background: var(--border); }
+
+    /* ─── Page inner ─── */
+    .vp-inner {
+      max-width: 1280px; margin: 0 auto; padding: 0 40px;
+    }
+    @media(max-width:768px){ .vp-inner{ padding: 0 20px; } }
+
+    /* ─── Category section ─── */
+    .vp-category { margin-bottom: 72px; }
+    .vp-cat-header {
+      display: flex; align-items: center; gap: 16px; margin-bottom: 32px;
+    }
+    .vp-cat-icon {
+      width: 44px; height: 44px; border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem; flex-shrink: 0;
+    }
+    .vp-cat-title {
+      font-size: 1.1rem; font-weight: 800; color: var(--text);
+      letter-spacing: -.01em;
+    }
+    .vp-cat-count {
+      font-size: .72rem; font-weight: 700; letter-spacing: .1em;
+      text-transform: uppercase; color: var(--text-subtle);
+      margin-top: 2px;
+    }
+    .vp-cat-line {
+      flex: 1; height: 1px; background: var(--border);
+    }
+
+    /* ─── Video cards grid ─── */
+    .vp-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+      align-items: stretch; /* ensure all cards in row match height */
+    }
+    @media(max-width:1100px){ .vp-grid{ grid-template-columns: repeat(2, 1fr); } }
+    @media(max-width:640px){  .vp-grid{ grid-template-columns: 1fr; } }
+
+    /* ─── Placeholder video card ─── */
+    .vp-card {
+      background: rgba(255,255,255,.04);
+      border: 1px solid var(--border);
+      border-radius: 22px; overflow: hidden;
+      position: relative;
+      contain: paint layout style;
+      display: flex; flex-direction: column;
+      will-change: transform; transform: translateZ(0);
+      transition: transform .5s cubic-bezier(.16,1,.3,1),
+                  border-color .4s, box-shadow .4s, background .3s;
+      cursor: default;
+    }
+    .vp-card::before {
+      content: ''; position: absolute; inset: 0;
+      border-radius: inherit;
+      background: radial-gradient(350px circle at var(--mx,50%) var(--my,50%),
+        rgba(255,255,255,.07), transparent 40%);
+      opacity: 0; transition: opacity .4s; pointer-events: none; z-index: 1;
+    }
+    .vp-card:hover { transform: translateY(-6px) translateZ(0); border-color: var(--border-strong); background: rgba(255,255,255,.06); }
+    .vp-card:hover::before { opacity: 1; }
+    .vp-card:hover .vp-card-shadow { box-shadow: 0 28px 56px rgba(0,0,0,.3); }
+
+    /* ─── Thumbnail placeholder ─── */
+    .vp-thumb {
+      position: relative; aspect-ratio: 16/9;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+    .vp-thumb-bg {
+      position: absolute; inset: 0;
+      background: var(--thumb-grad);
+      opacity: .85;
+    }
+    .vp-thumb-noise {
+      position: absolute; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");
+      opacity: .5;
+    }
+    .vp-thumb-icon {
+      position: relative; z-index: 2;
+      width: 64px; height: 64px; border-radius: 50%;
+      background: rgba(255,255,255,.12);
+      border: 1.5px solid rgba(255,255,255,.25);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.8rem;
+      transition: transform .35s, background .3s;
+    }
+    .vp-card:hover .vp-thumb-icon { transform: scale(1.12); background: rgba(255,255,255,.2); }
+
+    .vp-coming-badge {
+      position: absolute; bottom: 14px; right: 14px; z-index: 3;
+      background: rgba(0,0,0,.55); backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,.15);
+      color: rgba(255,255,255,.8); font-size: .65rem; font-weight: 700;
+      letter-spacing: .1em; text-transform: uppercase;
+      padding: 4px 12px; border-radius: 100px;
+    }
+    .vp-feat-badge {
+      position: absolute; top: 14px; left: 14px; z-index: 3;
+      background: var(--grad); color: #fff;
+      font-size: .62rem; font-weight: 800; letter-spacing: .1em;
+      text-transform: uppercase; padding: 4px 12px; border-radius: 100px;
+    }
+    .vp-num-badge {
+      position: absolute; top: 14px; right: 14px; z-index: 3;
+      font-size: .72rem; font-weight: 700; letter-spacing: .06em;
+      color: rgba(255,255,255,.6);
+    }
+
+    /* ─── Card body ─── */
+    /* Use flex flex-col to force footer down */
+    .vp-body { padding: 22px 24px 26px; display: flex; flex-direction: column; flex-grow: 1; }
+    .vp-meta {
+      display: flex; align-items: center; gap: 8px; margin-bottom: 10px;
+    }
+    .vp-cat-pill {
+      font-size: .62rem; font-weight: 800; letter-spacing: .14em;
+      text-transform: uppercase; color: var(--cat-color, var(--purple-l));
+      background: var(--cat-bg, rgba(130,94,228,.1));
+      border: 1px solid var(--cat-border, rgba(130,94,228,.2));
+      padding: 3px 10px; border-radius: 100px;
+    }
+    .vp-meta-dot { width: 3px; height: 3px; background: var(--border); border-radius: 50%; }
+    .vp-duration-label { font-size: .72rem; color: var(--text-subtle); }
+
+    .vp-card-title {
+      font-size: 1rem; font-weight: 700; color: var(--text);
+      letter-spacing: -.01em; line-height: 1.4; margin-bottom: 8px;
+    }
+    .vp-card-desc {
+      font-size: .84rem; color: var(--text-muted); line-height: 1.65;
+      flex-grow: 1; /* stretches to fill space so footer is always bottom aligned */
+    }
+
+    .vp-footer {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--border);
+    }
+    .vp-notify {
+      font-size: .78rem; font-weight: 600;
+      color: var(--purple-l); letter-spacing: .02em;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .vp-level {
+      font-size: .62rem; font-weight: 700; letter-spacing: .1em;
+      text-transform: uppercase; color: var(--text-subtle);
+      border: 1px solid var(--border); padding: 3px 10px; border-radius: 100px;
+    }
+
+    /* ─── Divider between categories ─── */
+    .vp-section-divider {
+      width: 100%; height: 1px; background: var(--border);
+      margin: 24px 0 72px; opacity: .5;
+    }
+
+    /* ─── CTA block ─── */
+    .vp-cta {
+      text-align: center; padding: 80px 24px 120px;
+    }
+    .vp-cta-card {
+      max-width: 720px; margin: 0 auto;
+      background: rgba(255,255,255,.04);
+      border: 1px solid var(--border); border-radius: 28px;
+      padding: 56px 48px;
+    }
+    @media(max-width:640px){ .vp-cta-card{ padding: 36px 24px; } }
+    .vp-cta h2 {
+      font-size: clamp(1.7rem, 3.5vw, 2.4rem);
+      font-weight: 900; letter-spacing: -.03em; margin-bottom: 14px; color: var(--text);
+    }
+    .vp-cta h2 em { font-style: italic; font-family: var(--serif); }
+    .vp-cta p { font-size: .95rem; color: var(--text-muted); margin-bottom: 36px; line-height: 1.7; }
+    .vp-cta-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+
+    /* ─── Reveal animation ─── */
+    .reveal-up {
+      opacity: 0; transform: translateY(28px);
+      transition: opacity .7s ease, transform .7s cubic-bezier(.16,1,.3,1);
+    }
+    .reveal-up.revealed { opacity: 1; transform: translateY(0); }
+
+  </style>
+</head>
+
+<body>
+
+  <div class="noise"></div>
+
+  <!-- NAVBAR -->
+  <header class="nav" id="navbar">
+    <div class="nav-inner">
+      <a href="/" class="logo" data-magnetic>
+        <img src="{% static 'img/logo.png' %}" alt="Zaryz Vistron">
+        <span>ZARYZ VISTRON</span>
+      </a>
+
+      <button class="menu-toggle" id="menu-toggle" onclick="toggleMenu()" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+
+      <nav class="nav-links" id="nav-links">
+        <div class="sidebar-header-mobile">
+            <a href="/" class="sidebar-brand-mobile">
+                <img src="{% static 'img/logo.png' %}" alt="Logo">
+                <span>ZARYZ VISTRON</span>
+            </a>
+        </div>
+        <a href="/" class="nav-link"><i class="fas fa-home"></i><span>Home</span></a>
+        <a href="/blog/" class="nav-link" data-no-smooth><i class="fas fa-book-open"></i><span>Blogs</span></a>
+        <a href="/videos/" class="nav-link" data-no-smooth><i class="fas fa-play-circle"></i><span>Videos</span></a>
+        <a href="/features/" class="nav-link"><i class="fas fa-star"></i><span>Features</span></a>
+
+        <a href="/contact/" class="nav-link"><i class="fas fa-envelope"></i><span>Contact</span></a>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="/contact/" class="btn-ghost">Request Demo</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="vp-hero">
+    <div class="vp-hero-blob vp-hero-blob-1"></div>
+    <div class="vp-hero-blob vp-hero-blob-2"></div>
+    <div class="vp-inner" style="position:relative; z-index:1;">
+      <div class="vp-tag reveal-up">
+        <span class="live-dot"></span>
+        Tutorial Library
+      </div>
+      <h1 class="vp-title reveal-up">
+        Learn Vistron<br><em>Step by Step</em>
+      </h1>
+      <p class="vp-sub reveal-up">
+        Comprehensive video guides covering every feature of the platform — from first login to enterprise-scale deployment.
+      </p>
+
+      <!-- Stats strip -->
+      <div class="vp-stats reveal-up">
+        <div class="vp-stat">
+          <span class="vp-stat-num">4</span>
+          <span class="vp-stat-lbl">Modules</span>
+        </div>
+        <div class="vp-stat-div"></div>
+        <div class="vp-stat">
+          <span class="vp-stat-num">12</span>
+          <span class="vp-stat-lbl">Topics</span>
+        </div>
+        <div class="vp-stat-div"></div>
+        <div class="vp-stat">
+          <span class="vp-stat-num">HD</span>
+          <span class="vp-stat-lbl">Quality</span>
+        </div>
+        <div class="vp-stat-div"></div>
+        <div class="vp-stat">
+          <span class="vp-stat-num">Free</span>
+          <span class="vp-stat-lbl">Access</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN CONTENT -->
+  <div class="vp-inner">
+
+    <!-- ══════════════════════════════════════
+         CATEGORY 1 — Getting Started
+    ══════════════════════════════════════ -->
+    <div class="vp-category reveal-up">
+      <div class="vp-cat-header">
+        <div class="vp-cat-icon" style="background:rgba(94,114,228,.12); border:1px solid rgba(94,114,228,.2);">🚀</div>
+        <div>
+          <div class="vp-cat-title">Getting Started</div>
+          <div class="vp-cat-count">3 videos</div>
+        </div>
+        <div class="vp-cat-line"></div>
+      </div>
+
+      <div class="vp-grid">
+
+        <!-- Card 1 — Featured -->
+        <div class="vp-card  reveal-up"
+             style="--thumb-grad: linear-gradient(135deg,#1a237e,#283593,#3949ab);">
+          <div class="vp-thumb">
+            <div class="vp-thumb-bg"></div>
+            <div class="vp-thumb-noise"></div>
+            <div class="vp-thumb-icon">🏁</div>
+            <span class="vp-feat-badge">Start Here</span>
+            <span class="vp-num-badge">01 / 03</span>
+            <span class="vp-coming-badge">▶ Coming Soon</span>
+          </div>
+          <div class="vp-body">
+            <div class="vp-meta">
+              <span class="vp-cat-pill" style="--cat-color:#818cf8; --cat-bg:rgba(94,114,228,.1); --cat-border:rgba(94,114,228,.2);">Getting Started</span>
+              <span class="vp-meta-dot"></span>
+              <span class="vp-duration-label">~10 min</span>
+            </div>
+            <h3 class="vp-card-title">Platform Overview & First Login</h3>
+            <p class="vp-card-desc">A complete orientation to Zaryz Vistron — navigate the dashboard, understand roles (Admin, Security, Visitor), and configure your organisation's basic settings on day one.</p>
+
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="vp-card reveal-up" style="--thumb-grad: linear-gradient(135deg,#1a237e,#4527a0);">
+          <div class="vp-thumb">
+            <div class="vp-thumb-bg"></div>
+            <div class="vp-thumb-noise"></div>
+            <div class="vp-thumb-icon">🏢</div>
+            <span class="vp-num-badge">02 / 03</span>
+            <span class="vp-coming-badge">▶ Coming Soon</span>
+          </div>
+          <div class="vp-body">
+            <div class="vp-meta">
+              <span class="vp-cat-pill" style="--cat-color:#818cf8; --cat-bg:rgba(94,114,228,.1); --cat-border:rgba(94,114,228,.2);">Setup</span>
+              <span class="vp-meta-dot"></span>
+              <span class="vp-duration-label">~8 min</span>
+            </div>
+            <h3 class="vp-card-title">Departments & Job Roles Setup</h3>
+            <p class="vp-card-desc">Create departments, define job roles, and map out your company's organisational hierarchy.</p>
+
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="vp-card reveal-up" style="--thumb-grad: linear-gradient(135deg,#311b92,#4527a0);">
+          <div class="vp-thumb">
+            <div class="vp-thumb-bg"></div>
+            <div class="vp-thumb-noise"></div>
+            <div class="vp-thumb-icon">👤</div>
+            <span class="vp-num-badge">03 / 03</span>
+            <span class="vp-coming-badge">▶ Coming Soon</span>
+          </div>
+          <div class="vp-body">
+            <div class="vp-meta">
+              <span class="vp-cat-pill" style="--cat-color:#818cf8; --cat-bg:rgba(94,114,228,.1); --cat-border:rgba(94,114,228,.2);">Users</span>
+              <span class="vp-meta-dot"></span>
+              <span class="vp-duration-label">~6 min</span>
+            </div>
+            <h3 class="vp-card-title">Employee & Staff Accounts</h3>
+            <p class="vp-card-desc">Add employees, assign departments and job roles, and manage their profile details from the admin panel.</p>
+
+          </div>
+        </div>
+
+      </div>
+    </div><!-- end category 1 -->
+
+    <hr class="vp-section-divider">
+
+    <!-- ══════════════════════════════════════
+         CATEGORY 2 — Visitor Management
+    ══════════════════════════════════════ -->
+    <div class="vp-category reveal-up">
+      <div class="vp-cat-header">
+        <div class="vp-cat-icon" style="background:rgba(52,211,153,.1); border:1px solid rgba(52,211,153,.2);">🧑‍💼</div>
+        <div>
+          <div class="vp-cat-title">Visitor Management</div>
+          <div class="vp-cat-count">3 videos</div>
+        </div>
+        <div class="vp-cat-line"></div>
+      </div>
+
+      <div class="vp-grid">
+
+        <!-- Card 4 — Featured -->
+        <div class="vp-card  reveal-up"
+             style="--thumb-grad: linear-gradient(135deg,#004d40,#00695c,#00897b);">
+          <div class="vp-thumb">
+            <div class="vp-thumb-bg"></div>
+            <div class="vp-thumb-noise"></div>
+            <div class="vp-thumb-icon">📋</div>
+            <span class="vp-feat-badge">Core Feature</span>
+            <span class="vp-num-badge">01 / 03</span>
+            <span class="vp-coming-badge">▶ Coming Soon</span>
+          </div>
+          <div class="vp-body">
+            <div class="vp-meta">
+              <span class="vp-cat-pill" style="--cat-color:#34d399; --cat-bg:rgba(52,211,153,.08); --cat-border:rgba(52,211,153,.2);">Registration</span>
+              <span class="vp-meta-dot"></span>
+              <span class="vp-duration-label">~12 min</span>
+            </div>
+            <h3 class="vp-card-title">Visitor Registration — Full Walkthrough</h3>
+            <p class="vp-card-desc">End-to-end visitor registration flow — from the visitor filling out the digital form, to host approval, OTP verification, and generating a visitor badge on arrival.</p>
+
+          </div>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="vp-card reveal-up" style="--thumb-grad: linear-gradient(135deg,#004d40,#00695c);">
+          <div class="vp-thumb">
+            <div class="vp-thumb-bg"></div>
+            <div class="vp-thumb-noise"></div>
+            <div class="vp-thumb-icon">✅</div>
+            <span class="vp-num-badge">02 / 03</span>
+            <span class="vp-coming-badge">▶ Coming Soon</span>
+          </div>
+          <div class="vp-body">
+            <div class="vp-meta">
+              <span class="vp-cat-pill" style="--cat-color:#34d399; --cat-bg:rgba(52,211,153,.08); --cat-border:rgba(52,211,153,.2);">Approval</span>
+              <span class="vp-meta-dot"></span>
+              <span class="vp-duration-label">~7 min</span>
+            </div>
+            <h3 class="vp-card-title">Approving & Rejecting Visits</h3>
+            <p class="vp-card-desc">How hosts receive approval requests, view visitor details, and accept or decline incoming visit requests from the dashboard.</p>
+
+          </div>
+        </div>
+
+        <!-- Card 6 -->
+        <div class="vp-card reveal-up" style="--thumb-grad: linear-gradient(135deg,#1b5e20,#2e7d32);">
+          <div class="vp-thumb">
+            <div class="vp-thumb-bg"></div>
+            <div class="vp-thumb-noise"></div>
+            <div class="vp-thumb-icon">🏷️</div>
+            <span class="vp-num-badge">03 / 03</span>
+            <span class="vp-coming-badge">▶ Coming Soon</span>
+          </div>
+          <div class="vp-body">
+            <div class="vp-meta">
+              <span class="vp-cat-pill" style="--cat-color:#34d399; --cat-bg:rgba(52,211,153,.08); --cat-border:rgba(52,211,153,.2);">Badges</span>
+              <span class="vp-meta-dot"></span>
+              <span class="vp-duration-label">~5 min</span>
+            </div>
+            <h3 class="vp-card-title">Digital Visitor Badges</h3>
+            <p class="vp-card-desc">Generate a digital visitor badge with the visitor's name, host details, and timestamp upon successful check-in.</p>
+
+          </div>
+        </div>
+
+      </div>
+    </div><!-- end category 2 -->
+
+    <hr class="vp-section-divider">
+
+    <!-- ══════════════════════════════════════
+         CATEGORY 3 — Security & QR Access
+    ══════════════════════════════════════ -->
+    <div class="vp-category reveal-up">
+      <div class="vp-cat-header">
+        <div class="vp-cat-icon" style="background:rgba(251,191,36,.1); border:1px solid rgba(251,191,36,.2);">🔐</div>
+        <div>
+          <div class="vp-cat-title">Security Operations</div>
+          <div class="vp-cat-count">3 videos</div>
+        </div>
+        <div class="vp-cat-line"></div>
+      </div>
+
+      <div class="vp-grid">
+
+        <!-- Card 7 — Featured -->
+        <div class="vp-card  reveal-up"
+             style="--thumb-grad: linear-gradient(135deg,#451a03,#78350f,#92400e);">
+          <div class="vp-thumb">
+            <div class="vp-thumb-bg"></div>
+            <div class="vp-thumb-noise"></div>
+            <div class="vp-thumb-icon">📱</div>
+            <span class="vp-feat-badge">Core Feature</span>
+            <span class="vp-num-badge">01 / 03</span>
+            <span class="vp-coming-badge">▶ Coming Soon</span>
+          </div>
+          <div class="vp-body">
+            <div class="vp-meta">
+              <span class="vp-cat-pill" style="--cat-color:#fbbf24; --cat-bg:rgba(251,191,36,.08); --cat-border:rgba(251,191,36,.2);">Check-In</span>
+              <span class="vp-meta-dot"></span>
+              <span class="vp-duration-label">~9 min</span>
+            </div>
+            <h3 class="vp-card-title">OTP Verification Setup</h3>
+            <p class="vp-card-desc">Configure OTP-based entry, set up the security guard's view, and manage how security verifies visitor OTP codes at the front desk.</p>
+
+          </div>
+        </div>
+
+        <!-- Card 8 -->
+        <div class="vp-card reveal-up" style="--thumb-grad: linear-gradient(135deg,#78350f,#92400e);">
+          <div class="vp-thumb">
+            <div class="vp-thumb-bg"></div>
+            <div class="vp-thumb-noise"></div>
+            <div class="vp-thumb-icon">🛡️</div>
+            <span class="vp-num-badge">02 / 03</span>
+            <span class="vp-coming-badge">▶ Coming Soon</span>
+          </div>
+          <div class="vp-body">
+            <div class="vp-meta">
+              <span class="vp-cat-pill" style="--cat-color:#fbbf24; --cat-bg:rgba(251,191,36,.08); --cat-border:rgba(251,191,36,.2);">Security</span>
+              <span class="vp-meta-dot"></span>
+              <span class="vp-duration-label">~7 min</span>
+            </div>
+            <h3 class="vp-card-title">Security Guard Dashboard</h3>
+            <p class="vp-card-desc">How security personnel use the Vistron dashboard to verify visitor OTPs, view active visits, and maintain accurate daily entry logs.</p>
+
+          </div>
+        </div>
+
+        <!-- Card 9 -->
+        <div class="vp-card reveal-up" style="--thumb-grad: linear-gradient(135deg,#7c2d12,#9a3412);">
+          <div class="vp-thumb">
+            <div class="vp-thumb-bg"></div>
+            <div class="vp-thumb-noise"></div>
+            <div class="vp-thumb-icon">🚪</div>
+            <span class="vp-num-badge">03 / 03</span>
+            <span class="vp-coming-badge">▶ Coming Soon</span>
+          </div>
+          <div class="vp-body">
+            <div class="vp-meta">
+              <span class="vp-cat-pill" style="--cat-color:#fbbf24; --cat-bg:rgba(251,191,36,.08); --cat-border:rgba(251,191,36,.2);">Access</span>
+              <span class="vp-meta-dot"></span>
+              <span class="vp-duration-label">~6 min</span>
+            </div>
+            <h3 class="vp-card-title">Check-Out & Visit Closure Flow</h3>
+            <p class="vp-card-desc">Properly close a visit session — mark visitor check-out, trigger exit notifications to the host, and ensure accurate time-log entries for compliance.</p>
+
+          </div>
+        </div>
+
+      </div>
+    </div><!-- end category 3 -->
+
+    <hr class="vp-section-divider">
+
+    <!-- ══════════════════════════════════════
+         CATEGORY 4 — Admin Dashboard & Reports
+    ══════════════════════════════════════ -->
+    <div class="vp-category reveal-up">
+      <div class="vp-cat-header">
+        <div class="vp-cat-icon" style="background:rgba(236,72,153,.1); border:1px solid rgba(236,72,153,.2);">📊</div>
+        <div>
+          <div class="vp-cat-title">Administration & Settings</div>
+          <div class="vp-cat-count">3 videos</div>
+        </div>
+        <div class="vp-cat-line"></div>
+      </div>
+
+      <div class="vp-grid">
+
+        <div class="vp-card  reveal-up"
+             style="--thumb-grad: linear-gradient(135deg,#500724,#831843,#9d174d);">
+          <div class="vp-thumb">
+            <div class="vp-thumb-bg"></div>
+            <div class="vp-thumb-noise"></div>
+            <div class="vp-thumb-icon">📈</div>
+            <span class="vp-feat-badge">Analytics</span>
+            <span class="vp-num-badge">01 / 03</span>
+            <span class="vp-coming-badge">▶ Coming Soon</span>
+          </div>
+          <div class="vp-body">
+            <div class="vp-meta">
+              <span class="vp-cat-pill" style="--cat-color:#f472b6; --cat-bg:rgba(236,72,153,.08); --cat-border:rgba(236,72,153,.2);">Analytics</span>
+              <span class="vp-meta-dot"></span>
+              <span class="vp-duration-label">~11 min</span>
+            </div>
+            <h3 class="vp-card-title">Admin Analytics — Visitor Trends & Reports</h3>
+            <p class="vp-card-desc">Explore visitor count trends, peak hour heatmaps, department-wise visit logs, and export PDF/CSV reports for compliance and board presentations.</p>
+
+          </div>
+        </div>
+
+        <div class="vp-card reveal-up" style="--thumb-grad: linear-gradient(135deg,#701a75,#86198f);">
+          <div class="vp-thumb">
+            <div class="vp-thumb-bg"></div>
+            <div class="vp-thumb-noise"></div>
+            <div class="vp-thumb-icon">📬</div>
+            <span class="vp-num-badge">02 / 03</span>
+            <span class="vp-coming-badge">▶ Coming Soon</span>
+          </div>
+          <div class="vp-body">
+            <div class="vp-meta">
+              <span class="vp-cat-pill" style="--cat-color:#f472b6; --cat-bg:rgba(236,72,153,.08); --cat-border:rgba(236,72,153,.2);">Templates</span>
+              <span class="vp-meta-dot"></span>
+              <span class="vp-duration-label">~6 min</span>
+            </div>
+            <h3 class="vp-card-title">Custom Mail Templates</h3>
+            <p class="vp-card-desc">Design custom email templates for visitor approvals, rejections, and OTP messages directly from the admin dashboard.</p>
+
+          </div>
+        </div>
+
+        <div class="vp-card reveal-up" style="--thumb-grad: linear-gradient(135deg,#4a044e,#701a75);">
+          <div class="vp-thumb">
+            <div class="vp-thumb-bg"></div>
+            <div class="vp-thumb-noise"></div>
+            <div class="vp-thumb-icon">⚙️</div>
+            <span class="vp-num-badge">03 / 03</span>
+            <span class="vp-coming-badge">▶ Coming Soon</span>
+          </div>
+          <div class="vp-body">
+            <div class="vp-meta">
+              <span class="vp-cat-pill" style="--cat-color:#f472b6; --cat-bg:rgba(236,72,153,.08); --cat-border:rgba(236,72,153,.2);">Settings</span>
+              <span class="vp-meta-dot"></span>
+              <span class="vp-duration-label">~8 min</span>
+            </div>
+            <h3 class="vp-card-title">SMTP & Email Server Setup</h3>
+            <p class="vp-card-desc">Connect your own SMTP credentials to send official automated emails from your company domain seamlessly.</p>
+
+          </div>
+        </div>
+
+      </div>
+    </div><!-- end category 4 -->
+
+
+
+
+
+    <!-- CTA -->
+    <div class="vp-cta reveal-up">
+      <div class="vp-cta-card">
+        <h2>Want a <em>live walkthrough</em>?</h2>
+        <p>Our team will give you a personalised demo of Zaryz Vistron — tailored to your industry, team size, and deployment environment. No slides. All product.</p>
+        <div class="vp-cta-btns">
+          <a href="/contact/" class="btn-primary" data-magnetic>
+            <span>Book a Live Demo</span>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+          <a href="/" class="btn-outline">Back to Home</a>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end vp-inner -->
+
+  <!-- FOOTER -->
+  {% include 'platform/_footer.html' %}
+
+  <script>
+
+
+    /* ── Navbar scroll ── */
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      const isScrolled = window.scrollY > 40;
+      navbar.classList.toggle('scrolled', isScrolled);
+    }, { passive: true });
+
+    /* ── Reveal on scroll ── */
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('revealed'); obs.unobserve(e.target); } });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.reveal-up').forEach(el => obs.observe(el));
+
+    /* ── Card mouse glow ── */
+    document.querySelectorAll('.vp-card').forEach(card => {
+      card.addEventListener('mousemove', e => {
+        const r = card.getBoundingClientRect();
+        card.style.setProperty('--mx', `${e.clientX - r.left}px`);
+        card.style.setProperty('--my', `${e.clientY - r.top}px`);
+      });
+    });
+
+    /* ── Mobile menu ── */
+    function toggleMenu() {
+      document.getElementById('nav-links').classList.toggle('open');
+      document.getElementById('menu-toggle').classList.toggle('open');
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,184 @@
+<!-- badge_lookup.html -->
+{% extends "security/security_base.html" %}
+{% load static %}
+
+{% block security_css %}
+<link href="{% static 'css/security.css' %}" rel="stylesheet">
+<style>
+/* Dashboard specific refinements */
+.dashboard-card {
+    border: none;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+    background: white !important;
+    border-radius: 20px;
+    padding: 24px;
+}
+.lookup-form {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    transition: all 0.3s ease;
+}
+.lookup-form:focus-within {
+    border-color: #6366f1;
+    background: white;
+    box-shadow: 0 4px 20px rgba(99, 102, 241, 0.08);
+}
+@media (max-width: 576px) {
+    .dashboard-card {
+        padding: 20px 16px;
+    }
+    /* Header: stack vertically, left-aligned */
+    .dashboard-header {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 10px;
+        margin-bottom: 20px !important;
+    }
+    .dashboard-title {
+        font-size: 1.4rem !important;
+    }
+    /* Search form stays side-by-side but compact */
+    .lookup-input-group {
+        flex-wrap: nowrap !important;
+        gap: 8px !important;
+    }
+    .lookup-input {
+        height: 42px !important;
+        font-size: 0.875rem !important;
+        min-width: 0; /* Allow input to shrink */
+    }
+    .lookup-input-group .btn-primary-modern {
+        height: 42px !important;
+        padding: 0 14px !important;
+        font-size: 0.8rem !important;
+        flex-shrink: 0;
+        width: auto !important;
+        white-space: nowrap;
+    }
+    .btn-secondary-modern {
+        padding: 5px 12px;
+        font-size: 0.75rem;
+    }
+}
+</style>
+{% endblock %}
+
+{% block security_content %}
+<div class="badge-lookup-page">
+    <div class="dashboard-card">
+        <!-- Header: title -->
+        <div class="dashboard-header mb-5">
+            <h1 class="dashboard-title m-0">
+                <i class="fas fa-search me-2"></i> Badge Lookup
+            </h1>
+            <p class="text-muted small m-0 mt-1">Search visitor by badge ID</p>
+        </div>
+
+        <!-- Lookup Form -->
+        <div class="lookup-form p-3 p-md-4 rounded-4">
+            <form method="post">
+                {% csrf_token %}
+                <div class="lookup-input-group d-flex gap-2">
+                    <input 
+                        name="badge_id" 
+                        class="lookup-input flex-grow-1" 
+                        placeholder="Enter Badge ID"
+                        required
+                        autocomplete="off"
+                        autofocus
+                        style="height: 48px; border-radius: 12px; border: 1.5px solid #e2e8f0; padding: 0 16px;">
+                    <button type="submit" class="btn-primary-modern px-4" style="height: 48px; border-radius: 12px; background: #6366f1;">
+                        <i class="fas fa-search me-1" style="font-size: 0.8rem;"></i> Search
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Search Result -->
+        {% if visit %}
+        <div class="badge-card mx-auto" style="margin-top: 32px; max-width: 450px;">
+            <div class="badge-header">
+                <!-- Photo/Avatar -->
+                <div class="badge-photo-wrapper">
+                    {% if visit.photo %}
+                        <img src="{% url 'visitors:visitor_photo' visit.uuid %}"
+                             alt="{{ visit.full_name }}"
+                             class="badge-photo">
+                    {% else %}
+                        <div class="badge-avatar">
+                            {{ visit.full_name|first|upper }}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <h2 class="badge-name">{{ visit.full_name }}</h2>
+                <p class="badge-id"><i class="fas fa-id-badge text-primary"></i> {{ visit.badge_id }}</p>
+            </div>
+
+            <!-- Visitor Info -->
+            <div class="badge-info">
+                <div class="info-row">
+                    <div class="info-label"><i class="fas fa-phone"></i> Phone</div>
+                    <div class="info-value">{{ visit.phone }}</div>
+                </div>
+
+                <div class="info-row">
+                    <div class="info-label"><i class="fas fa-calendar"></i> Visit Date</div>
+                    <div class="info-value">{{ visit.visit_date|date:"F d, Y" }}</div>
+                </div>
+
+                <div class="info-row">
+                    <div class="info-label"><i class="fas fa-info-circle"></i> Status</div>
+                    <div class="info-value">
+                        <span class="status-badge status-{{ visit.status }}">
+                            {{ visit.display_status }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="badge-actions d-grid gap-2 mt-4">
+                {% if visit.status == "approved" or visit.status == "pending" %}
+                    <a href="{% url 'security:checkin' visit.id %}" class="btn-success-modern justify-content-center">
+                        <i class="fas fa-sign-in-alt"></i> Check In
+                    </a>
+                {% elif visit.status == "checked_in" %}
+                    <a href="{% url 'security:checkout' visit.id %}" class="btn-warning-modern justify-content-center">
+                        <i class="fas fa-sign-out-alt"></i> Check Out
+                    </a>
+                {% endif %}
+
+                <a href="{% url 'security:badge_detail' visit.id %}" class="btn-primary-modern justify-content-center">
+                    <i class="fas fa-eye"></i> Full Details
+                </a>
+            </div>
+        </div>
+        {% endif %}
+
+        {% if request.method == 'POST' and not visit %}
+        <div class="empty-state py-5">
+            <div class="empty-icon text-muted">
+                <i class="fas fa-exclamation-circle opacity-50"></i>
+            </div>
+            <h4 class="empty-title">Visitor Not Found</h4>
+            <p class="empty-message">No records found for ID "{{ request.POST.badge_id }}"</p>
+        </div>
+        {% endif %}
+
+        <!-- Bottom Actions -->
+        <div class="d-flex justify-content-between mt-4 mt-md-5 pt-3 border-top">
+            <a href="{% url 'security:security_dashboard' %}" class="btn-secondary-modern text-decoration-none">
+                <i class="fas fa-arrow-left text-muted me-1"></i> Dashboard
+            </a>
+            <a href="{% url 'security:scan_qr' %}" class="btn-secondary-modern text-decoration-none">
+                <i class="fas fa-qrcode text-primary me-1"></i> Use QR Scanner
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block security_js %}
+<script src="{% static 'js/security.js' %}"></script>
+{% endblock %}

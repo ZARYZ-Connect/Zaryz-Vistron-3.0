@@ -1,0 +1,250 @@
+/* ================= GLOBAL RESET ================= */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  color: #fff;
+  background: linear-gradient(135deg, #020617 0%, #0b132b 50%, #111c44 100%);
+  overflow-x: hidden;
+}
+
+.container {
+  max-width: 1250px;
+  margin: 0 auto;
+  padding: 0 6%;
+}
+
+/* ================= NAVBAR ================= */
+
+.nav {
+  padding: 30px 50px;
+}
+
+.nav-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.logo img {
+  height: 48px;
+}
+
+.brand-text {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: #4da3ff;
+}
+
+.nav-links a {
+  font-size: 17px;
+  margin-left: 40px;
+  color: #9aa4c3;
+  text-decoration: none;
+  transition: 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: #ffffff;
+}
+
+/* ================= HERO ================= */
+
+.hero {
+  padding: 170px 0 140px;
+}
+
+.hero-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 120px;
+}
+
+.hero-left {
+  max-width: 640px;
+}
+
+.tag {
+  font-size: 12px;
+  letter-spacing: 2px;
+  color: #4da3ff;
+  margin-bottom: 22px;
+}
+
+.hero h1 {
+  font-size: 70px;
+  line-height: 1.1;
+  margin-bottom: 30px;
+}
+
+.gradient-text {
+  background: linear-gradient(90deg, #4da3ff, #9b6dff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero p {
+  font-size: 19px;
+  color: #b6c2e1;
+  margin-bottom: 45px;
+  line-height: 1.6;
+}
+
+.cta-btn {
+  padding: 16px 48px;
+  border-radius: 40px;
+  background: linear-gradient(90deg, #4da3ff, #9b6dff);
+  color: #fff;
+  text-decoration: none;
+  transition: 0.3s ease;
+}
+
+.cta-btn:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 25px 60px rgba(77,163,255,0.4);
+}
+
+/* HERO CARD */
+
+.hero-right {
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(30px);
+  border-radius: 28px;
+  padding: 55px;
+  border: 1px solid rgba(255,255,255,0.08);
+  min-width: 420px;
+  box-shadow: 0 50px 120px rgba(0,0,0,0.65);
+}
+
+.flow-step {
+  padding: 15px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  color: #9aa4c3;
+  font-size: 15px;
+}
+
+.flow-step:last-child {
+  border-bottom: none;
+}
+
+/* ================= STORY ================= */
+
+.story-section {
+  padding: 180px 0;
+}
+
+.story-block {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 120px;
+  margin-bottom: 180px;
+}
+
+.story-block.reverse {
+  flex-direction: row-reverse;
+}
+
+.story-text h2 {
+  font-size: 54px;
+  margin-bottom: 22px;
+}
+
+.story-text p,
+.story-text li {
+  font-size: 18px;
+  color: #9aa4c3;
+  margin-bottom: 16px;
+  line-height: 1.6;
+}
+
+.story-visual {
+  background: rgba(255,255,255,0.04);
+  backdrop-filter: blur(25px);
+  border-radius: 30px;
+  padding: 55px;
+  border: 1px solid rgba(255,255,255,0.08);
+  min-width: 380px;
+  box-shadow: 0 50px 120px rgba(0,0,0,0.65);
+}
+
+/* ================= FINAL CTA ================= */
+
+.final-cta {
+  text-align: center;
+  padding: 200px 0;
+}
+
+.final-cta h2 {
+  font-size: 54px;
+  margin-bottom: 22px;
+}
+
+.final-cta p {
+  font-size: 20px;
+  color: #b6c2e1;
+  margin-bottom: 45px;
+}
+
+/* ================= FOOTER ================= */
+
+.footer {
+  text-align: center;
+  padding: 50px 0;
+  color: #6c789c;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 1024px) {
+
+  .hero-inner,
+  .story-block {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .hero-right,
+  .story-visual {
+    min-width: 100%;
+    width: 100%;
+  }
+
+  .hero h1 {
+    font-size: 46px;
+  }
+}
+
+@media (max-width: 768px) {
+
+  .container { padding: 0 20px; }
+  .nav { padding: 20px; }
+
+  .nav-links { display: none; }
+
+  .hero { padding: 100px 0; }
+
+  .hero h1 { font-size: 36px; }
+  .hero p { font-size: 16px; }
+
+  .story-text h2 { font-size: 32px; }
+  .story-text p,
+  .story-text li { font-size: 15px; }
+
+  .final-cta h2 { font-size: 32px; }
+  .final-cta p { font-size: 16px; }
+
+}

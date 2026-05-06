@@ -1,0 +1,13 @@
+Django
+gunicorn
+psycopg2-binary
+django-extensions
+djangorestframework
+django-crispy-forms
+crispy-bootstrap5
+python-dotenv
+requests
+Pillow
+redis
+django-redis
+qrcode[pil]

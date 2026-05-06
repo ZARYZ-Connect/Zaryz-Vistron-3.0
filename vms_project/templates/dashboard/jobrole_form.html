@@ -1,0 +1,106 @@
+<!-- ==================== JOBROLE_FORM.HTML ==================== -->
+{% extends "dashboard/admin_base.html" %}
+{% load static %}
+
+{% block admin_css %}
+<link href="{% static 'css/form.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block admin_content %}
+<div class="form-container">
+  <div class="form-card">
+    <div class="form-header">
+      <div class="form-icon">
+        <i class="fas fa-briefcase"></i>
+      </div>
+      <h2 class="form-title">{% if is_new %}Add Job Position{% else %}Edit Job Position{% endif %}</h2>
+      <p class="form-subtitle">Define roles and responsibilities for your organization</p>
+    </div>
+
+    <form method="post" id="mainForm">
+      {% csrf_token %}
+      
+      <div class="form-section">
+        <h5 class="section-title">
+          <i class="fas fa-building"></i>
+          Job Position Information
+        </h5>
+
+        <div class="form-group">
+          <label class="form-label required" for="id_department">Department</label>
+          {% if form.department.errors %}
+            <div class="error-messages">
+              <ul class="error-list">
+                {% for error in form.department.errors %}
+                  <li>{{ error }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+          {% endif %}
+          <select name="department" id="id_department" class="modern-select" required>
+            <option value="">Select a department</option>
+            {% for value, label in form.department.field.choices %}
+              {% if value %}
+                <option value="{{ value }}" {% if form.department.value|stringformat:"s" == value|stringformat:"s" %}selected{% endif %}>
+                  {{ label }}
+                </option>
+              {% endif %}
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label required" for="id_name">Job Position Name</label>
+          {% if form.name.errors %}
+            <div class="error-messages">
+              <ul class="error-list">
+                {% for error in form.name.errors %}
+                  <li>{{ error }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+          {% endif %}
+          <input 
+            type="text" 
+            name="name" 
+            id="id_name" 
+            class="modern-input" 
+            placeholder="e.g., Senior Developer, Marketing Manager" 
+            value="{{ form.name.value|default:'' }}"
+            required
+            maxlength="100"
+          >
+          <div class="char-counter" id="nameCounter">
+            <span id="nameCount">{{ form.name.value|default:''|length }}</span>/100
+          </div>
+        </div>
+      </div>
+
+      <div class="btn-group">
+        <button type="submit" class="btn-primary-modern" id="submitBtn">
+          {% if is_new %}
+            <i class="fas fa-plus"></i>
+            Create Job Position
+          {% else %}
+            <i class="fas fa-save"></i>
+            Update Job Position
+          {% endif %}
+        </button>
+        <a href="{% url 'dashboard:jobrole_list' %}" class="btn-secondary-modern">
+          <i class="fas fa-times"></i>
+          Cancel
+        </a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block admin_js %}
+<script src="{% static 'js/form.js' %}"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    initCharCounter('id_name', 'nameCount', 'nameCounter', 100);
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,284 @@
+<!-- templates/visitors/approve_already_done.html -->
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link href="{% static 'css/visitor-pages.css' %}" rel="stylesheet">
+<style>
+
+/* ── Already Processed — Compact Premium (matching approve_done) ── */
+
+body {
+    background:
+        radial-gradient(1200px 600px at 10% -10%, rgba(99, 102, 241, 0.35), transparent 60%),
+        radial-gradient(800px 500px at 90% 10%, rgba(139, 92, 246, 0.35), transparent 55%),
+        linear-gradient(180deg, #0b1020 0%, #0f172a 40%, #111827 100%) !important;
+    min-height: 100vh;
+    margin: 0;
+}
+
+.result-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: calc(100vh - 64px); /* Adjusting navbar assumed height */
+    padding: 80px 12px 40px; /* Increased top padding to push card down */
+}
+
+.result-card {
+    max-width: 380px;
+    width: 100%;
+    border-radius: 18px;
+    overflow: hidden;
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255,255,255,0.12);
+    box-shadow: 0 32px 80px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1);
+}
+
+/* ── Banner ── */
+.rc-banner {
+    padding: 18px 20px 14px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, #d97706, #f59e0b);
+}
+.rc-banner::before {
+    content: '';
+    position: absolute;
+    top: -30px; right: -30px;
+    width: 120px; height: 120px;
+    background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
+    border-radius: 50%;
+}
+.rc-icon {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    border: 2px solid rgba(255,255,255,0.35);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    color: white;
+    margin-bottom: 10px;
+}
+.rc-banner-title {
+    font-size: 1rem;
+    font-weight: 800;
+    color: white;
+    margin: 0 0 3px;
+    letter-spacing: -0.02em;
+}
+.rc-banner-sub {
+    font-size: 0.7rem;
+    color: rgba(255,255,255,0.85);
+    line-height: 1.4;
+    margin: 0;
+    font-weight: 500;
+}
+
+/* ── Body ── */
+.rc-body { padding: 14px 18px 18px; }
+
+/* ── Detail Table ── */
+.rc-detail-table {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 12px;
+}
+.rc-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 9px 14px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.rc-row:last-child { border-bottom: none; }
+.rc-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: rgba(255,255,255,0.55);
+}
+.rc-label i { width: 12px; color: rgba(255,255,255,0.35); font-size: 0.65rem; }
+.rc-value {
+    font-size: 0.76rem;
+    font-weight: 700;
+    color: #e2e8f0;
+    text-align: right;
+}
+
+/* ── Chips ── */
+.rc-chip {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 20px;
+    font-size: 0.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+.rc-chip.success { background: rgba(16,185,129,0.1); color: #059669; }
+.rc-chip.danger  { background: rgba(239,68,68,0.1);  color: #dc2626; }
+.rc-chip.neutral { background: rgba(107,114,128,0.1); color: #6b7280; }
+
+/* Badge ID */
+.rc-badge-value {
+    font-family: 'Courier New', monospace;
+    color: #a78bfa;
+    font-weight: 800;
+    letter-spacing: 2px;
+    font-size: 0.78rem;
+}
+
+/* ── Info Box ── */
+.rc-info-box {
+    border-radius: 9px;
+    padding: 10px 12px;
+    margin-bottom: 12px;
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+    background: rgba(99,102,241,0.08);
+    border: 1px solid rgba(99,102,241,0.15);
+}
+.rc-info-box i.rc-info-icon {
+    font-size: 0.72rem;
+    margin-top: 1px;
+    flex-shrink: 0;
+    color: #6366f1;
+}
+.rc-info-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: rgba(255,255,255,0.85);
+    margin-bottom: 3px;
+}
+.rc-info-text {
+    font-size: 0.66rem;
+    color: rgba(255,255,255,0.5);
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* ── Home Button ── */
+.rc-home-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    width: 100%;
+    padding: 10px 20px;
+    background: linear-gradient(135deg, #7c4dff, #b388ff);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-decoration: none;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 14px rgba(124,77,255,0.3);
+    transition: all 0.2s;
+}
+.rc-home-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(124,77,255,0.4);
+    color: white;
+}
+.rc-home-btn i { font-size: 0.8rem; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 480px) {
+    .result-container { 
+        padding: 20px 24px; 
+        align-items: center; 
+    }
+    .result-card { 
+        border-radius: 16px; 
+        max-width: 340px; 
+    }
+    .rc-banner { padding: 14px 16px 12px; }
+    .rc-body { padding: 12px 14px 16px; }
+    .rc-banner-title { font-size: 0.92rem; }
+}
+@media (max-width: 360px) {
+    .result-card { max-width: 100%; }
+}
+
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="result-container">
+  <div class="result-card">
+
+    <!-- ── AMBER BANNER ── -->
+    <div class="rc-banner">
+      <div class="rc-icon"><i class="fas fa-info-circle"></i></div>
+      <h1 class="rc-banner-title">Already Processed</h1>
+      <p class="rc-banner-sub">This request has already been reviewed. No further action is required.</p>
+    </div>
+
+    <div class="rc-body">
+
+      <!-- Details -->
+      <div class="rc-detail-table">
+        <div class="rc-row">
+          <span class="rc-label"><i class="fas fa-user"></i> Visitor</span>
+          <span class="rc-value">{{ visit.full_name }}</span>
+        </div>
+        <div class="rc-row">
+          <span class="rc-label"><i class="fas fa-calendar"></i> Visit Date</span>
+          <span class="rc-value">{{ visit.visit_date|date:"M d, Y" }}</span>
+        </div>
+        <div class="rc-row">
+          <span class="rc-label"><i class="fas fa-check-circle"></i> Status</span>
+          <span class="rc-value">
+            {% if visit.status == 'approved' %}
+              <span class="rc-chip success">{{ visit.status }}</span>
+            {% elif visit.status == 'rejected' %}
+              <span class="rc-chip danger">{{ visit.status }}</span>
+            {% else %}
+              <span class="rc-chip neutral">{{ visit.status }}</span>
+            {% endif %}
+          </span>
+        </div>
+        {% if visit.badge_id %}
+        <div class="rc-row">
+          <span class="rc-label"><i class="fas fa-id-badge"></i> Badge ID</span>
+          <span class="rc-value rc-badge-value">{{ visit.badge_id }}</span>
+        </div>
+        {% endif %}
+      </div>
+
+      <!-- Info Box -->
+      <div class="rc-info-box">
+        <i class="fas fa-lightbulb rc-info-icon"></i>
+        <div>
+          <div class="rc-info-title">Why am I seeing this?</div>
+          <p class="rc-info-text">
+            This request was already processed by someone else or the approval link has expired.
+            Each link can only be used once for security purposes.
+          </p>
+        </div>
+      </div>
+
+      <a href="{% url 'visitors:home' %}" class="rc-home-btn">
+        <i class="fas fa-home"></i> Back to Home
+      </a>
+
+    </div><!-- /rc-body -->
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/visitor-pages.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,54 @@
+<!-- ==================== 4. VISIT TYPE DELETE ==================== -->
+{% extends "dashboard/admin_base.html" %}
+{% load static %}
+
+{% block admin_css %}
+<link rel="stylesheet" href="{% static 'css/delete-confirm.css' %}">
+{% endblock %}
+
+{% block admin_content %}
+<div class="delete-container">
+    <div class="delete-card">
+        <div class="warning-icon pulse">
+            <i class="fas fa-exclamation-triangle"></i>
+        </div>
+
+        <h2 class="delete-title">Delete Visit Type</h2>
+        <p class="delete-message">Delete this visit type?</p>
+        
+        <div class="item-name">{{ object.name }}</div>
+
+        <div class="impact-warning">
+            <i class="fas fa-exclamation-circle"></i>
+            <div class="impact-text">
+                Ensure no active visits use this type
+            </div>
+        </div>
+
+        <div class="consequences">
+            <h6><i class="fas fa-info-circle"></i>Consequences</h6>
+            <ul>
+                <li>This action cannot be undone</li>
+                <li>Existing visits need reassignment</li>
+                <li>Future visits may be affected</li>
+            </ul>
+        </div>
+
+        <form method="post" id="deleteForm">
+            {% csrf_token %}
+            <div class="btn-group">
+                <button type="submit" class="btn-delete">
+                    <i class="fas fa-trash-alt"></i>Delete
+                </button>
+                <a href="{% url 'dashboard:visittype_list' %}" class="btn-cancel">
+                    <i class="fas fa-times"></i>Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block admin_js %}
+<script src="{% static 'js/delete-confirm.js' %}"></script>
+{% endblock %}

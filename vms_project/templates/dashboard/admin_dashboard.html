@@ -1,0 +1,340 @@
+{% extends "base.html" %}
+{% load static %}
+{% block body_class %}vms-luxury-bg{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}?v=1.8">
+<link rel="stylesheet" href="{% static 'css/admin-sidebar.css' %}?v=1.8">
+<style>
+/* ── Analytics Trend Badge ─────────────────────────────── */
+.analytics-trend-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    transition: all 0.4s ease;
+    white-space: nowrap;
+}
+.badge-trend-high {
+    background: rgba(34, 197, 94, 0.15);
+    color: #22c55e;
+    border: 1px solid rgba(34, 197, 94, 0.35);
+    box-shadow: 0 0 10px rgba(34, 197, 94, 0.15);
+}
+.badge-trend-medium {
+    background: rgba(249, 115, 22, 0.15);
+    color: #f97316;
+    border: 1px solid rgba(249, 115, 22, 0.35);
+    box-shadow: 0 0 10px rgba(249, 115, 22, 0.15);
+}
+.badge-trend-low {
+    background: rgba(239, 68, 68, 0.15);
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.35);
+    box-shadow: 0 0 10px rgba(239, 68, 68, 0.15);
+}
+
+/* Dashboard specific navbar overrides to ensure exact fixed alignment */
+.vms-glass-navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: 64px;
+    z-index: 1050;
+    background: linear-gradient(135deg, rgba(30, 27, 75, 0.95) 0%, rgba(49, 46, 129, 0.95) 100%) !important;
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+}
+
+@media (max-width: 767px) {
+    .vms-glass-navbar {
+        min-height: 64px !important;
+        height: auto !important;
+        padding: 5px 0 !important;
+    }
+}
+body {
+    padding-top: 64px; /* offset navbar */
+}
+
+@media (max-width: 991px) {
+    body {
+        padding-top: 60px; /* offset smaller mobile navbar */
+    }
+}
+/* ─── Main content area alignment ──────── */
+.admin-main-wrapper {
+    margin-left: 280px; /* Restored original width */
+    padding: 24px;
+    min-height: calc(100vh - 64px);
+    background: radial-gradient(1200px 600px at 10% -10%, rgba(99, 102, 241, 0.15), transparent 60%),
+                radial-gradient(800px 500px at 90% 10%, rgba(139, 92, 246, 0.15), transparent 55%),
+                linear-gradient(180deg, #0b1020 0%, #0f172a 40%, #111827 100%) !important;
+}
+
+.dashboard-title {
+    color: #ffffff !important;
+}
+
+.dashboard-subtitle {
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+
+/* ========================================================= */
+/* MOBILE / TABLET ADAPTATION */
+/* ========================================================= */
+@media (max-width: 1200px) {
+    .admin-main-wrapper { 
+        margin-left: 56px; 
+        padding: 12px 15px;
+        transition: margin-left 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+}
+
+@media (max-width: 767px) {
+    .admin-main-wrapper {
+        margin-left: 0 !important;
+        padding: 10px 12px; /* Very tight mobile padding */
+    }
+    .metric-card {
+        padding: 16px !important;
+        margin-bottom: 8px;
+    }
+    .dashboard-title {
+        margin-top: 5px !important;
+        font-size: 1.35rem !important;
+    }
+}
+
+@media (max-width: 767px) {
+    .admin-main-wrapper { 
+        margin-left: 0 !important; 
+        padding: 16px !important; 
+    }
+}
+
+/* Dashboard specific aesthetics */
+.metric-card {
+    background: white !important;
+    border: 1px solid #f1f5f9 !important;
+    border-radius: 24px;   /* Slightly more rounded */
+    padding: 20px 24px;    /* Adjusted padding */
+    min-height: 180px;     /* Ensure balanced height */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03) !important;
+}
+
+@media (max-width: 1200px) {
+    .metric-card {
+        padding: 16px 20px;
+        min-height: 160px;
+    }
+}
+
+@media (max-width: 767px) {
+    .metric-card {
+        padding: 12px 10px !important;
+        min-height: 120px !important;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        border-radius: 16px !important;
+    }
+    .metric-card h3 {
+        font-size: 1.25rem !important;
+        margin: 4px 0 !important;
+    }
+    .metric-label {
+        font-size: 0.65rem !important;
+        margin-bottom: 2px !important;
+        white-space: nowrap !important;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100%;
+        display: block;
+    }
+    .metric-card small {
+        font-size: 0.6rem !important;
+        display: none;
+    }
+    .metric-icon {
+        width: 32px !important;
+        height: 32px !important;
+        margin-bottom: 6px !important;
+    }
+    .metric-icon i { font-size: 0.85rem !important; }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-container-fluid p-0">
+
+    <!-- Overlay -->
+    <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+    <div class="admin-layout-flex">
+
+        <!-- SIDEBAR -->
+        {% include 'components/admin_sidebar.html' %}
+
+        <!-- MAIN CONTENT -->
+        <div class="admin-main-wrapper">
+            <div class="dashboard-shell">
+
+                <!-- Header -->
+                <div class="dashboard-header">
+                    <h1 class="dashboard-title">Admin Dashboard</h1>
+                    <p class="dashboard-subtitle">
+                        Analytics and visitor management — {{ timeframe|upper }}
+                    </p>
+                </div>
+
+                <!-- METRICS -->
+                <div class="row g-4 mb-5">
+
+                    <div class="col-lg-3 col-md-6 col-6">
+                        <a href="{% url 'dashboard:visitor_list' %}" class="text-decoration-none">
+                            <div class="metric-card visitor">
+                                <div class="metric-icon">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                                <span class="metric-label">Total Visitors</span>
+                                <h3>{{ total }}</h3>
+                                <small>All time records</small>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6 col-6">
+                        <a href="{% url 'dashboard:visitor_list_by_status' status='pending' %}" class="text-decoration-none">
+                            <div class="metric-card pending">
+                                <div class="metric-icon">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                                <span class="metric-label">Pending</span>
+                                <h3>{{ pending }}</h3>
+                                <small>Requires action</small>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6 col-6">
+                        <a href="{% url 'dashboard:visitor_list_by_status' 'approved' %}" class="text-decoration-none">
+                            <div class="metric-card approved">
+                                <div class="metric-icon">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                                <span class="metric-label">Approved</span>
+                                <h3>{{ approved }}</h3>
+                                <small>In selected period</small>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="col-xl-3 col-lg-6 col-md-6 col-6">
+                        <a href="{% url 'dashboard:employee_list' %}" class="text-decoration-none">
+                            <div class="metric-card employee">
+                                <div class="metric-icon">
+                                    <i class="fas fa-id-card"></i>
+                                </div>
+                                <span class="metric-label">Employees</span>
+                                <h3>{{ employees_count }}</h3>
+                                <small>Active staff members</small>
+                            </div>
+                        </a>
+                    </div>
+
+                </div>
+
+                <!-- ANALYTICS -->
+                <div class="analytics-card mb-4" id="visitor-analysis">
+                    <div class="card-body p-4">
+
+                        <div class="d-flex justify-content-between align-items-start mb-4 flex-wrap">
+                            <div>
+                                <div class="d-flex align-items-center gap-3 flex-wrap">
+                                    <div class="analytics-title">Visitor Analytics</div>
+                                    <span id="analytics-trend-badge" class="analytics-trend-badge"></span>
+                                </div>
+                                <div class="analytics-subtitle">
+                                    Trends based on selected timeframe
+                                </div>
+                            </div>
+
+                            <a href="{% url 'dashboard:export_visitors_csv' %}?timeframe={{ timeframe }}"
+                               class="btn export-btn mt-3 mt-md-0">
+                                <i class="fas fa-download me-2"></i>Export CSV
+                            </a>
+                        </div>
+
+                        <div class="timeframe-toggle mb-4">
+                            <div class="btn-group flex-nowrap">
+                                <a href="?timeframe=daily#visitor-analysis" class="btn{% if timeframe == 'daily' %} active{% endif %}">
+                                    <i class="fas fa-sun"></i> Daily
+                                </a>
+                                <a href="?timeframe=weekly#visitor-analysis" class="btn{% if timeframe == 'weekly' %} active{% endif %}">
+                                    <i class="fas fa-calendar-week"></i> Weekly
+                                </a>
+                                <a href="?timeframe=monthly#visitor-analysis" class="btn{% if timeframe == 'monthly' %} active{% endif %}">
+                                    <i class="fas fa-calendar-alt"></i> Monthly
+                                </a>
+                                <a href="?timeframe=yearly#visitor-analysis" class="btn{% if timeframe == 'yearly' %} active{% endif %}">
+                                    <i class="fas fa-chart-line"></i> Yearly
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="chart-container">
+                            <div class="chart-responsive-wrapper">
+                                <div class="visitor-chart-wrapper">
+                                    <canvas id="visitorChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/dashboard.js' %}"></script>
+
+<script>
+function toggleSidebar() {
+    document.querySelector(".modern-admin-sidebar").classList.toggle("active");
+    document.querySelector(".sidebar-overlay").classList.toggle("active");
+}
+</script>
+
+{{ chart_data|json_script:"chart-data" }}
+
+<script>
+const chartData = JSON.parse(document.getElementById("chart-data").textContent);
+
+window.dashboardData = {
+    chartData: chartData,
+    timeframe: "{{ timeframe }}"
+};
+</script>
+{% endblock %}

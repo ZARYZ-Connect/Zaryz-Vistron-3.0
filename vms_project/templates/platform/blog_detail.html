@@ -1,0 +1,125 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ post.title }} | Zaryz Vistron Hub</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/landing.css' %}">
+    <style>
+        .post-page { color: #fff; min-height: 100vh; overflow-x: hidden; }
+        .post-article { padding: 180px 0 100px; position: relative; z-index: 10; }
+        .post-header { max-width: 860px; margin: 0 auto 60px; text-align: center; }
+        .post-meta { display: flex; align-items: center; justify-content: center; gap: 16px; margin-bottom: 24px; font-size: 0.85rem; color: rgba(255,255,255,0.4); font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; }
+        .post-title { font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 900; line-height: 1.1; margin-bottom: 32px; letter-spacing: -0.04em; }
+        .post-hero { max-width: 1100px; margin: 0 auto 80px; border-radius: 32px; overflow: hidden; aspect-ratio: 21/9; background: #1a1f26; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 40px 80px rgba(0,0,0,0.4); }
+        .post-hero img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s var(--transition); }
+        .post-hero:hover img { transform: scale(1.03); }
+        .post-body { max-width: 760px; margin: 0 auto 120px; font-size: 1.2rem; line-height: 1.8; color: rgba(255,255,255,0.8); }
+        .post-body h2 { margin: 60px 0 24px; font-size: 2.2rem; font-weight: 800; color: #fff; letter-spacing: -0.02em; }
+        .back-btn { display: inline-flex; align-items: center; gap: 12px; color: #825ee4; text-decoration: none; margin-bottom: 48px; font-weight: 700; font-size: 0.95rem; transition: gap 0.3s; }
+        .back-btn:hover { gap: 16px; color: #fff; }
+    </style>
+</head>
+<body class="post-page">
+
+
+    <div class="noise"></div>
+
+    <!-- ═══════════════════ NAVBAR ═══════════════════ -->
+  <header class="nav" id="navbar">
+    <div class="nav-inner">
+      <a href="/" class="logo" data-magnetic>
+        <img src="{% static 'img/logo.png' %}" alt="Zaryz Vistron">
+        <span>ZARYZ VISTRON</span>
+      </a>
+
+      <button class="menu-toggle" id="menu-toggle" onclick="toggleMenu()" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+
+      <nav class="nav-links" id="nav-links">
+        <div class="sidebar-header-mobile">
+            <a href="/" class="sidebar-brand-mobile">
+                <img src="{% static 'img/logo.png' %}" alt="Logo">
+                <span>ZARYZ VISTRON</span>
+            </a>
+        </div>
+        <a href="/" class="nav-link"><i class="fas fa-home"></i><span>Home</span></a>
+        <a href="/blog/" class="nav-link" data-no-smooth><i class="fas fa-book-open"></i><span>Blogs</span></a>
+        <a href="/videos/" class="nav-link" data-no-smooth><i class="fas fa-play-circle"></i><span>Videos</span></a>
+        <a href="/features/" class="nav-link"><i class="fas fa-star"></i><span>Features</span></a>
+
+        <a href="/contact/" class="nav-link"><i class="fas fa-envelope"></i><span>Contact</span></a>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="/contact/" class="btn-ghost">Request Demo</a>
+      </div>
+    </div>
+  </header>
+
+    <article class="post-article">
+        <!-- Animated mesh background (Static version) -->
+        <div class="hero-mesh" style="opacity: 0.3;">
+            <div class="mesh-blob mesh-3"></div>
+            <div class="mesh-blob mesh-4"></div>
+        </div>
+
+        <div class="section-inner" style="max-width: 1260px; margin: 0 auto; padding: 0 40px; position: relative;">
+            <a href="{% url 'blog_list' %}" class="back-btn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                Back to Knowledge Hub
+            </a>
+
+            <header class="post-header">
+                <div class="post-meta">
+                    <span style="color: #825ee4;">ARTICLE</span>
+                    <span style="width:4px; height:4px; border-radius:50%; background:rgba(255,255,255,0.2);"></span>
+                    <span>{{ post.created_at|date:"M d, Y" }}</span>
+                    <span style="width:4px; height:4px; border-radius:50%; background:rgba(255,255,255,0.2);"></span>
+                    <span>By {{ post.author|default:"Vistron Team" }}</span>
+                </div>
+                <h1 class="post-title">{{ post.title }}</h1>
+            </header>
+
+            {% if post.featured_img %}
+            <div class="post-hero">
+                <img src="{{ post.featured_img.url }}" alt="{{ post.title }}">
+            </div>
+            {% endif %}
+
+            <div class="post-body">
+                {{ post.content|safe|linebreaks }}
+            </div>
+
+            <div style="margin-top: 80px; padding-top: 60px; border-top: 1px solid rgba(255,255,255,0.06); text-align: center;">
+                <h4 style="margin-bottom: 24px; font-weight: 800;">Want to see Vistron in action?</h4>
+                <a href="/contact/" class="btn-primary" style="padding: 0 40px; height: 55px; line-height: 55px;">Schedule a Private Demo</a>
+            </div>
+        </div>
+    </article>
+
+    {% include 'platform/_footer.html' %}
+
+    <script>
+        /* ── Mobile Menu Toggle ── */
+        function toggleMenu() {
+            const navLinks = document.getElementById('nav-links');
+            const menuBtn = document.getElementById('menu-toggle');
+            if (navLinks && menuBtn) {
+                navLinks.classList.toggle('open');
+                menuBtn.classList.toggle('open');
+            }
+        }
+
+        const hoverTargets = 'a, button, .btn-primary, .btn-outline, .btn-ghost';
+        document.querySelectorAll(hoverTargets).forEach(el => {
+
+        });
+    </script>
+</body>
+</html>

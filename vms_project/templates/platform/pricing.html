@@ -1,0 +1,137 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Zaryz Vistron | Pricing</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="{% static 'css/landing.css' %}">
+  <link rel="stylesheet" href="{% static 'css/pricing.css' %}">
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+
+  <header class="nav" id="navbar">
+    <div class="nav-inner">
+      <a href="/" class="logo" data-magnetic>
+        <img src="{% static 'img/logo.png' %}" alt="Zaryz Vistron">
+        <span>ZARYZ VISTRON</span>
+      </a>
+
+      <button class="menu-toggle" id="menu-toggle" onclick="toggleMenu()" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+
+      <nav class="nav-links" id="nav-links">
+        <div class="sidebar-header-mobile">
+            <a href="/" class="sidebar-brand-mobile">
+                <img src="{% static 'img/logo.png' %}" alt="Logo">
+                <span>ZARYZ VISTRON</span>
+            </a>
+        </div>
+        <a href="/" class="nav-link"><i class="fas fa-home"></i><span>Home</span></a>
+        <a href="/blog/" class="nav-link" data-no-smooth><i class="fas fa-book-open"></i><span>Blogs</span></a>
+        <a href="/videos/" class="nav-link" data-no-smooth><i class="fas fa-play-circle"></i><span>Videos</span></a>
+        <a href="/features/" class="nav-link"><i class="fas fa-star"></i><span>Features</span></a>
+
+        <a href="/contact/" class="nav-link"><i class="fas fa-envelope"></i><span>Contact</span></a>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="/contact/" class="btn-ghost">Request Demo</a>
+      </div>
+    </div>
+  </header>
+
+<!-- ================= HERO ================= -->
+
+<section class="hero reveal">
+  <h1>Enterprise Deployment Tailored To Your Scale</h1>
+  <p>
+    Architected for organizations that demand flexibility,
+    security, and scalable visitor infrastructure.
+  </p>
+</section>
+
+<!-- ================= PRICING GRID ================= -->
+
+<section class="pricing-grid">
+
+  <div class="pricing-card reveal">
+    <h3>Organization-Based Licensing</h3>
+    <p>
+      Pricing structured around number of tenants,
+      branches, and deployment scale.
+      Built to support growing enterprises and multi-campus operations.
+    </p>
+  </div>
+
+  <div class="pricing-card reveal">
+    <h3>Flexible Deployment Model</h3>
+    <p>
+      Choose managed multi-tenant deployment,
+      dedicated instance, or enterprise-grade isolation —
+      aligned with your compliance and infrastructure strategy.
+    </p>
+  </div>
+
+  <div class="pricing-card reveal">
+    <h3>Implementation & Integration</h3>
+    <p>
+      Domain routing, email gateway setup,
+      admin onboarding, SSO configuration,
+      and full security optimization included.
+    </p>
+  </div>
+
+  <div class="pricing-card reveal">
+    <h3>Transparent Enterprise Partnership</h3>
+    <p>
+      No hidden visitor charges.
+      Long-term collaboration with SLA-backed support,
+      performance monitoring, and dedicated onboarding.
+    </p>
+  </div>
+
+</section>
+
+<!-- ================= FINAL CTA ================= -->
+
+<section class="final-cta reveal">
+  <h2>Let’s Architect Your Visitor Infrastructure</h2>
+  <p>
+    Speak with our enterprise team to design a deployment
+    strategy tailored to your organization.
+  </p>
+  <a href="/contact/" class="cta-btn">Request Pricing →</a>
+</section>
+
+<!-- ================= FOOTER ================= -->
+
+<footer class="footer">
+  © {{ now|date:"Y" }} Zaryz Vistron. All rights reserved.
+</footer>
+
+<!-- JS -->
+<script src="{% static 'js/pricing.js' %}"></script>
+<script>
+    function toggleMenu() {
+        const navLinks = document.getElementById('nav-links');
+        const menuBtn = document.getElementById('menu-toggle');
+        if (navLinks && menuBtn) {
+            navLinks.classList.toggle('open');
+            menuBtn.classList.toggle('open');
+        }
+    }
+</script>
+
+</body>
+</html>

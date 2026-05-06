@@ -1,0 +1,295 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Features | Zaryz Vistron</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/landing.css' %}">
+    <style>
+        body { color: #fff; min-height: 100vh; overflow-x: hidden; }
+        
+        /* ── Nav ── */
+        .nav-static { 
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000; 
+            background: rgba(11, 18, 32, 0.82); backdrop-filter: blur(20px); 
+            -webkit-backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,0.08); 
+        }
+
+        /* ── Hero ── */
+        .features-hero { padding: 120px 40px 60px; text-align: center; position: relative; }
+        .features-hero-mesh { position: absolute; inset: 0; z-index: 0; overflow: hidden; opacity: 0.4; }
+        .features-hero-title { font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 900; line-height: 1.1; margin-bottom: 20px; letter-spacing: -0.04em; position: relative; z-index: 2; }
+        .features-hero-title em { font-family: 'Instrument Serif', serif; font-style: italic; color: #825ee4; }
+        .features-hero-sub { font-size: 1.15rem; color: rgba(255,255,255,0.7); max-width: 600px; margin: 0 auto; position: relative; z-index: 2; }
+
+        /* ── Feature Sections ── */
+        .feature-block { padding: 80px 40px; position: relative; z-index: 2; }
+        .feature-block:nth-child(even) { background: rgba(255, 255, 255, 0.02); }
+        .feature-block-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+        
+        .feature-block.reverse .feature-block-inner { direction: rtl; }
+        .feature-block.reverse .feature-block-content { direction: ltr; }
+        .feature-block.reverse .feature-block-visual { direction: ltr; }
+
+        @media (max-width: 992px) {
+            .feature-block-inner { grid-template-columns: 1fr; gap: 60px; text-align: left; }
+            .feature-block.reverse .feature-block-inner { direction: ltr; }
+            .feature-tag { margin: 0 0 20px; }
+            .feature-list { display: block; text-align: left; }
+        }
+
+        .feature-tag { 
+            display: inline-flex; align-items: center; gap: 8px; font-size: 0.8rem; 
+            font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; 
+            color: #825ee4; background: rgba(130, 94, 228, 0.1); border: 1px solid rgba(130, 94, 228, 0.2); 
+            padding: 6px 12px; border-radius: 100px; margin-bottom: 16px; 
+        }
+        .feature-title { font-size: 2.8rem; font-weight: 800; line-height: 1.2; margin-bottom: 16px; letter-spacing: -0.02em; }
+        .feature-desc { font-size: 1.15rem; line-height: 1.6; color: rgba(255,255,255,0.7); margin-bottom: 28px; }
+        
+        .feature-list { list-style: none; padding: 0; margin: 0; }
+        .feature-list li { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; font-size: 1.1rem; color: rgba(255,255,255,0.9); line-height: 1.4; }
+        .feature-list li::before { 
+            content: ''; flex-shrink: 0; width: 22px; height: 22px; 
+            background: rgba(130, 94, 228, 0.2) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23825ee4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E") no-repeat center; 
+            background-size: 12px; border-radius: 50%; border: 1px solid rgba(130, 94, 228, 0.4);
+        }
+
+        .feature-visual { position: relative; border-radius: 24px; overflow: hidden; box-shadow: 0 40px 80px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); }
+        .feature-visual::after { content: ''; position: absolute; inset: 0; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.1); border-radius: 24px; pointer-events: none; }
+        .feature-visual img { width: 100%; display: block; transform: scale(1.02); transition: transform 0.8s ease; }
+        .feature-block:hover .feature-visual img { transform: scale(1); }
+
+        /* ── Reveal Animation ── */
+        .reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        /* ── Compact Mobile View ── */
+        @media (max-width: 640px) {
+            .features-hero { padding: 120px 20px 60px; }
+            .features-hero-title { font-size: 2.5rem; }
+            .features-hero-sub { font-size: 1.1rem; }
+            
+            .feature-block { padding: 50px 20px; }
+            .feature-block-inner { gap: 40px; }
+            
+            .feature-title { font-size: 2.2rem; margin-bottom: 16px; }
+            .feature-desc { 
+                font-size: 1.1rem; 
+                margin-bottom: 24px; 
+                line-height: 1.6; 
+                text-align: left;
+                word-wrap: break-word;
+                hyphens: auto;
+            }
+            
+            .feature-list li { font-size: 1.05rem; margin-bottom: 14px; text-align: left; }
+            .feature-list li::before { width: 18px; height: 18px; background-size: 10px; }
+            
+            .cta-section { padding: 60px 20px !important; }
+            .cta-section h2 { font-size: 2.2rem !important; }
+        }
+
+        .cta-section h2 { font-size: 3rem; }
+    </style>
+</head>
+<body>
+
+
+    <div class="noise"></div>
+
+    <!-- ═══════════════════ NAVBAR ═══════════════════ -->
+  <header class="nav" id="navbar">
+    <div class="nav-inner">
+      <a href="/" class="logo" data-magnetic>
+        <img src="{% static 'img/logo.png' %}" alt="Zaryz Vistron">
+        <span>ZARYZ VISTRON</span>
+      </a>
+
+      <button class="menu-toggle" id="menu-toggle" onclick="toggleMenu()" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+
+      <nav class="nav-links" id="nav-links">
+        <div class="sidebar-header-mobile">
+            <a href="/" class="sidebar-brand-mobile">
+                <img src="{% static 'img/logo.png' %}" alt="Logo">
+                <span>ZARYZ VISTRON</span>
+            </a>
+        </div>
+        <a href="/" class="nav-link"><i class="fas fa-home"></i><span>Home</span></a>
+        <a href="/blog/" class="nav-link" data-no-smooth><i class="fas fa-book-open"></i><span>Blogs</span></a>
+        <a href="/videos/" class="nav-link" data-no-smooth><i class="fas fa-play-circle"></i><span>Videos</span></a>
+        <a href="/features/" class="nav-link"><i class="fas fa-star"></i><span>Features</span></a>
+
+        <a href="/contact/" class="nav-link"><i class="fas fa-envelope"></i><span>Contact</span></a>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="/contact/" class="btn-ghost">Request Demo</a>
+      </div>
+    </div>
+  </header>
+
+    <!-- ═══════════════════ HERO ═══════════════════ -->
+    <section class="features-hero">
+        <div class="features-hero-mesh">
+            <div class="mesh-blob mesh-1" style="background: radial-gradient(circle, rgba(130,94,228,0.2) 0%, transparent 70%);"></div>
+            <div class="mesh-blob mesh-2" style="background: radial-gradient(circle, rgba(74,222,128,0.1) 0%, transparent 70%);"></div>
+        </div>
+        <h1 class="features-hero-title reveal">Deep dive into<br><em>Vistron Capabilities</em></h1>
+        <p class="features-hero-sub reveal" style="transition-delay: 0.1s;">Explore the enterprise-grade features that power the world's most secure and efficient workplaces.</p>
+    </section>
+
+    <!-- ═══════════════════ 01 REGISTRATION ═══════════════════ -->
+    <section id="registration" class="feature-block">
+        <div class="feature-block-inner">
+            <div class="feature-block-content reveal">
+                <div class="feature-tag">01 / REGISTRATION</div>
+                <h2 class="feature-title">Flawless First Impressions</h2>
+                <p class="feature-desc">Give your guests a premium welcome with our sleek self-service pre-registration portal. Visitors can verify their details and complete the check-in process seamlessly before they even step through the door.</p>
+                <ul class="feature-list">
+                    <li>Branded welcome screens and greetings</li>
+                    <li>Frictionless pre-registration flows</li>
+                    <li>Secure identity and detail verification</li>
+                    <li>Instant host notifications upon arrival</li>
+                </ul>
+            </div>
+            <div class="feature-block-visual reveal" style="transition-delay: 0.2s;">
+                <div class="feature-visual">
+                    <img src="{% static 'img/1.png' %}" alt="Visitor Pre-registration Welcome Screen">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════ 02 APPROVAL ═══════════════════ -->
+    <section id="approval" class="feature-block reverse">
+        <div class="feature-block-inner">
+            <div class="feature-block-content reveal">
+                <div class="feature-tag">02 / APPROVAL</div>
+                <h2 class="feature-title">One-Click Authorizations</h2>
+                <p class="feature-desc">Hosts receive comprehensive visitor approval requests containing all critical details—visit date, time slots, contact info, and purpose. Review and authorize guests instantly from any device.</p>
+                <ul class="feature-list">
+                    <li>Detailed visitor context (type, purpose, host)</li>
+                    <li>Quick Approve / Reject decision buttons</li>
+                    <li>Optional instructions and notes for security</li>
+                    <li>Automated confirmation emails sent to visitors</li>
+                </ul>
+            </div>
+            <div class="feature-block-visual reveal" style="transition-delay: 0.2s;">
+                <div class="feature-visual">
+                    <img src="{% static 'img/2.png' %}" alt="Visitor Approval Card">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════ 03 VALIDATION ═══════════════════ -->
+    <section id="validation" class="feature-block">
+        <div class="feature-block-inner">
+            <div class="feature-block-content reveal">
+                <div class="feature-tag">03 / VALIDATION</div>
+                <h2 class="feature-title">Digital QR Gate Passes</h2>
+                <p class="feature-desc">Upon approval, visitors receive a dedicated digital pass with a secure QR code. This contactless badge grants them immediate access at reception or integrated security gates.</p>
+                <ul class="feature-list">
+                    <li>High-contrast, scannable QR passes</li>
+                    <li>Personalized badges with visitor details</li>
+                    <li>Contactless check-in and access</li>
+                    <li>Secure validation linked directly to the VMS</li>
+                </ul>
+            </div>
+            <div class="feature-block-visual reveal" style="transition-delay: 0.2s;">
+                <div class="feature-visual">
+                    <img src="{% static 'img/3.png' %}" alt="Digital QR Gate Pass">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════ 04 MONITORING ═══════════════════ -->
+    <section id="monitoring" class="feature-block reverse">
+        <div class="feature-block-inner">
+            <div class="feature-block-content reveal">
+                <div class="feature-tag">04 / MONITORING</div>
+                <h2 class="feature-title">Real-Time Security Dashboard</h2>
+                <p class="feature-desc">Maintain absolute visibility over your premises. The admin dashboard tracks live statistics including total visitors, active sessions, overstays, and recent activity logs.</p>
+                <ul class="feature-list">
+                    <li>Live counts for active and departed visitors</li>
+                    <li>Immediate alerts for visitor overstays</li>
+                    <li>Comprehensive recent activity tracking</li>
+                    <li>Centralized hub for all security operations</li>
+                </ul>
+            </div>
+            <div class="feature-block-visual reveal" style="transition-delay: 0.2s;">
+                <div class="feature-visual">
+                    <img src="{% static 'img/4.png' %}" alt="Security Monitoring Dashboard">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════ 05 ACCESS ═══════════════════ -->
+    <section id="access" class="feature-block">
+        <div class="feature-block-inner">
+            <div class="feature-block-content reveal">
+                <div class="feature-tag">05 / ACCESS</div>
+                <h2 class="feature-title">Granular Role-Based Access</h2>
+                <p class="feature-desc">Structure your visitor management to match your organizational hierarchy. Vistron provides dedicated, purpose-built interfaces tailored to specific roles—for instance, the Security Dashboard for live gate monitoring, and the Admin Dashboard for high-level analytics, department configuration, and system settings.</p>
+                <ul class="feature-list">
+                    <li>Dedicated Admin Dashboard for comprehensive analytics</li>
+                    <li>Focused Security Dashboard for real-time visitor tracking</li>
+                    <li>Granular permissions and access zones for staff</li>
+                    <li>Complete visibility control based on user roles</li>
+                </ul>
+            </div>
+            <div class="feature-block-visual reveal" style="transition-delay: 0.2s; display: flex; flex-direction: column; gap: 30px;">
+                <div class="feature-visual">
+                    <img src="{% static 'img/5.png' %}" alt="Admin Dashboard Interface">
+                </div>
+                <div class="feature-visual">
+                    <img src="{% static 'img/4.png' %}" alt="Security Dashboard Interface">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════ FOOTER ═══════════════════ -->
+    <div class="cta-section" style="margin-top: 60px; padding: 100px 40px; text-align: center; border-top: 1px solid rgba(255,255,255,0.05); background: radial-gradient(circle at top, rgba(130,94,228,0.1) 0%, transparent 70%);">
+        <h2 style="font-weight: 900; margin-bottom: 30px;">Ready to elevate your workplace?</h2>
+        <a href="/contact/" class="btn-primary" style="font-size: 1.1rem; padding: 18px 40px;">Deploy Vistron Today</a>
+    </div>
+
+    {% include 'platform/_footer.html' %}
+
+    <script>
+        /* ── Scroll Reveal ── */
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.15 });
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+
+
+        /* ── Mobile Menu Toggle ── */
+        function toggleMenu() {
+            const navLinks = document.getElementById('nav-links');
+            const menuBtn = document.getElementById('menu-toggle');
+            if (navLinks && menuBtn) {
+                navLinks.classList.toggle('open');
+                menuBtn.classList.toggle('open');
+            }
+        }
+    </script>
+</body>
+</html>

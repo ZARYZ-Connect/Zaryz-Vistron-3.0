@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% load static %}
+{% block profile_trigger %}
+<div class="vms-hamburger-trigger d-lg-none">
+    <i class="fas fa-bars"></i>
+</div>
+<div class="vms-avatar-tile d-none d-lg-flex">
+    <span>{% if user.role == 'admin' or user.is_superuser %}AD{% elif user.role == 'security' %}SC{% elif user.role == 'reception' %}RC{% else %}EM{% endif %}</span>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<link href="{% static 'css/visitor-hero.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+
+<section class="visitor-hero">
+
+    <!-- Admin Button -->
+    
+
+    <div class="hero-center">
+
+        <div class="hero-glass-card">
+
+            <div class="current-time" id="clock"></div>
+
+            <h1 class="hero-title">Welcome</h1>
+
+            <h2 class="hero-subtitle">Visitor Registration</h2>
+
+            <p class="hero-description">
+                Please register your visit below.
+                The process takes less than one minute.
+            </p>
+
+            <a href="{% url 'visitors:visit_register' %}" class="btn-primary">
+                Start Registration <i class="fas fa-arrow-right ms-2"></i>
+            </a>
+
+            <p class="assistance-text">
+                Need assistance? Please contact reception.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function updateClock() {
+    const now = new Date();
+    document.getElementById("clock").innerHTML =
+        now.toLocaleString();
+}
+setInterval(updateClock, 1000);
+    updateClock();
+
+</script>
+{% endblock %}

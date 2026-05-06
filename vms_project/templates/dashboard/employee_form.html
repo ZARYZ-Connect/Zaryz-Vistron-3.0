@@ -1,0 +1,240 @@
+<!-- employee_form.html -->
+
+{% extends "dashboard/admin_base.html" %}
+{% load static %}
+
+{% block admin_css %}
+<link rel="stylesheet" href="{% static 'css/form.css' %}">
+{% endblock %}
+
+{% block admin_content %}
+<div class="form-container">
+    <div class="form-card">
+        <!-- Form Header -->
+        <div class="form-header">
+            <div class="form-icon">
+                <i class="fas fa-{% if is_new %}user-plus{% else %}user-edit{% endif %}"></i>
+            </div>
+            <h1 class="form-title">
+                {% if is_new %}Add New Employee{% else %}Edit Employee{% endif %}
+            </h1>
+            <p class="form-subtitle">
+                {% if is_new %}
+                    Create a new employee record for your organization
+                {% else %}
+                    Update employee information and details
+                {% endif %}
+            </p>
+        </div>
+
+        <!-- Global form errors -->
+        {% if form.non_field_errors %}
+        <div class="error-messages">
+            <ul class="error-list">
+                {% for error in form.non_field_errors %}
+                <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+
+        <!-- Employee Form -->
+        <form method="post" id="mainForm">
+            {% csrf_token %}
+
+            <!-- Basic Information Section -->
+            <div class="form-section">
+                <h3 class="section-title">
+                    <i class="fas fa-id-card"></i>
+                    Basic Information
+                </h3>
+
+                <div class="form-grid">
+                    <!-- Employee ID Field -->
+                    <div class="form-group">
+                        <label class="form-label required" for="id_employee_id">
+                            <i class="fas fa-fingerprint me-2"></i>
+                            Employee ID
+                        </label>
+                        <input type="text"
+                               name="employee_id"
+                               id="id_employee_id"
+                               class="modern-input"
+                               placeholder="EMP-001"
+                               value="{{ form.employee_id.value|default:'' }}"
+                               maxlength="30"
+                               required>
+                        {% if form.employee_id.errors %}
+                        <div class="error-messages">
+                            <ul class="error-list">
+                                {% for error in form.employee_id.errors %}
+                                <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Name Field -->
+                    <div class="form-group">
+                        <label class="form-label required" for="id_name">
+                            <i class="fas fa-user me-2"></i>
+                            Full Name
+                        </label>
+                        <input type="text"
+                               name="name"
+                               id="id_name"
+                               class="modern-input"
+                               placeholder="Enter employee's full name"
+                               value="{{ form.name.value|default:'' }}"
+                               maxlength="200"
+                               required>
+                        {% if form.name.errors %}
+                        <div class="error-messages">
+                            <ul class="error-list">
+                                {% for error in form.name.errors %}
+                                <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="form-grid">
+                    <!-- Department Field -->
+                    <div class="form-group">
+                        <label class="form-label required" for="id_department">
+                            <i class="fas fa-building me-2"></i>
+                            Department
+                        </label>
+                        <select name="department" id="id_department" class="modern-select" required>
+                            <option value="">Select Department</option>
+                            {% for dept in form.department.field.queryset %}
+                                <option value="{{ dept.pk }}"
+                                        {% if form.department.value == dept.pk|stringformat:"s" %}selected{% endif %}>
+                                    {{ dept.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                        {% if form.department.errors %}
+                        <div class="error-messages">
+                            <ul class="error-list">
+                                {% for error in form.department.errors %}
+                                <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Job Position Field -->
+                    <div class="form-group">
+                        <label class="form-label required" for="id_job_role">
+                            <i class="fas fa-briefcase me-2"></i>
+                            Job Position
+                        </label>
+                        <select name="job_role" id="id_job_role" class="modern-select" required>
+                            <option value="">Select Job Position</option>
+                            {% for role in form.job_role.field.queryset %}
+                                <option value="{{ role.pk }}"
+                                        {% if form.job_role.value == role.pk|stringformat:"s" %}selected{% endif %}>
+                                    {{ role.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                        {% if form.job_role.errors %}
+                        <div class="error-messages">
+                            <ul class="error-list">
+                                {% for error in form.job_role.errors %}
+                                <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Information Section -->
+            <div class="form-section">
+                <h3 class="section-title">
+                    <i class="fas fa-phone"></i>
+                    Contact Information
+                </h3>
+
+                <div class="form-grid">
+                    <!-- Email Field -->
+                    <div class="form-group">
+                        <label class="form-label" for="id_email">
+                            <i class="fas fa-envelope me-2"></i>
+                            Email Address
+                        </label>
+                        <input type="email"
+                               name="email"
+                               id="id_email"
+                               class="modern-input"
+                               placeholder="employee@company.com"
+                               value="{{ form.email.value|default:'' }}"
+                               maxlength="100">
+                        {% if form.email.errors %}
+                        <div class="error-messages">
+                            <ul class="error-list">
+                                {% for error in form.email.errors %}
+                                <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Phone Field -->
+                    <div class="form-group">
+                        <label class="form-label" for="id_phone">
+                            <i class="fas fa-phone me-2"></i>
+                            Phone Number
+                        </label>
+                        <input type="tel"
+                               name="phone"
+                               id="id_phone"
+                               class="modern-input"
+                               placeholder="+91 98765 43210"
+                               value="{{ form.phone.value|default:'' }}"
+                               maxlength="30">
+                        {% if form.phone.errors %}
+                        <div class="error-messages">
+                            <ul class="error-list">
+                                {% for error in form.phone.errors %}
+                                <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="btn-group">
+                <button class="btn-primary-modern" type="submit" id="submitBtn">
+                    {% if is_new %}
+                        <i class="fas fa-user-plus"></i>
+                        Create Employee
+                    {% else %}
+                        <i class="fas fa-save"></i>
+                        Update Employee
+                    {% endif %}
+                </button>
+                <a class="btn-secondary-modern" href="{% url 'dashboard:employee_list' %}">
+                    <i class="fas fa-arrow-left"></i>
+                    Back to List
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block admin_js %}
+<script src="{% static 'js/form.js' %}"></script>
+{% endblock %}

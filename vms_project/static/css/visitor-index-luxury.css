@@ -1,0 +1,324 @@
+/* =========================================================
+   VMS – ENTERPRISE SAAS (LIGHT + ANIMATED BACKGROUND)
+   FINAL COMMERCIAL VERSION
+   ========================================================= */
+
+:root {
+    --accent: #3b82f6;
+    --accent-soft: rgba(59,130,246,0.18);
+
+    --text-main: #0f172a;
+    --text-muted: #64748b;
+
+    --card-bg: rgba(255,255,255,0.96);
+    --card-border: rgba(59,130,246,0.2);
+
+    --radius-lg: 22px;
+    --radius-md: 14px;
+}
+
+/* ================= BASE ================= */
+html, body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--text-main);
+
+    background:
+        radial-gradient(1200px 600px at 20% 0%, #e6efff, transparent 60%),
+        radial-gradient(900px 600px at 80% 20%, #edf4ff, transparent 60%),
+        linear-gradient(180deg, #f7faff, #ffffff);
+    overflow-x: hidden;
+}
+
+/* ================= ANIMATED BACKGROUND ================= */
+.index-container {
+    position: relative;
+    min-height: calc(100vh - 120px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+    overflow: hidden;
+}
+
+/* ===== AMBIENT MOTION CONNECTION (FINAL) ===== */
+
+/* Default values (prevents jump on load) */
+.index-container {
+    --ambient-x: 0px;
+    --ambient-y: 0px;
+}
+
+/* ===== MAIN AMBIENT GLOW (FINAL, NO CONFLICT) ===== */
+.index-container::before {
+    content: '';
+    position: absolute;
+    width: 900px;
+    height: 900px;
+    left: 50%;
+    top: 50%;
+
+    background: radial-gradient(
+        circle,
+        rgba(59,130,246,0.35),
+        rgba(139,92,246,0.20),
+        transparent 65%
+    );
+
+    transform:
+        translate(
+            calc(-50% + var(--ambient-x, 0px)),
+            calc(-50% + var(--ambient-y, 0px))
+        );
+
+    transition: transform 0.18s ease-out;
+    animation: floatGlow 22s ease-in-out infinite;
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* Animated dots grid */
+.index-container::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+        radial-gradient(rgba(59,130,246,0.25) 1px, transparent 1px);
+    background-size: 28px 28px;
+    opacity: 0.16;
+    animation: driftGrid 40s linear infinite;
+    z-index: 0;
+}
+
+/* ================= CARD ================= */
+.index-card {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 330px; /* Ultra-mini compacted from 360px */
+    background: var(--card-bg);
+    border-radius: var(--radius-lg);
+    padding: 20px 18px; /* Tighter padding */
+    text-align: center;
+    border: 1px solid var(--card-border);
+    box-shadow: 0 40px 120px rgba(59,130,246,0.25);
+}
+
+/* ================= ICON ================= */
+.floating-icon-container {
+    width: 56px; /* Scaled down */
+    height: 56px;
+    margin: 0 auto 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon-ring {
+    display: none;
+}
+
+.main-icon {
+    width: 44px; /* Scaled down from 56px */
+    height: 44px;
+    border-radius: 50%;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-size: 1.25rem; /* Further reduced */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ================= TEXT ================= */
+.greeting-text {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+}
+
+.index-title {
+    font-size: 1.2rem; /* Further reduced from 1.35rem */
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+
+.index-subtitle {
+    font-size: 0.85rem; /* Slightly further reduced */
+    line-height: 1.4;
+    color: var(--text-muted);
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+/* ================= BUTTON ================= */
+.action-buttons {
+    margin-top: 18px; /* Reduced margin */
+}
+
+.btn-register {
+    background: var(--accent);
+    color: white;
+    padding: 14px 36px;
+    border-radius: var(--radius-md);
+    font-size: 0.95rem;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    transition: all 0.25s ease;
+}
+
+.btn-register:hover {
+    background: #2563eb;
+    transform: translateY(-2px);
+}
+
+/* ================= SHORTCUT ================= */
+.shortcut-hint {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    border: 1px solid var(--card-border);
+    padding: 8px 16px;
+    border-radius: 10px;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    box-shadow: 0 10px 40px rgba(59,130,246,0.15);
+    z-index: 3;
+}
+
+/* ================= ANIMATIONS ================= */
+@keyframes floatGlow {
+    0% { transform: translate(-50%, -50%); }
+    50% { transform: translate(-40%, -45%); }
+    100% { transform: translate(-50%, -50%); }
+}
+
+@keyframes driftGrid {
+    from { background-position: 0 0; }
+    to { background-position: 400px 400px; }
+}
+
+/* ================= MOBILE ================= */
+@media (max-width: 768px) {
+    .index-card {
+        padding: 24px 18px; /* Compact padding */
+        animation: fadeInUp 0.9s ease-out !important; /* Stop floatCard, keep enter animation */
+        max-width: 300px;
+    }
+}
+
+
+/* ================= HERO CARD MICRO ANIMATION ================= */
+
+/* Floating card */
+.index-card {
+    animation: floatCard 6s ease-in-out infinite,
+               fadeInUp 0.9s ease-out;
+}
+
+/* Soft breathing glow */
+.index-card::after {
+    content: '';
+    position: absolute;
+    inset: -10px;
+    border-radius: inherit;
+    background: radial-gradient(
+        circle,
+        rgba(59,130,246,0.18),
+        transparent 70%
+    );
+    opacity: 0.6;
+    z-index: -1;
+    animation: pulseGlow 4s ease-in-out infinite;
+}
+
+/* Animations */
+@keyframes floatCard {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-8px);
+    }
+}
+
+@keyframes pulseGlow {
+    0%, 100% {
+        opacity: 0.45;
+    }
+    50% {
+        opacity: 0.75;
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(24px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+/* ================= PREMIUM FINAL TOUCH ================= */
+
+/* Subtle animated gradient border */
+.index-card::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: inherit;
+    background: linear-gradient(
+        120deg,
+        transparent 30%,
+        rgba(99,102,241,0.45),
+        rgba(139,92,246,0.35),
+        transparent 70%
+    );
+    background-size: 200% 200%;
+    animation: borderGlow 6s linear infinite;
+    z-index: -2;
+}
+
+/* Background spotlight sweep */
+.index-container::after {
+    animation: driftGrid 40s linear infinite,
+               lightSweep 18s ease-in-out infinite;
+}
+
+/* Idle ambient motion (when mouse is not moving) */
+@keyframes idleFloat {
+    0%, 100% {
+        --ambient-x: 0px;
+        --ambient-y: 0px;
+    }
+    50% {
+        --ambient-x: 12px;
+        --ambient-y: -10px;
+    }
+}
+
+/* Keyframes */
+@keyframes borderGlow {
+    0%   { background-position: 0% 50%; }
+    100% { background-position: 200% 50%; }
+}
+
+@keyframes lightSweep {
+    0%   { opacity: 0.12; }
+    50%  { opacity: 0.22; }
+    100% { opacity: 0.12; }
+}
+
+/* Activate idle motion */
+.index-container {
+    animation: idleFloat 12s ease-in-out infinite;
+}

@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link href="{% static 'css/otp-premium.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+
+<section class="otp-wrapper">
+
+  <div class="otp-card">
+
+      <!-- Icon -->
+      <div class="otp-icon">
+          <i class="fas fa-shield-alt"></i>
+      </div>
+
+      <h2>Verify Your Email</h2>
+
+      <p class="otp-subtext">
+          We've sent a 6-digit verification code to your email.
+      </p>
+      {% if error %} 
+        <div class="otp-error">
+          <i class="fas fa-exclamation-circle"></i>
+           {{ error }}
+        </div>
+      {% endif %}
+
+      <form method="POST">
+          {% csrf_token %}
+          <input type="hidden" name="visit_id" value="{{ request.session.visit_id }}">
+      	  <!-- Hidden input that Django will read -->
+          <input type="hidden" name="otp" id="otp-combined">
+
+          <div class="otp-inputs">
+              <input type="text" maxlength="1" class="otp-box">
+              <input type="text" maxlength="1" class="otp-box">
+              <input type="text" maxlength="1" class="otp-box">
+              <input type="text" maxlength="1" class="otp-box">
+              <input type="text" maxlength="1" class="otp-box">
+              <input type="text" maxlength="1" class="otp-box">
+          </div>
+
+          <button type="submit" class="btn-verify">
+              Verify Code
+          </button>
+
+      </form>
+
+      <div class="otp-resend">
+        Didn't receive the code?
+          <button type="button"
+               id="resend-btn"
+               class="resend-btn"
+               data-url="{% url 'visitors:resend_otp' %}">
+               Request New Code
+          </button>
+        <span id="countdown"></span>
+
+      </div>
+
+      <div class="otp-info">
+          For security purposes, this verification code will expire after 10 minutes.
+      </div>
+
+      <div class="otp-footer">
+          VISTRON™ — Enterprise Visitor Management
+      </div>
+
+  </div>
+
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/otp-premium.js' %}"></script>
+{% endblock %}

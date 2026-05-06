@@ -1,0 +1,511 @@
+{% extends "dashboard/admin_base.html" %}
+{% load static %}
+
+{% block admin_css %}
+<link rel="stylesheet" href="{% static 'css/list.css' %}">
+<style>
+/* ── Visitor Detail — Premium Modern Design ── */
+
+.vd-container {
+    padding: 20px;
+    max-width: 100%;
+}
+
+/* ── Top Header Bar ── */
+.vd-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.vd-title-group {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.vd-icon-wrap {
+    width: 46px;
+    height: 46px;
+    background: linear-gradient(135deg, #7c4dff, #b388ff);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 6px 18px rgba(124,77,255,0.3);
+    flex-shrink: 0;
+}
+.vd-icon-wrap i { color: white; font-size: 1.1rem; }
+
+.vd-title {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #0f172a;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+}
+.vd-subtitle {
+    font-size: 0.8rem;
+    color: #64748b;
+    font-weight: 500;
+    margin-top: 2px;
+}
+
+/* Status Pill */
+.vd-status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 16px;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+}
+.vd-status-pill.pending   { background: #fffbeb; color: #b45309; border: 1.5px solid #fde68a; }
+.vd-status-pill.approved  { background: #f0fdf4; color: #15803d; border: 1.5px solid #bbf7d0; }
+.vd-status-pill.rejected  { background: #fef2f2; color: #b91c1c; border: 1.5px solid #fecaca; }
+.vd-status-pill.checked_in  { background: #eff6ff; color: #1d4ed8; border: 1.5px solid #bfdbfe; }
+.vd-status-pill.checked_out { background: #f9fafb; color: #374151; border: 1.5px solid #e5e7eb; }
+
+/* ── Main Card ── */
+.vd-card {
+    background: #ffffff;
+    border-radius: 22px;
+    border: 1px solid rgba(0,0,0,0.05);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.05), 0 2px 6px rgba(0,0,0,0.02);
+    overflow: hidden;
+}
+
+/* ── Card Inner Layout ── */
+.vd-card-body {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 0;
+}
+
+/* ── Left: Identity Panel ── */
+.vd-identity {
+    background: linear-gradient(180deg, #faf8ff 0%, #f1eeff 100%);
+    border-right: 1px solid rgba(124,77,255,0.1);
+    padding: 28px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+}
+
+.vd-photo-wrap {
+    width: 100%;
+    aspect-ratio: 1;
+    max-width: 160px;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 3px solid rgba(124,77,255,0.2);
+    box-shadow: 0 8px 24px rgba(124,77,255,0.15);
+    background: #e9e3ff;
+}
+.vd-photo-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.vd-photo-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: #a78bfa;
+    background: linear-gradient(135deg, #ede9fe, #ddd6fe);
+}
+.vd-photo-placeholder i { font-size: 2.5rem; }
+.vd-photo-placeholder span { font-size: 0.7rem; font-weight: 600; color: #7c3aed; }
+
+.vd-visitor-name {
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 800;
+    color: #1e1b4b;
+    line-height: 1.2;
+}
+
+.vd-qr-box {
+    background: white;
+    border: 1px solid rgba(124,77,255,0.15);
+    border-radius: 12px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    width: 100%;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+.vd-qr-box img { width: 80px; height: 80px; object-fit: contain; }
+.vd-qr-label {
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: #7c4dff;
+    text-transform: uppercase;
+}
+
+/* ── Right: Info Panel ── */
+.vd-info {
+    padding: 24px 24px;
+}
+
+.vd-section-title {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #7c4dff;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.vd-section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, rgba(124,77,255,0.2), transparent);
+}
+
+.vd-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.vd-field-row {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid #f1f5f9;
+    align-items: start;
+}
+.vd-field-row:last-child { border-bottom: none; }
+
+.vd-field-label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    padding-top: 2px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.vd-field-label i { color: #b388ff; font-size: 0.7rem; width: 14px; }
+
+.vd-field-value {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #0f172a;
+    word-break: break-word;
+}
+.vd-field-value.muted { color: #94a3b8; font-weight: 500; font-style: italic; }
+.vd-field-value.date { color: #7c4dff; }
+
+.vd-type-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(124,77,255,0.08);
+    border: 1px solid rgba(124,77,255,0.2);
+    color: #7c4dff;
+    padding: 3px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+/* ── Action Buttons (Approve/Reject) ── */
+.vd-actions {
+    padding: 16px 28px 20px;
+    border-top: 1px solid #f1f5f9;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    flex-wrap: wrap;
+    background: #fafcff;
+}
+
+.vd-btn-approve {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 9px 22px;
+    background: linear-gradient(135deg, #10b981, #34d399);
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-size: 0.82rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(16,185,129,0.3);
+    transition: all 0.2s ease;
+}
+.vd-btn-approve:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(16,185,129,0.4); }
+
+.vd-btn-reject {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 9px 22px;
+    background: linear-gradient(135deg, #ef4444, #f87171);
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-size: 0.82rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(239,68,68,0.3);
+    transition: all 0.2s ease;
+}
+.vd-btn-reject:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(239,68,68,0.4); }
+
+/* ── Footer ── */
+.vd-footer {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.vd-back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 20px;
+    background: linear-gradient(135deg, rgba(124, 77, 255, 0.85), rgba(99, 102, 241, 0.85));
+    border-radius: 10px;
+    color: white;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-decoration: none;
+    box-shadow: 0 4px 12px rgba(124,77,255,0.25);
+    transition: all 0.2s ease;
+}
+.vd-back-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(124,77,255,0.35); color: white; }
+
+.vd-id-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.78rem;
+    color: #94a3b8;
+    font-weight: 600;
+}
+.vd-id-badge strong { color: #7c4dff; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1024px) {
+    .vd-card-body { grid-template-columns: 160px 1fr; }
+    .vd-info { padding: 18px 16px; }
+    .vd-identity { padding: 18px 12px; }
+    .vd-field-row { 
+        grid-template-columns: 110px 1fr; 
+        gap: 10px; 
+        padding: 8px 0;
+    }
+    .vd-field-label { font-size: 0.65rem; }
+    .vd-field-value { font-size: 0.82rem; }
+    .vd-visitor-name { font-size: 0.9rem; }
+}
+
+@media (max-width: 768px) {
+    .vd-card-body {
+        grid-template-columns: 1fr;
+    }
+    .vd-identity {
+        border-right: none;
+        border-bottom: 1px solid rgba(124,77,255,0.1);
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 20px 16px;
+        gap: 12px;
+    }
+    .vd-photo-wrap { max-width: 90px; }
+    .vd-visitor-name { font-size: 0.88rem; text-align: left; }
+    .vd-qr-box { width: auto; padding: 8px; }
+    .vd-qr-box img { width: 60px; height: 60px; }
+    
+    .vd-info { padding: 16px 14px; }
+    .vd-field-row { grid-template-columns: 1fr; gap: 2px; padding: 8px 0; }
+    .vd-field-label { font-size: 0.62rem; }
+    .vd-field-value { font-size: 0.8rem; }
+    .vd-header { flex-direction: column; align-items: flex-start; gap: 8px; }
+    .vd-actions { padding: 12px 14px; }
+    .vd-btn-approve, .vd-btn-reject { width: 100%; justify-content: center; padding: 8px; }
+    .vd-container { padding: 10px; }
+}
+
+@media (max-width: 480px) {
+    .vd-title { font-size: 1.2rem; }
+    .vd-card { border-radius: 16px; }
+    .vd-identity {
+        flex-direction: column;
+        align-items: center;
+    }
+    .vd-footer { flex-direction: column; align-items: flex-start; }
+    .vd-back-btn { width: 100%; justify-content: center; }
+}
+</style>
+{% endblock %}
+
+{% block admin_content %}
+<div class="vd-container">
+
+    <!-- ── PAGE HEADER ── -->
+    <div class="vd-header">
+        <div class="vd-title-group">
+            <div class="vd-icon-wrap">
+                <i class="fas fa-id-card-alt"></i>
+            </div>
+            <div>
+                <div class="vd-title">Visitor Details</div>
+                <div class="vd-subtitle">Complete visit record — ID #{{ visit.id|stringformat:"04d" }}</div>
+            </div>
+        </div>
+
+        <!-- Status Pill -->
+        {% if visit.status == "pending" %}
+            <span class="vd-status-pill pending"><i class="fas fa-clock"></i> Pending</span>
+        {% elif visit.status == "approved" %}
+            <span class="vd-status-pill approved"><i class="fas fa-check-circle"></i> Approved</span>
+        {% elif visit.status == "rejected" %}
+            <span class="vd-status-pill rejected"><i class="fas fa-times-circle"></i> Rejected</span>
+        {% elif visit.status == "checked_in" %}
+            <span class="vd-status-pill checked_in"><i class="fas fa-sign-in-alt"></i> Checked In</span>
+        {% elif visit.status == "checked_out" %}
+            <span class="vd-status-pill checked_out"><i class="fas fa-sign-out-alt"></i> Checked Out</span>
+        {% endif %}
+    </div>
+
+    <!-- ── MAIN CARD ── -->
+    <div class="vd-card">
+        <div class="vd-card-body">
+
+            <!-- LEFT: Identity Panel -->
+            <div class="vd-identity">
+                <!-- Photo -->
+                <div class="vd-photo-wrap">
+                    {% if visit.photo %}
+                        <img src="{{ visit.photo.url }}" alt="Visitor Photo">
+                    {% else %}
+                        <div class="vd-photo-placeholder">
+                            <i class="fas fa-user-circle"></i>
+                            <span>No Photo</span>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <!-- Name -->
+                <div class="vd-visitor-name">{{ visit.full_name }}</div>
+
+
+            </div>
+
+            <!-- RIGHT: Info Panel -->
+            <div class="vd-info">
+                <div class="vd-section-title">
+                    <i class="fas fa-info-circle"></i> Visit Information
+                </div>
+
+                <div class="vd-fields">
+                    <div class="vd-field-row">
+                        <div class="vd-field-label"><i class="fas fa-user"></i> Full Name</div>
+                        <div class="vd-field-value">{{ visit.full_name }}</div>
+                    </div>
+
+                    <div class="vd-field-row">
+                        <div class="vd-field-label"><i class="fas fa-envelope"></i> Contact Email</div>
+                        <div class="vd-field-value">{{ visit.email|default:"—" }}</div>
+                    </div>
+
+                    <div class="vd-field-row">
+                        <div class="vd-field-label"><i class="fas fa-phone"></i> Phone Number</div>
+                        <div class="vd-field-value">{{ visit.phone|default:"—" }}</div>
+                    </div>
+
+                    <div class="vd-field-row">
+                        <div class="vd-field-label"><i class="fas fa-calendar-alt"></i> Scheduled Date</div>
+                        <div class="vd-field-value date">{{ visit.visit_date|date:"d M Y"|default:"—" }}</div>
+                    </div>
+
+                    <div class="vd-field-row">
+                        <div class="vd-field-label"><i class="fas fa-tag"></i> Visit Category</div>
+                        <div class="vd-field-value">
+                            <span class="vd-type-badge">
+                                <i class="fas fa-tag"></i> {{ visit.visit_type.name|default:"General" }}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="vd-field-row">
+                        <div class="vd-field-label"><i class="fas fa-user-tie"></i> Whom To Meet</div>
+                        <div class="vd-field-value">
+                            {% if visit.whom_to_meet_employee %}
+                                <span style="display:inline-flex; align-items:center; gap:6px;">
+                                    <span style="width:24px;height:24px;border-radius:6px;background:linear-gradient(135deg,#7c4dff,#b388ff);display:inline-flex;align-items:center;justify-content:center;color:white;font-size:0.65rem;font-weight:800;">
+                                        {{ visit.whom_to_meet_employee.name|slice:":1"|upper }}
+                                    </span>
+                                    {{ visit.whom_to_meet_employee.name }}
+                                </span>
+                            {% else %}
+                                <span class="muted">—</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div><!-- /vd-card-body -->
+
+        <!-- ── Approve / Reject Actions ── -->
+        {% if visit.status == "pending" %}
+        <div class="vd-actions">
+            <form method="post" action="{% url 'dashboard:visitor_approve' visit.pk %}" style="margin:0;">
+                {% csrf_token %}
+                <button type="submit" class="vd-btn-approve">
+                    <i class="fas fa-check-circle"></i> Approve Visit
+                </button>
+            </form>
+            <form method="post" action="{% url 'dashboard:visitor_reject' visit.pk %}" style="margin:0;">
+                {% csrf_token %}
+                <button type="submit" class="vd-btn-reject">
+                    <i class="fas fa-times-circle"></i> Reject Visit
+                </button>
+            </form>
+        </div>
+        {% endif %}
+
+    </div><!-- /vd-card -->
+
+    <!-- ── FOOTER ── -->
+    <div class="vd-footer">
+        <a href="{% url 'dashboard:visitor_list' %}" class="vd-back-btn">
+            <i class="fas fa-arrow-left"></i> Back to List
+        </a>
+        <div class="vd-id-badge">
+            <i class="fas fa-hashtag"></i>
+            Viewing record <strong>#{{ visit.id|stringformat:"04d" }}</strong>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

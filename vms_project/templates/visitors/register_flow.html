@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/register-flow.css' %}">
+<link href="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/css/tom-select.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div class="flow-wrapper">
+  <div class="flow-card">
+
+    <!-- STEP PROGRESS -->
+    <div class="stepper">
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+  <form id="registerForm" method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+
+      <!-- STEP 1 -->
+      <div class="flow-step active">
+        <h2>Personal Details</h2>
+        <p class="sub">Tell us who you are</p>
+
+        <label>Full Name</label>
+        <input type="text" name="full_name" required>
+
+        <label>Phone Number</label>
+        <input type="tel" name="phone" required>
+
+        <label>Email Address</label>
+        <input type="email" name="email" required>
+
+        <div class="actions single">
+          <button type="button" class="btn primary next">Continue</button>
+        </div>
+      </div>
+
+      <!-- STEP 2 -->
+      <div class="flow-step">
+        <h2>Visit Details</h2>
+        <p class="sub">When & why you are visiting</p>
+
+        <label>Visit Type</label>
+
+	<select id="visit_type" name="visit_type" required>
+	<option value="">Select visit type</option>
+
+	{% for vt in form.fields.visit_type.queryset %}
+	<option value="{{ vt.id }}">{{ vt.name }}</option>
+	{% endfor %}
+
+	</select>
+
+
+        <label>Visit Date</label>
+        <input type="date" name="visit_date" class="animated-field" required>
+        <label>Department</label>
+        <select name="department">
+  	  <option value="">Select department</option>
+  	  {% for d in departments %}
+  	  <option value="{{ d.id }}">{{ d.name }}</option>
+    	  {% endfor %}
+	</select>
+
+	<label>Person to Meet</label>
+	<select name="whom_to_meet_employee" disabled>
+          <option value="">Select department first</option>
+        </select>
+
+        <div class="row">
+          <div>
+            <label>From</label>
+            <input type="time" name="start_time" class="animated-field" required>
+          </div>
+          <div>
+            <label>To</label>
+            <input type="time" name="end_time" class="animated-field" required>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button type="button" class="btn ghost back">Back</button>
+          <button type="button" class="btn primary next">Continue</button>
+        </div>
+      </div>
+
+
+      <!-- STEP 3 -->
+      <div class="flow-step">
+        <h2>Verification Photo</h2>
+        <p class="sub">Required for secure entry</p>
+
+        <div class="photo-preview">
+          <video id="video" autoplay muted></video>
+          <img id="photoPreview">
+        </div>
+
+        <canvas id="canvas"></canvas>
+        {{ form.photo }}
+
+        <button type="button" id="captureBtn" class="btn primary full">
+          Capture / Re-Capture
+        </button>
+
+        <div class="actions">
+          <button type="button" class="btn ghost back">Back</button>
+          <button type="button" class="btn primary next">Continue</button>
+        </div>
+      </div>
+
+      <!-- STEP 4 -->
+      <div class="flow-step">
+        <h2>Confirm & Submit</h2>
+        <p class="sub">Everything looks good</p>
+
+        <div class="actions">
+          <button type="button" class="btn ghost back">Back</button>
+          <button type="submit" class="btn primary">Submit Registration</button>
+        </div>
+      </div>
+
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>
+<script src="{% static 'js/register-flow.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}?v=1.3">
+<link rel="stylesheet" href="{% static 'css/admin-sidebar.css' %}?v=1.3">
+<style>
+
+
+/* ─── Navbar appearance ─── */
+.vms-glass-navbar {
+    background: linear-gradient(135deg, rgba(30, 27, 75, 0.95) 0%, rgba(49, 46, 129, 0.95) 100%) !important;
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
+}
+
+/* ─── Layout shell ───────────────────── */
+.admin-layout-flex {
+    display: flex;
+    align-items: stretch;
+    min-height: calc(100vh - 64px);
+}
+
+/* ─── Main content area ──────────────── */
+.admin-main-wrapper {
+    flex: 1;
+    min-width: 0;
+    margin-left: 280px;          /* desktop: sidebar is 280px wide */
+    padding: 24px;
+    min-height: calc(100vh - 64px);
+    background: transparent; /* Changed from #f8fafc to allow body bg */
+    transition: margin-left 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                padding     0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: margin-left;
+}
+
+/* ─── Tablet: Rail Mode (768 – 1200 px) ─ */
+@media (min-width: 768px) and (max-width: 1200px) {
+    .admin-main-wrapper {
+        margin-left: 72px;       /* matches collapsed rail width */
+        padding: 20px;
+        transition: margin-left 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        will-change: margin-left;
+    }
+    /* When the rail expands on hover or click, push the content smoothly */
+    .modern-admin-sidebar:hover ~ .admin-main-wrapper,
+    .modern-admin-sidebar.active ~ .admin-main-wrapper {
+        margin-left: 280px;
+    }
+}
+
+/* ─── Sidebar overlay ────────────────── */
+.sidebar-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.4);
+    backdrop-filter: blur(4px);
+    z-index: 1045;
+    opacity: 0; visibility: hidden;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+.sidebar-overlay.active { opacity: 1; visibility: visible; }
+
+/* ─── Mobile: Drawer (≤ 767 px) ─────── */
+@media (max-width: 767px) {
+    .admin-main-wrapper {
+        margin-left: 0;
+        padding: 16px;
+    }
+}
+</style>
+{% block admin_css %}{% endblock %}
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-container-fluid p-0">
+    <!-- Mobile overlay -->
+    <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+    <!-- Rail layout: sidebar and wrapper are direct siblings -->
+    <div class="admin-layout-flex">
+        {% include 'components/admin_sidebar.html' %}
+        <div class="admin-main-wrapper">
+            {% block admin_content %}{% endblock %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function toggleSidebar() {
+    const sidebar = document.querySelector(".modern-admin-sidebar");
+    const overlay = document.querySelector(".sidebar-overlay");
+    if (sidebar) sidebar.classList.toggle("active");
+    if (overlay) overlay.classList.toggle("active");
+}
+</script>
+{% block admin_js %}{% endblock %}
+{% endblock %}

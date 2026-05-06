@@ -1,0 +1,109 @@
+<!-- security_user_form.html -->
+{% extends "dashboard/admin_base.html" %}
+{% load static %}
+
+{% block admin_css %}
+<link href="{% static 'css/form.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block admin_content %}
+<div class="form-container">
+  <div class="form-card">
+    <div class="form-header">
+      <div class="form-icon">
+        <i class="fas fa-user-shield"></i>
+      </div>
+      <h2 class="form-title">{% if is_new %}Add Security User{% else %}Edit Security User{% endif %}</h2>
+      <p class="form-subtitle">{% if is_new %}Create a new security or reception user account{% else %}Update an existing security or reception user account{% endif %}</p>
+    </div>
+
+    <form method="post" id="mainForm">
+      {% csrf_token %}
+      
+      <div class="form-section">
+        <h5 class="section-title">
+          <i class="fas fa-user"></i>
+          Account Information
+        </h5>
+
+        <div class="form-grid">
+          {% for field in form %}
+            <div class="form-group {% if field.name == 'username' or field.name == 'email' %}{% else %}{% endif %}">
+              <label class="form-label {% if field.field.required %}required{% endif %}" for="{{ field.id_for_label }}">
+                {{ field.label }}
+              </label>
+              {% if field.errors %}
+                <div class="error-messages">
+                  <ul class="error-list">
+                    {% for error in field.errors %}
+                      <li>{{ error }}</li>
+                    {% endfor %}
+                  </ul>
+                </div>
+              {% endif %}
+              
+              {% if field.field.widget.input_type == 'select' %}
+                <select name="{{ field.name }}" id="{{ field.id_for_label }}" class="modern-select" {% if field.field.required %}required{% endif %}>
+                  {% for value, label in field.field.choices %}
+                    <option value="{{ value }}" {% if field.value == value %}selected{% endif %}>
+                      {{ label }}
+                    </option>
+                  {% endfor %}
+                </select>
+              {% elif field.field.widget.input_type == 'password' %}
+                <input 
+                  type="password" 
+                  name="{{ field.name }}" 
+                  id="{{ field.id_for_label }}" 
+                  class="modern-input" 
+                  {% if field.field.required %}required{% endif %}
+                >
+              {% elif field.field.widget.input_type == 'email' %}
+                <input 
+                  type="email" 
+                  name="{{ field.name }}" 
+                  id="{{ field.id_for_label }}" 
+                  class="modern-input" 
+                  value="{{ field.value|default:'' }}"
+                  {% if field.field.required %}required{% endif %}
+                >
+              {% else %}
+                <input 
+                  type="text" 
+                  name="{{ field.name }}" 
+                  id="{{ field.id_for_label }}" 
+                  class="modern-input" 
+                  value="{{ field.value|default:'' }}"
+                  {% if field.field.required %}required{% endif %}
+                >
+              {% endif %}
+              
+              {% if field.help_text %}
+                <small class="form-text text-muted">
+                  <i class="fas fa-info-circle"></i>
+                  {{ field.help_text }}
+                </small>
+              {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="btn-group">
+        <button type="submit" class="btn-primary-modern" id="submitBtn">
+          <i class="fas fa-user-{% if is_new %}plus{% else %}edit{% endif %}"></i>
+          {% if is_new %}Create User{% else %}Update User{% endif %}
+        </button>
+        <a href="{% url 'dashboard:security_user_list' %}" class="btn-secondary-modern">
+          <i class="fas fa-times"></i>
+          Cancel
+        </a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block admin_js %}
+<script src="{% static 'js/form.js' %}"></script>
+{% endblock %}

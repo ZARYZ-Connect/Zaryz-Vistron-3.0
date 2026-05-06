@@ -1,0 +1,364 @@
+/* ═══════════════════════════════════════════════════════════
+   theme.css  —  LIGHT MODE ONLY
+   Dark mode: zero changes. All existing CSS stays as-is.
+   This file only activates under [data-theme="light"].
+═══════════════════════════════════════════════════════════ */
+
+/* ── 1. Light Mode Token Palette ── */
+[data-theme="light"] {
+  --bg:             #ffffff;
+  --bg-2:           #faf9ff;
+  --surface:        #f4f3ff;
+  --surface-2:      #ede9fd;
+  --surface-hover:  #e4e0fc;
+  --border:         rgba(94, 114, 228, 0.15);
+  --border-strong:  rgba(94, 114, 228, 0.30);
+  --text:           #1a1535;
+  --text-muted:     #6b5fa0;
+  --text-subtle:    #9b8fc4;
+  --accent:         #7c4dff;
+  --accent-2:       #b388ff;
+  --shadow:         0 4px 24px rgba(94, 114, 228, 0.10);
+  --navbar-bg:      rgba(250, 249, 255, 0.92);
+  --input-bg:       #f4f3ff;
+  --input-border:   rgba(94, 114, 228, 0.25);
+}
+
+/* ── 2. Smooth transitions only when switching (not on page load) ── */
+[data-theme="light"] *,
+[data-theme="light"] *::before,
+[data-theme="light"] *::after {
+  transition:
+    background-color 0.25s ease,
+    border-color     0.25s ease,
+    color            0.20s ease,
+    box-shadow       0.25s ease !important;
+}
+
+/* ══════════════════════════════════════════
+   COMPONENT OVERRIDES — light mode only
+══════════════════════════════════════════ */
+
+/* Body */
+[data-theme="light"] body {
+  background: var(--bg) !important;
+  color: var(--text) !important;
+}
+
+/* ── Navbar ── */
+[data-theme="light"] .vms-glass-navbar {
+  background: var(--navbar-bg) !important;
+  border-bottom: 1px solid var(--border) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  box-shadow: 0 2px 20px rgba(94, 114, 228, 0.08) !important;
+}
+[data-theme="light"] .vms-glass-navbar .navbar-brand,
+[data-theme="light"] .vms-glass-navbar .brand-text,
+[data-theme="light"] .vms-glass-navbar .nav-link,
+[data-theme="light"] .logo,
+[data-theme="light"] .logo span {
+  color: var(--accent) !important;
+}
+
+[data-theme="light"] .vms-hamburger-trigger {
+  background: rgba(94, 114, 228, 0.08) !important;
+  border-color: rgba(94, 114, 228, 0.3) !important;
+  box-shadow: 0 2px 8px rgba(94, 114, 228, 0.06) !important;
+}
+[data-theme="light"] .vms-hamburger-trigger i {
+  color: var(--accent) !important;
+}
+[data-theme="light"] .vms-hamburger-trigger:hover {
+  background: rgba(124, 77, 255, 0.15) !important;
+  border-color: var(--accent) !important;
+}
+
+[data-theme="light"] .sidebar-brand-text {
+  color: var(--accent) !important;
+  background: none !important;
+  -webkit-text-fill-color: var(--accent) !important;
+}
+
+[data-theme="light"] .brand-logo,
+[data-theme="light"] .sidebar-logo,
+[data-theme="light"] .logo img {
+  /* Converts white logo to #7c4dff purple cleanly */
+  filter: invert(34%) sepia(93%) saturate(3364%) hue-rotate(248deg) brightness(101%) contrast(106%) !important;
+}
+
+[data-theme="light"] .nav.scrolled .nav-link {
+  color: var(--text) !important;
+}
+[data-theme="light"] .vms-glass-navbar .nav-link:hover {
+  color: var(--accent) !important;
+}
+[data-theme="light"] #mobile-sidebar-toggle {
+  background: rgba(94, 114, 228, 0.08) !important;
+  border: 1px solid var(--border) !important;
+  color: var(--text) !important;
+}
+
+/* ── Sidebar (Admin) ── */
+[data-theme="light"] .modern-admin-sidebar {
+  background: linear-gradient(180deg, #f4f3ff 0%, #faf9ff 100%) !important;
+  border-right: 1px solid var(--border) !important;
+  box-shadow: 4px 0 20px rgba(94, 114, 228, 0.06) !important;
+}
+[data-theme="light"] .sidebar-nav-item {
+  color: var(--text-muted) !important;
+}
+[data-theme="light"] .sidebar-nav-item i {
+  background: linear-gradient(90deg, var(--accent), var(--accent-2)) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}
+[data-theme="light"] .sidebar-nav-item:hover {
+  background: var(--surface) !important;
+  color: var(--accent) !important;
+}
+[data-theme="light"] .sidebar-nav-item.active-custom {
+  background: rgba(94, 114, 228, 0.10) !important;
+  color: var(--accent) !important;
+  border: 1px solid var(--border) !important;
+}
+[data-theme="light"] .sidebar-stats-title,
+[data-theme="light"] .stat-lbl {
+  color: var(--text-subtle) !important;
+}
+[data-theme="light"] .stat-val {
+  color: var(--text) !important;
+}
+[data-theme="light"] .sidebar-stat-card {
+  background: var(--surface) !important;
+  border-color: var(--border) !important;
+}
+[data-theme="light"] .sidebar-stat-icon {
+  background: var(--surface-2) !important;
+  border-color: var(--border) !important;
+}
+[data-theme="light"] .p-name {
+  color: var(--text) !important;
+  background: none !important;
+  -webkit-text-fill-color: var(--text) !important;
+}
+[data-theme="light"] .p-role {
+  color: var(--text-muted) !important;
+}
+[data-theme="light"] .sidebar-profile-section {
+  background: var(--surface) !important;
+  border-top-color: var(--border) !important;
+}
+[data-theme="light"] .sidebar-logout-btn {
+  background: rgba(94, 114, 228, 0.06) !important;
+  border-color: var(--border) !important;
+  color: var(--text-muted) !important;
+}
+[data-theme="light"] .sidebar-logout-btn:hover {
+  background: var(--accent) !important;
+  color: #fff !important;
+  border-color: var(--accent) !important;
+}
+[data-theme="light"] .sidebar-logout-btn i,
+[data-theme="light"] .sidebar-logout-btn span {
+  -webkit-text-fill-color: var(--accent) !important;
+  color: var(--accent) !important;
+  background: none !important;
+}
+[data-theme="light"] .sidebar-logout-btn:hover i,
+[data-theme="light"] .sidebar-logout-btn:hover span {
+  -webkit-text-fill-color: #fff !important;
+  color: #fff !important;
+}
+[data-theme="light"] .sidebar-brand-text {
+  background: none !important;
+  -webkit-text-fill-color: var(--accent-2) !important;
+  color: var(--accent-2) !important;
+}
+[data-theme="light"] .brand-logo {
+  filter: drop-shadow(0 0 6px rgba(130, 94, 228, 0.4)) !important;
+}
+
+/* ── Sidebar (Security) ── */
+[data-theme="light"] .modern-security-sidebar {
+  background: linear-gradient(180deg, #f4f3ff 0%, #faf9ff 100%) !important;
+  border-right: 1px solid var(--border) !important;
+}
+
+/* ── Main canvas ── */
+[data-theme="light"] .admin-main-wrapper {
+  background: #f8f7ff !important;
+}
+
+/* ── Dashboard metric cards ── */
+[data-theme="light"] .metric-card {
+  background: #ffffff !important;
+  border: 1px solid rgba(94, 114, 228, 0.10) !important;
+  box-shadow: 0 4px 20px rgba(94, 114, 228, 0.06) !important;
+}
+[data-theme="light"] .metric-card:hover {
+  box-shadow: 0 8px 30px rgba(94, 114, 228, 0.12) !important;
+  transform: translateY(-2px);
+}
+[data-theme="light"] .metric-card h3,
+[data-theme="light"] .metric-label {
+  color: var(--text) !important;
+}
+[data-theme="light"] .metric-card small {
+  color: var(--text-muted) !important;
+}
+[data-theme="light"] .metric-card::before {
+  background: var(--accent-2) !important;
+}
+[data-theme="light"] .metric-icon {
+  background: var(--accent-2) !important;
+  box-shadow: 0 4px 14px rgba(130, 94, 228, 0.25) !important;
+}
+[data-theme="light"] .metric-icon i {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+/* ── Analytics card ── */
+[data-theme="light"] .analytics-card {
+  background: #ffffff !important;
+  border: 1px solid var(--border) !important;
+}
+[data-theme="light"] .analytics-title {
+  color: var(--accent) !important;
+}
+[data-theme="light"] .analytics-subtitle {
+  color: var(--text-muted) !important;
+}
+[data-theme="light"] .dashboard-title {
+  color: var(--text) !important;
+}
+[data-theme="light"] .dashboard-subtitle {
+  color: var(--text-muted) !important;
+}
+
+/* ── Generic cards and panels ── */
+[data-theme="light"] .card,
+[data-theme="light"] .modern-card,
+[data-theme="light"] .glass-card {
+  background: #ffffff !important;
+  border: 1px solid var(--border) !important;
+  box-shadow: var(--shadow) !important;
+  color: var(--text) !important;
+}
+
+/* ── Tables ── */
+[data-theme="light"] table {
+  background: var(--bg) !important;
+  color: var(--text) !important;
+}
+[data-theme="light"] thead tr {
+  background: var(--surface-2) !important;
+}
+[data-theme="light"] tbody tr:hover {
+  background: var(--surface) !important;
+}
+[data-theme="light"] td,
+[data-theme="light"] th {
+  border-color: var(--border) !important;
+  color: var(--text) !important;
+}
+
+/* ── Inputs, selects, textareas ── */
+[data-theme="light"] input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+[data-theme="light"] select,
+[data-theme="light"] textarea {
+  background: var(--input-bg) !important;
+  color: var(--text) !important;
+  border-color: var(--input-border) !important;
+}
+[data-theme="light"] input:focus,
+[data-theme="light"] select:focus,
+[data-theme="light"] textarea:focus {
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 0 3px rgba(94, 114, 228, 0.15) !important;
+  outline: none !important;
+}
+[data-theme="light"] input::placeholder,
+[data-theme="light"] textarea::placeholder {
+  color: var(--text-subtle) !important;
+}
+
+/* ── Badges & tags ── */
+[data-theme="light"] .badge {
+  background: rgba(94, 114, 228, 0.10) !important;
+  color: var(--accent) !important;
+  border: 1px solid rgba(94, 114, 228, 0.20) !important;
+}
+
+/* ── Modals & dropdowns ── */
+[data-theme="light"] .modal-content {
+  background: var(--bg) !important;
+  border: 1px solid var(--border-strong) !important;
+  box-shadow: 0 20px 60px rgba(94, 114, 228, 0.15) !important;
+  color: var(--text) !important;
+}
+[data-theme="light"] .dropdown-menu {
+  background: var(--bg) !important;
+  border: 1px solid var(--border-strong) !important;
+  box-shadow: 0 10px 30px rgba(94, 114, 228, 0.12) !important;
+}
+[data-theme="light"] .dropdown-item {
+  color: var(--text) !important;
+}
+[data-theme="light"] .dropdown-item:hover {
+  background: var(--surface) !important;
+  color: var(--accent) !important;
+}
+
+/* ── Dividers ── */
+[data-theme="light"] hr,
+[data-theme="light"] .divider {
+  border-color: var(--border) !important;
+}
+
+/* ── Scrollbar ── */
+[data-theme="light"] ::-webkit-scrollbar-track {
+  background: var(--bg-2) !important;
+}
+[data-theme="light"] ::-webkit-scrollbar-thumb {
+  background: rgba(94, 114, 228, 0.25) !important;
+  border-radius: 4px !important;
+}
+[data-theme="light"] ::-webkit-scrollbar-thumb:hover {
+  background: var(--accent) !important;
+}
+
+/* ── Theme toggle button itself: adapt in light mode ── */
+[data-theme="light"] #theme-toggle {
+  background: rgba(94, 114, 228, 0.08) !important;
+  border-color: rgba(94, 114, 228, 0.3) !important;
+  color: var(--accent) !important;
+  box-shadow: 0 2px 8px rgba(94, 114, 228, 0.06) !important;
+}
+[data-theme="light"] #theme-toggle:hover {
+  background: rgba(94, 114, 228, 0.15) !important;
+  border-color: var(--accent) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(94, 114, 228, 0.12) !important;
+}
+/* Ensure SVG icons in light mode use the accent color */
+[data-theme="light"] #theme-toggle svg {
+  stroke: var(--accent) !important;
+}
+
+/* ── Toast Notifications (Popups) ── */
+[data-theme="light"] .vms-toast-alert {
+  background: rgba(255, 255, 255, 0.98) !important;
+  color: #1a1a1a !important;
+  box-shadow: 
+      0 10px 30px rgba(94, 114, 228, 0.15),
+      inset 0 0 0 1px rgba(94, 114, 228, 0.1) !important;
+}
+[data-theme="light"] .vms-toast-alert .btn-close {
+  filter: none !important;
+}
+[data-theme="light"] .vms-toast-progress-bar {
+  opacity: 0.8 !important;
+}

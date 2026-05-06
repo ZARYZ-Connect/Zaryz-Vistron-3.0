@@ -1,0 +1,93 @@
+<!-- ==================== 6. SECURITY USER DELETE ==================== -->
+{% extends "dashboard/admin_base.html" %}
+{% load static %}
+
+{% block admin_css %}
+<link rel="stylesheet" href="{% static 'css/delete-confirm.css' %}">
+{% endblock %}
+
+{% block admin_content %}
+<div class="delete-container">
+    <div class="delete-card">
+        <div class="warning-icon pulse">
+            <i class="fas fa-user-slash"></i>
+        </div>
+
+        <h2 class="delete-title">Delete Security User</h2>
+        <p class="delete-message">Permanently remove user:</p>
+        
+        <div class="item-name">
+            {{ object.get_full_name|default:object.username }}
+        </div>
+
+        <div class="item-details">
+            <div class="detail-item">
+                <span class="detail-label">
+                    <i class="fas fa-user"></i>Username
+                </span>
+                <span class="detail-value">{{ object.username }}</span>
+            </div>
+
+            {% if object.email %}
+            <div class="detail-item">
+                <span class="detail-label">
+                    <i class="fas fa-envelope"></i>Email
+                </span>
+                <span class="detail-value">{{ object.email }}</span>
+            </div>
+            {% endif %}
+
+            <div class="detail-item">
+                <span class="detail-label">
+                    <i class="fas fa-id-badge"></i>Role
+                </span>
+                <span class="detail-value">{{ object.get_role_display }}</span>
+            </div>
+
+            <div class="detail-item">
+                <span class="detail-label">
+                    <i class="fas fa-toggle-on"></i>Active
+                </span>
+                <span class="detail-value">
+                    {% if object.is_active %}
+                    <span style="color: #2dce89;">Yes</span>
+                    {% else %}
+                    <span style="color: #f5365c;">No</span>
+                    {% endif %}
+                </span>
+            </div>
+        </div>
+
+        <div class="consequences">
+            <h6><i class="fas fa-exclamation-triangle"></i>Consequences</h6>
+            <ul>
+                <li>This action cannot be undone</li>
+                <li>Login access removed</li>
+                <li>Audit logs retained</li>
+                <li>Requires new setup to recreate</li>
+            </ul>
+        </div>
+
+        <div class="admin-warning">
+            <i class="fas fa-shield-alt"></i>
+            Sensitive action
+        </div>
+
+        <form method="post" id="deleteForm">
+            {% csrf_token %}
+            <div class="btn-group">
+                <button class="btn-delete" type="submit">
+                    <i class="fas fa-trash-alt"></i>Delete
+                </button>
+                <a class="btn-cancel" href="{% url 'dashboard:security_user_list' %}">
+                    <i class="fas fa-times"></i>Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block admin_js %}
+<script src="{% static 'js/delete-confirm.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,98 @@
+<!-- ==================== 2. EMPLOYEE DELETE ==================== -->
+{% extends "dashboard/admin_base.html" %}
+{% load static %}
+
+{% block admin_css %}
+<link rel="stylesheet" href="{% static 'css/delete-confirm.css' %}">
+{% endblock %}
+
+{% block admin_content %}
+<div class="delete-container">
+    <div class="delete-card">
+        <div class="warning-icon pulse">
+            <i class="fas fa-user-slash"></i>
+        </div>
+
+        <h2 class="delete-title">Delete Employee</h2>
+        <p class="delete-message">Permanently remove employee:</p>
+        
+        <div class="item-name">{{ object.name }}</div>
+
+        <div class="item-details">
+            {% if object.department %}
+            <div class="detail-item">
+                <span class="detail-label">
+                    <i class="fas fa-building"></i>Department
+                </span>
+                <span class="detail-value">{{ object.department.name }}</span>
+            </div>
+            {% endif %}
+            
+            {% if object.job_role %}
+            <div class="detail-item">
+                <span class="detail-label">
+                    <i class="fas fa-briefcase"></i>Job Position
+                </span>
+                <span class="detail-value">{{ object.job_role.name }}</span>
+            </div>
+            {% endif %}
+            
+            {% if object.email %}
+            <div class="detail-item">
+                <span class="detail-label">
+                    <i class="fas fa-envelope"></i>Email
+                </span>
+                <span class="detail-value">{{ object.email }}</span>
+            </div>
+            {% endif %}
+            
+            <div class="detail-item">
+                <span class="detail-label">
+                    <i class="fas fa-toggle-on"></i>Status
+                </span>
+                <span class="detail-value">
+                    {% if object.is_active %}
+                    <span style="color: #2dce89;">Active</span>
+                    {% else %}
+                    <span style="color: #f5365c;">Inactive</span>
+                    {% endif %}
+                </span>
+            </div>
+        </div>
+
+        <div class="consequences">
+            <h6><i class="fas fa-exclamation-triangle"></i>Consequences</h6>
+            <ul>
+                <li>This action cannot be undone</li>
+                <li>Record permanently deleted</li>
+                <li>Appointments may be affected</li>
+                <li>Access immediately revoked</li>
+                {% if object.visitor_set.count %}
+                <li><strong>{{ object.visitor_set.count }} visitor(s)</strong> associated</li>
+                {% endif %}
+            </ul>
+        </div>
+
+        <div class="admin-warning">
+            <i class="fas fa-shield-alt"></i>
+            Sensitive action
+        </div>
+
+        <form method="post" id="deleteForm">
+            {% csrf_token %}
+            <div class="btn-group">
+                <button class="btn-delete" type="submit">
+                    <i class="fas fa-trash-alt"></i>Delete
+                </button>
+                <a class="btn-cancel" href="{% url 'dashboard:employee_list' %}">
+                    <i class="fas fa-times"></i>Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block admin_js %}
+<script src="{% static 'js/delete-confirm.js' %}"></script>
+{% endblock %}

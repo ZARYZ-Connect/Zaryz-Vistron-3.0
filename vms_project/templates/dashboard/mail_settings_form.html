@@ -1,0 +1,386 @@
+<style>
+/* ── Mail Settings Form ── */
+.msf-section {
+    margin-bottom: 20px;
+}
+
+.msf-section-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.72rem;
+    font-weight: 800;
+    color: #7c4dff;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #f1f5f9;
+    margin-bottom: 14px;
+}
+.msf-section-title i {
+    width: 22px; height: 22px;
+    background: linear-gradient(135deg, #7c4dff, #b388ff);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 0.65rem;
+    flex-shrink: 0;
+}
+
+.msf-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+.msf-grid.single { grid-template-columns: 1fr; }
+
+.msf-field { display: flex; flex-direction: column; gap: 4px; }
+.msf-label {
+    font-size: 0.67rem;
+    font-weight: 700;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+}
+
+.msf-input {
+    width: 100%;
+    height: 40px;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 9px;
+    padding: 0 13px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #0f172a;
+    background: #f9fafb;
+    transition: all 0.2s;
+    outline: none;
+}
+.msf-input:focus {
+    border-color: #7c4dff;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(124,77,255,0.1);
+}
+.msf-input::placeholder { color: #94a3b8; font-size: 0.82rem; }
+
+.msf-select-custom {
+    position: relative;
+    width: 100%;
+}
+.msf-dropdown-trigger {
+    width: 100%;
+    height: 42px;
+    background: #f9fafb;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #0f172a;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.msf-dropdown-trigger:hover, .msf-select-custom.active .msf-dropdown-trigger {
+    border-color: #7c4dff;
+    background: white;
+    box-shadow: 0 0 0 4px rgba(124,77,255,0.1);
+}
+.msf-dropdown-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    width: 100%;
+    background: white;
+    border: 1px solid rgba(124,77,255,0.1);
+    border-radius: 14px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    z-index: 100;
+    padding: 8px;
+    display: none;
+    transform-origin: top;
+    animation: dropdownPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+@keyframes dropdownPop {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+.msf-select-custom.active .msf-dropdown-menu { display: block; }
+.msf-dropdown-item {
+    padding: 10px 14px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #475569;
+}
+.msf-dropdown-item:hover {
+    background: rgba(124,77,255,0.06);
+    color: #7c4dff;
+    padding-left: 18px;
+}
+.msf-dropdown-item i { width: 20px; text-align: center; font-size: 0.9rem; }
+
+.msf-hint {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.72rem;
+    color: #64748b;
+    margin-top: 4px;
+    background: #fffbeb;
+    border: 1px solid #fde68a;
+    border-radius: 6px;
+    padding: 5px 10px;
+}
+
+/* Security Toggle Chips */
+.msf-security-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+.msf-toggle-chip {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 8px 16px;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 9px;
+    background: #f9fafb;
+    cursor: pointer;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #64748b;
+    transition: all 0.18s;
+    user-select: none;
+    flex: 1;
+    justify-content: center;
+}
+.msf-toggle-chip input[type=checkbox] { display: none; }
+.msf-toggle-chip:has(input:checked) {
+    border-color: #7c4dff;
+    background: rgba(124,77,255,0.07);
+    color: #7c4dff;
+}
+.msf-chip-dot {
+    width: 14px; height: 14px;
+    border-radius: 4px;
+    border: 1.5px solid currentColor;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.6rem;
+    transition: all 0.15s;
+}
+.msf-toggle-chip:has(input:checked) .msf-chip-dot {
+    background: #7c4dff;
+    border-color: #7c4dff;
+    color: white;
+}
+
+/* Actions */
+.msf-actions {
+    display: flex;
+    gap: 10px;
+    padding-top: 16px;
+    border-top: 1px solid #f1f5f9;
+    margin-top: 4px;
+    justify-content: flex-end;
+}
+.msf-btn-save {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 8px 18px;
+    background: linear-gradient(135deg, #7c4dff, #b388ff);
+    border: none;
+    border-radius: 9px;
+    color: white;
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(124,77,255,0.25);
+    transition: all 0.2s;
+    text-decoration: none;
+    white-space: nowrap;
+}
+.msf-btn-save:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(124,77,255,0.35);
+}
+.msf-btn-test {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 8px 16px;
+    background: #f8fafc;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 9px;
+    color: #475569;
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+    white-space: nowrap;
+}
+.msf-btn-test:hover {
+    border-color: #7c4dff;
+    color: #7c4dff;
+    background: rgba(124,77,255,0.04);
+}
+
+@media (max-width: 540px) {
+    .msf-grid { grid-template-columns: 1fr; }
+    .msf-actions { justify-content: stretch; }
+    .msf-btn-save, .msf-btn-test { flex: 1; }
+
+    /* Keep TLS/SSL always side-by-side and compact */
+    .msf-security-row {
+        flex-wrap: nowrap !important;
+        gap: 8px !important;
+    }
+    .msf-toggle-chip {
+        padding: 7px 10px !important;
+        font-size: 0.75rem !important;
+        gap: 5px !important;
+    }
+}
+</style>
+
+<form id="mainForm" method="post">
+  {% csrf_token %}
+
+  <!-- ── Email Provider ── -->
+  <div class="msf-section">
+    <div class="msf-section-title">
+      <i class="fas fa-at"></i> Email Provider
+    </div>
+    <div class="msf-field">
+      <label class="msf-label">Quick Select Provider</label>
+      <div class="msf-select-custom" id="providerSelect">
+        <div class="msf-dropdown-trigger" onclick="toggleMsfDropdown()">
+            <span id="selectedLabel">Select a provider...</span>
+            <i class="fas fa-chevron-down text-muted" style="font-size: 0.7rem;"></i>
+        </div>
+        <div class="msf-dropdown-menu">
+            <div class="msf-dropdown-item" onclick="selectProvider('gmail', '📧 Gmail')">
+                <i class="fab fa-google text-danger"></i> Gmail
+            </div>
+            <div class="msf-dropdown-item" onclick="selectProvider('outlook', '📬 Outlook')">
+                <i class="fab fa-microsoft text-primary"></i> Outlook
+            </div>
+            <div class="msf-dropdown-item" onclick="selectProvider('zoho', '📮 Zoho Mail')">
+                <i class="fas fa-envelope-square text-warning"></i> Zoho Mail
+            </div>
+            <div class="msf-dropdown-item" onclick="selectProvider('custom', '⚙️ Custom SMTP')">
+                <i class="fas fa-tools text-secondary"></i> Custom SMTP
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  function toggleMsfDropdown() {
+      document.getElementById('providerSelect').classList.toggle('active');
+  }
+
+  function selectProvider(val, label) {
+      document.getElementById('selectedLabel').innerHTML = label;
+      document.getElementById('providerSelect').classList.remove('active');
+      autoFillSMTP(val);
+  }
+
+  // Close when clicking outside
+  window.addEventListener('click', function(e) {
+      if (!document.getElementById('providerSelect').contains(e.target)) {
+          document.getElementById('providerSelect').classList.remove('active');
+      }
+  });
+  </script>
+
+  <!-- ── SMTP Config ── -->
+  <div class="msf-section">
+    <div class="msf-section-title">
+      <i class="fas fa-server"></i> SMTP Configuration
+    </div>
+    <div class="msf-grid" style="margin-bottom:10px;">
+      <div class="msf-field">
+        <label class="msf-label">SMTP Host</label>
+        <input id="smtp_host" name="smtp_host" class="msf-input"
+               placeholder="e.g. smtp.gmail.com"
+               value="{{ form.smtp_host.value|default:'' }}">
+      </div>
+      <div class="msf-field">
+        <label class="msf-label">Port</label>
+        <input id="port" name="port" type="number" class="msf-input"
+               placeholder="587"
+               value="{{ form.port.value|default:'' }}">
+      </div>
+    </div>
+    <div class="msf-grid">
+      <div class="msf-field">
+        <label class="msf-label">Username / Email</label>
+        <input name="username" class="msf-input"
+               placeholder="sender@example.com"
+               value="{{ form.username.value|default:'' }}">
+      </div>
+      <div class="msf-field">
+        <label class="msf-label">Password</label>
+        <input type="password" name="password" class="msf-input"
+               placeholder="Leave blank to keep existing">
+        {% if form.instance.pk and form.instance.password %}
+          <div class="msf-hint">
+            <i class="fas fa-lock" style="color:#d97706;"></i>
+            Password saved. Leave blank to keep it.
+          </div>
+        {% endif %}
+        {{ form.password.errors }}
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Security ── -->
+  <div class="msf-section">
+    <div class="msf-section-title">
+      <i class="fas fa-shield-alt"></i> Security Protocol
+    </div>
+    <div class="msf-security-row">
+      <label class="msf-toggle-chip">
+        <input id="use_tls" type="checkbox" name="use_tls"
+               onchange="toggleSecurity('tls')"
+               {% if form.use_tls.value %}checked{% endif %}>
+        <span class="msf-chip-dot"><i class="fas fa-check"></i></span>
+        <i class="fas fa-lock" style="font-size:0.72rem;"></i> TLS (Recommended)
+      </label>
+      <label class="msf-toggle-chip">
+        <input id="use_ssl" type="checkbox" name="use_ssl"
+               onchange="toggleSecurity('ssl')"
+               {% if form.use_ssl.value %}checked{% endif %}>
+        <span class="msf-chip-dot"><i class="fas fa-check"></i></span>
+        <i class="fas fa-shield-alt" style="font-size:0.72rem;"></i> SSL
+      </label>
+    </div>
+  </div>
+
+  <!-- ── Actions ── -->
+  <div class="msf-actions">
+    <button id="submitBtn" type="submit" class="msf-btn-save">
+      <i class="fas fa-save"></i> Save Settings
+    </button>
+    <a href="{% url 'dashboard:mail_test' %}" class="msf-btn-test">
+      <i class="fas fa-paper-plane"></i> Test Email
+    </a>
+  </div>
+
+</form>

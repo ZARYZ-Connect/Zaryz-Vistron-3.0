@@ -1,0 +1,298 @@
+<!-- templates/base.html -->
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="utf-8">
+    <title>Zaryz Vistron | Enterprise Visitor Management</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Google Fonts: Outfit (Primary) & Instrument Serif (Accents) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+
+    {% load static %}
+
+    <!-- Theme Configuration: Isolate theme per role (Admin != Security) -->
+    <script>
+        {% with url_name=request.resolver_match.url_name app_name=request.resolver_match.app_name %}
+            // 🔒 Force Dark Mode for all public-facing visitor pages
+            // This ensures a consistent "Luxury" brand experience for guests
+            const visitorApps = ['visitors', 'landing', 'blog'];
+            const darkOnlyPages = ['login', 'magic_login', 'contact_submit'];
+
+            if (visitorApps.includes('{{ app_name }}') || darkOnlyPages.includes('{{ url_name }}')) {
+                window.VMS_FORCE_DARK = true;
+            }
+
+            {% if request.user.is_authenticated %}
+                {% if request.user.is_superuser %}
+                    window.VMS_THEME_KEY = 'zaryz-theme-admin';
+                {% else %}
+                    window.VMS_THEME_KEY = 'zaryz-theme-{{ request.user.role|default:"guest" }}';
+                {% endif %}
+            {% else %}
+                window.VMS_THEME_KEY = 'zaryz-theme-guest';
+            {% endif %}
+        {% endwith %}
+    </script>
+
+    <!-- Theme init: must be FIRST script, BEFORE any CSS to prevent flash -->
+    <script src="{% static 'js/theme-init.js' %}"></script>
+
+    <!-- Global CSS -->
+    <link href="{% static 'css/custom.css' %}?v=1.4" rel="stylesheet">
+    <link href="{% static 'css/theme.css' %}?v=2.0" rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.css" rel="stylesheet">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{% static 'img/logo.png' %}">
+
+    <style>
+        body {
+            font-family: 'Outfit', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+    </style>
+
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body class="vms-glass-body {% block body_class %}{% endblock %}" data-app-shell>
+
+<!-- ========================================= -->
+<!-- NAVBAR -->
+<!-- ========================================= -->
+<nav class="navbar navbar-dark vms-glass-navbar">
+    <div class="container-fluid px-2 px-md-4 position-relative d-flex align-items-center justify-content-between flex-nowrap">
+
+        <!-- LEFT: Brand & Links Container -->
+        <div class="d-flex align-items-center">
+            
+            <!-- Mobile/Tablet Hamburger (FIRST) -->
+            {% if request.resolver_match.url_name != 'home' and request.resolver_match.url_name != 'profile' and request.resolver_match.url_name != 'visit_register' and request.resolver_match.url_name != 'otp_validate' %}
+            <button class="btn btn-sm text-white me-3" 
+                    onclick="toggleSidebar()"
+                    id="mobile-sidebar-toggle"
+                    style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 10px; width: 40px; height: 40px; display: none;">
+                <i class="fas fa-bars"></i>
+            </button>
+            <style>
+            @media (max-width: 1200px) {
+                #mobile-sidebar-toggle { display: flex !important; align-items: center; justify-content: center; }
+            }
+            </style>
+            {% endif %}
+
+            <!-- Brand (AFTER HAMBURGER) -->
+            <a class="navbar-brand d-flex align-items-center me-3"
+               href="{% url 'visitors:home' %}">
+                <img src="{% static 'img/logo.png' %}"
+                     class="brand-logo me-2"
+                     alt="Logo" style="height: 28px;">
+                <span class="brand-text" style="font-size: 14px; white-space: nowrap; letter-spacing: 0.5px;">ZARYZ VISTRON</span>
+            </a>
+            
+        </div>
+
+        <!-- RIGHT: Profile/Login — only shown on public visitor pages -->
+        <div class="d-flex align-items-center justify-content-end ms-auto">
+            
+            <!-- Theme Toggle -->
+            {% if request.resolver_match.url_name != 'login' and request.resolver_match.url_name != 'visit_register' and request.resolver_match.url_name != 'magic_login' and request.resolver_match.url_name != 'home' and request.resolver_match.url_name != 'otp_validate' and request.resolver_match.url_name != 'qr_pass' and request.resolver_match.url_name != 'approve' %}
+                {% include 'components/theme_toggle.html' %}
+            {% endif %}
+            
+            {% if user.is_authenticated %}
+                {% with url_name=request.resolver_match.url_name %}
+                {% if url_name == 'home' or url_name == 'visit_register' or url_name == 'otp_validate' %}
+                <div class="dropdown me-3">
+                    <a class="vms-screenshot-trigger dropdown-toggle d-flex align-items-center text-decoration-none" 
+                       id="profileDropdown" aria-expanded="false" style="cursor: pointer;">
+                        <div class="vms-hamburger-trigger d-flex align-items-center justify-content-center">
+                            <i class="fas fa-bars"></i>
+                        </div>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end vms-dropdown-glass-v2 mt-2" 
+                        aria-labelledby="profileDropdown">
+                        <div class="vms-dropdown-arrow"></div>
+                        <li class="px-3 py-2 border-bottom border-secondary opacity-10">
+                            <div class="small fw-800 text-muted text-uppercase mb-1" style="font-size: 0.65rem; letter-spacing: 0.1em;">Logged in as</div>
+                            <div class="fw-bold text-white small">{{ user.get_full_name|default:user.username }}</div>
+                        </li>
+                        <li>
+                            <a class="dropdown-item mt-2" href="{% if user.role == 'admin' or user.is_superuser %}{% url 'dashboard:admin_dashboard' %}{% else %}{% url 'security:security_dashboard' %}{% endif %}">
+                                <i class="fas fa-chart-pie"></i>
+                                <span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{% url 'accounts:profile' %}">
+                                <i class="fas fa-id-card"></i>
+                                <span>Profile Card</span>
+                            </a>
+                        </li>
+                        <li><hr class="dropdown-divider border-secondary opacity-10"></li>
+                        <li>
+                            <form action="{% url 'accounts:logout' %}" method="post" id="navbar-logout-form">
+                                {% csrf_token %}
+                                <a class="dropdown-item text-danger" href="#" onclick="document.getElementById('navbar-logout-form').submit();">
+                                    <i class="fas fa-power-off"></i>
+                                    <span>Logout</span>
+                                </a>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+                {% endif %}
+                {% endwith %}
+            {% else %}
+                <a class="vms-btn-login d-flex align-items-center justify-content-center" href="{% url 'accounts:login' %}">
+                    <i class="fas fa-sign-in-alt d-inline d-sm-none"></i>
+                    <span class="d-none d-sm-inline">LOGIN</span>
+                </a>
+            {% endif %}
+        </div>
+
+    </div>
+</nav>
+
+<!-- ========================================= -->
+<!-- MAIN CONTENT -->
+<!-- ========================================= -->
+<main class="container-fluid p-0 m-0">
+
+    {% if messages %}
+        <div class="vms-toast-container">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show shadow-lg vms-toast-alert"
+                     role="alert">
+                    <div class="d-flex align-items-center w-100">
+                        {% if message.tags == 'success' %}
+                            <i class="fas fa-check-circle me-2"></i>
+                        {% elif message.tags == 'error' or message.tags == 'danger' %}
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                        {% else %}
+                            <i class="fas fa-info-circle me-2"></i>
+                        {% endif %}
+                        <span class="message-text">{{ message }}</span>
+                    </div>
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="alert"></button>
+                    <!-- Visual Progress Bar -->
+                    <div class="vms-toast-progress">
+                        <div class="vms-toast-progress-bar"></div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {% block content %}{% endblock %}
+
+</main>
+
+<!-- ========================================= -->
+<!-- SCRIPTS -->
+<!-- ========================================= -->
+
+<!-- Bootstrap -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Chart.js (Global as requested) -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- Custom JS -->
+<script src="{% static 'js/custom.js' %}"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js"></script>
+
+<script>
+// Auto-dismiss alerts with Fluid Animation
+document.addEventListener('DOMContentLoaded', function() {
+    const alerts = document.querySelectorAll('.vms-toast-alert');
+    alerts.forEach(function(alert) {
+        setTimeout(function() {
+            alert.classList.add('closing');
+            setTimeout(() => {
+                const bsAlert = bootstrap.Alert.getInstance(alert) || new bootstrap.Alert(alert);
+                bsAlert.close();
+            }, 500); // Match CSS animation duration
+        }, 3500); // 3.5s before slide out starts
+    });
+});
+</script>
+<!-- Custom User Dropdown Logic (Decoupled from Bootstrap) -->
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const trigger = document.getElementById('profileDropdown');
+    if (!trigger) return;
+
+    const wrapper = trigger.closest('.dropdown');
+    const menu = wrapper ? wrapper.querySelector('.dropdown-menu') : null;
+    if (!menu) return;
+
+    function toggleMenu(forceShow = null) {
+        const isShown = menu.classList.contains('show');
+        const willShow = forceShow !== null ? forceShow : !isShown;
+        
+        if (willShow) {
+            menu.style.display = 'block';
+            // Slight delay ensures display:block is rendered before opacity transitions
+            setTimeout(() => menu.classList.add('show'), 10);
+            trigger.setAttribute('aria-expanded', 'true');
+        } else {
+            menu.classList.remove('show');
+            setTimeout(() => {
+                if (!menu.classList.contains('show')) {
+                    menu.style.display = 'none';
+                }
+            }, 250);
+            trigger.setAttribute('aria-expanded', 'false');
+        }
+    }
+
+    // Handle Clicks
+    trigger.addEventListener('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        toggleMenu();
+    });
+
+    // Handle Hover (Desktop only)
+    wrapper.addEventListener('mouseenter', () => window.innerWidth >= 992 && toggleMenu(true));
+    wrapper.addEventListener('mouseleave', () => window.innerWidth >= 992 && toggleMenu(false));
+
+    // Handle Outside Clicks
+    document.addEventListener('click', (e) => {
+        if (!wrapper.contains(e.target)) toggleMenu(false);
+    });
+});
+</script>
+{% block extra_js %}{% endblock %}
+
+<script>
+window.addEventListener("scroll",function(){
+const navbar=document.querySelector(".navbar");
+
+if(window.scrollY>20){
+navbar.classList.add("scrolled");
+}else{
+navbar.classList.remove("scrolled");
+}
+});
+</script>
+
+
+
+</body>
+</html>

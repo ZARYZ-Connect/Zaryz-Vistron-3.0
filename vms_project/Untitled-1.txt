@@ -1,0 +1,12 @@
+# Zaryz Vistron | Enterprise Visitor Management
+
+[ZARYZ VISTRON
+                ZARYZ](http://info.localhost:8000/visitors/)
+[LOGIN](http://info.localhost:8000/accounts/login/)
+
+# Welcome
+
+## Visitor Registration
+Please register your visit below. The process takes less than one minute.
+[Start Registration](http://info.localhost:8000/visitors/register/)
+Need assistance? Please contact reception.

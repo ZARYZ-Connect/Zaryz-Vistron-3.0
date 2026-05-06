@@ -1,0 +1,87 @@
+<!-- visittype_form.html -->
+{% extends "dashboard/admin_base.html" %}
+{% load static %}
+
+{% block admin_css %}
+<link href="{% static 'css/form.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block admin_content %}
+<div class="form-container">
+  <div class="form-card">
+    <div class="form-header">
+      <div class="form-icon">
+        <i class="fas fa-clipboard-list"></i>
+      </div>
+      <h2 class="form-title">{% if is_new %}Add Visit Type{% else %}Edit Visit Type{% endif %}</h2>
+      <p class="form-subtitle">Define categories for different types of visits</p>
+    </div>
+
+    <form method="post" id="mainForm">
+      {% csrf_token %}
+      
+      <div class="form-section">
+        <h5 class="section-title">
+          <i class="fas fa-tag"></i>
+          Visit Type Details
+        </h5>
+
+        <div class="form-group">
+          <label class="form-label required" for="id_name">Visit Type Name</label>
+          {% if form.name.errors %}
+            <div class="error-messages">
+              <ul class="error-list">
+                {% for error in form.name.errors %}
+                  <li>{{ error }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+          {% endif %}
+          <input 
+            type="text" 
+            name="name" 
+            id="id_name" 
+            class="modern-input" 
+            placeholder="e.g., Business Meeting, Interview, Delivery" 
+            value="{{ form.name.value|default:'' }}"
+            required
+            maxlength="100"
+          >
+          <div class="char-counter" id="nameCounter">
+            <span id="nameCount">{{ form.name.value|default:''|length }}</span>/100
+          </div>
+          <small class="form-text text-muted">
+            <i class="fas fa-lightbulb"></i>
+            Choose a clear, descriptive name for easy identification
+          </small>
+        </div>
+      </div>
+
+      <div class="btn-group">
+        <button type="submit" class="btn-primary-modern" id="submitBtn">
+          {% if is_new %}
+            <i class="fas fa-plus"></i>
+            Create Visit Type
+          {% else %}
+            <i class="fas fa-save"></i>
+            Update Visit Type
+          {% endif %}
+        </button>
+        <a href="{% url 'dashboard:visittype_list' %}" class="btn-secondary-modern">
+          <i class="fas fa-times"></i>
+          Cancel
+        </a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block admin_js %}
+<script src="{% static 'js/form.js' %}"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    initCharCounter('id_name', 'nameCount', 'nameCounter', 100);
+  });
+</script>
+{% endblock %}

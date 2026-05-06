@@ -1,0 +1,183 @@
+<!-- templates/visitors/qr_pass.html -->
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link href="{% static 'css/visitor-pages.css' %}" rel="stylesheet">
+<style>
+    .pass-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background: #0b1020;
+        padding: 24px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .pass-container::before {
+        content: '';
+        position: absolute;
+        top: -10%;
+        left: -10%;
+        width: 120%;
+        height: 120%;
+        background: radial-gradient(circle at 30% 30%, rgba(99, 102, 241, 0.15), transparent 40%),
+                    radial-gradient(circle at 70% 70%, rgba(139, 92, 246, 0.15), transparent 40%);
+        z-index: 0;
+    }
+
+    .pass-card {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 24px;
+        padding: 40px;
+        width: 100%;
+        max-width: 380px;
+        text-align: center;
+        box-shadow: 0 40px 100px rgba(0, 0, 0, 0.5);
+        position: relative;
+        z-index: 1;
+        animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .pass-header {
+        margin-bottom: 32px;
+    }
+
+    .pass-logo {
+        height: 32px;
+        margin-bottom: 12px;
+        filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.2));
+    }
+
+    .pass-title {
+        color: white;
+        font-size: 1.25rem;
+        font-weight: 800;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        margin: 0;
+    }
+
+    .qr-wrapper {
+        position: relative;
+        display: inline-block;
+        background: white;
+        padding: 16px;
+        border-radius: 20px;
+        margin-bottom: 32px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.1);
+    }
+
+    .qr-image {
+        width: 220px;
+        height: 220px;
+        display: block;
+    }
+
+    .qr-logo-overlay {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 54px;
+        height: 54px;
+        background: white;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 6px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .qr-logo-overlay img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+
+    .visitor-info {
+        color: rgba(255, 255, 255, 0.9);
+        margin-bottom: 24px;
+    }
+
+    .visitor-name {
+        font-size: 1.5rem;
+        font-weight: 800;
+        margin: 0 0 4px;
+        color: white;
+    }
+
+    .visitor-badge {
+        font-family: 'Courier New', monospace;
+        font-size: 0.9rem;
+        color: #a78bfa;
+        font-weight: 700;
+        letter-spacing: 2px;
+    }
+
+    .scan-instruction {
+        color: rgba(255, 255, 255, 0.4);
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-top: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .scan-instruction::before,
+    .scan-instruction::after {
+        content: '';
+        height: 1px;
+        width: 30px;
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    @keyframes slideUp {
+        from { transform: translateY(40px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="pass-container">
+    <div class="pass-card">
+        <div class="pass-header">
+            <img src="{% static 'img/logo.png' %}" alt="Logo" class="pass-logo">
+            <h1 class="pass-title">Visitor Pass</h1>
+        </div>
+
+        <div class="qr-wrapper">
+            {% if visit.qr_code %}
+                <img src="{{ visit.qr_code.url }}" alt="QR Code" class="qr-image">
+                <div class="qr-logo-overlay">
+                    <img src="{% static 'img/logo.png' %}" alt="Logo Mini">
+                </div>
+            {% else %}
+                <div style="width: 220px; height: 220px; display: flex; align-items: center; justify-content: center; color: #666;">
+                    QR Code Not Generated
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="visitor-info">
+            <h2 class="visitor-name">{{ visit.full_name }}</h2>
+            <div class="visitor-badge">{{ visit.badge_id }}</div>
+        </div>
+
+        <div class="scan-instruction">
+            Scan at Reception
+        </div>
+    </div>
+</div>
+{% endblock %}

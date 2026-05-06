@@ -1,0 +1,93 @@
+<!-- templates/components/admin_sidebar.html -->
+{% load static %}
+
+<div class="modern-admin-sidebar">
+    <!-- Sidebar Header: Brand Logo & Text -->
+    <div class="sidebar-header">
+        <a href="{% url 'visitors:home' %}" class="sidebar-brand">
+            <img src="{% static 'img/logo.png' %}" alt="Logo" class="sidebar-logo">
+            <span class="sidebar-brand-text">ZARYZ VISTRON</span>
+        </a>
+        <button class="sidebar-close-btn d-xl-none" onclick="toggleSidebar()">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+
+
+    <!-- Navigation -->
+    <nav class="sidebar-nav">
+        <a class="sidebar-nav-item {% if request.resolver_match.url_name == 'admin_dashboard' %}active-custom{% endif %}"
+           href="{% url 'dashboard:admin_dashboard' %}">
+            <i class="fas fa-chart-pie"></i>
+            <span>Dashboard</span>
+        </a>
+
+        <a class="sidebar-nav-item {% if active_menu == 'departments' %}active-custom{% endif %}"
+           href="{% url 'dashboard:department_list' %}">
+            <i class="fas fa-sitemap"></i>
+            <span>Departments</span>
+        </a>
+
+        <a class="sidebar-nav-item {% if active_menu == 'jobroles' %}active-custom{% endif %}"
+           href="{% url 'dashboard:jobrole_list' %}">
+            <i class="fas fa-briefcase"></i>
+            <span>Job Positions</span>
+        </a>
+
+        <a class="sidebar-nav-item {% if active_menu == 'employees' %}active-custom{% endif %}"
+           href="{% url 'dashboard:employee_list' %}">
+            <i class="fas fa-users"></i>
+            <span>Employees</span>
+        </a>
+
+        <a class="sidebar-nav-item {% if active_menu == 'visittype' %}active-custom{% endif %}"
+           href="{% url 'dashboard:visittype_list' %}">
+            <i class="fas fa-id-card-alt"></i>
+            <span>Visit Types</span>
+        </a>
+
+        <a class="sidebar-nav-item {% if active_menu == 'mailtemplates' %}active-custom{% endif %}"
+           href="{% url 'dashboard:mailtemplate_list' %}">
+            <i class="fas fa-envelope-open-text"></i>
+            <span>Mail Templates</span>
+        </a>
+
+        <a class="sidebar-nav-item {% if active_menu == 'security' %}active-custom{% endif %}"
+           href="{% url 'dashboard:security_user_list' %}">
+            <i class="fas fa-user-shield"></i>
+            <span>Security Users</span>
+        </a>
+
+        <a class="sidebar-nav-item {% if active_menu == 'mailsettings' %}active-custom{% endif %}"
+           href="{% url 'dashboard:mail_settings' %}">
+            <i class="fas fa-cog"></i>
+            <span>SMTP Settings</span>
+        </a>
+    </nav>
+
+
+    <!-- Spacer to push content to bottom -->
+    <div style="flex-grow: 1;"></div>
+
+    <!-- Enhanced Admin Profile Section (Neat Alignment) -->
+    <div class="sidebar-profile-section">
+        <a href="{% url 'accounts:profile' %}" class="sidebar-profile-link" onclick="window.location.href='{% url "accounts:profile" %}'; return true;" style="display: block; position: relative; z-index: 10; cursor: pointer;">
+            <div class="profile-header-mini mb-3">
+                <img src="https://ui-avatars.com/api/?name={% if user.role == 'admin' or user.is_superuser %}AD{% elif user.role == 'security' %}SC{% elif user.role == 'reception' %}RC{% else %}EM{% endif %}&background=7c4dff&color=fff&rounded=true" 
+                     alt="Admin Avatar" class="profile-avatar-sidebar">
+                <div class="p-details">
+                    <div class="p-name">{{ user.get_full_name|default:user.username|default:"System Admin" }}</div>
+                    <div class="p-role">Administrator</div>
+                </div>
+            </div>
+        </a>
+        
+        <form method="post" action="{% url 'accounts:logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="sidebar-logout-btn">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </button>
+        </form>
+    </div>
+</div>

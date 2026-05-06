@@ -1,0 +1,114 @@
+<!-- templates/components/security_sidebar.html -->
+{% load static %}
+
+<div class="modern-security-sidebar">
+    <!-- Sidebar Header: Brand Logo & Text -->
+    <div class="sidebar-header">
+        <a href="{% url 'visitors:home' %}" class="sidebar-brand">
+            <img src="{% static 'img/logo.png' %}" alt="Logo" class="sidebar-logo">
+            <span class="sidebar-brand-text">ZARYZ VISTRON</span>
+        </a>
+        <button class="sidebar-close-btn d-xl-none" onclick="toggleSidebar()">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+
+    <!-- Navigation Area -->
+    <nav class="sidebar-nav mt-3">
+        <a class="sidebar-nav-item {% if request.resolver_match.url_name == 'security_dashboard' %}active-custom{% endif %}"
+           href="{% url 'security:security_dashboard' %}">
+            <i class="fas fa-chart-pie"></i>
+            <span>Dashboard</span>
+        </a>
+
+        <a class="sidebar-nav-item {% if request.resolver_match.url_name == 'scan_qr' %}active-custom{% endif %}"
+           href="{% url 'security:scan_qr' %}">
+            <i class="fas fa-qrcode"></i>
+            <span>Scan QR Code</span>
+        </a>
+
+        <a class="sidebar-nav-item {% if request.resolver_match.url_name == 'badge_lookup' %}active-custom{% endif %}"
+           href="{% url 'security:badge_lookup' %}">
+            <i class="fas fa-search"></i>
+            <span>Badge Lookup</span>
+        </a>
+    </nav>
+
+    <!-- LIVE STATS SECTION (Security Specific) -->
+    <div class="sidebar-stats-title">Live Overview</div>
+    <div class="sidebar-stats-container">
+        <!-- Total Today -->
+        <a href="{% url 'security:all_today_list' %}" class="text-decoration-none">
+            <div class="sidebar-stat-card">
+                <div class="sidebar-stat-icon icon-total">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="sidebar-stat-info">
+                    <div class="stat-val">{{ security_counts.total }}</div>
+                    <div class="stat-lbl">Visitors Today</div>
+                </div>
+            </div>
+        </a>
+
+        <!-- Inside -->
+        <a href="{% url 'security:checked_in_list' %}" class="text-decoration-none">
+            <div class="sidebar-stat-card">
+                <div class="sidebar-stat-icon icon-inside">
+                    <i class="fas fa-sign-in-alt"></i>
+                </div>
+                <div class="sidebar-stat-info">
+                    <div class="stat-val">{{ security_counts.checked_in }}</div>
+                    <div class="stat-lbl">Currently Inside</div>
+                </div>
+            </div>
+        </a>
+
+        <!-- Expected -->
+        <a href="{% url 'security:awaiting_list' %}" class="text-decoration-none">
+            <div class="sidebar-stat-card">
+                <div class="sidebar-stat-icon icon-expected">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="sidebar-stat-info">
+                    <div class="stat-val">{{ security_counts.awaiting }}</div>
+                    <div class="stat-lbl">Expected Arrival</div>
+                </div>
+            </div>
+        </a>
+
+        <!-- Exited -->
+        <a href="{% url 'security:checked_out_list' %}" class="text-decoration-none">
+            <div class="sidebar-stat-card">
+                <div class="sidebar-stat-icon icon-exited">
+                    <i class="fas fa-sign-out-alt"></i>
+                </div>
+                <div class="sidebar-stat-info">
+                    <div class="stat-val">{{ security_counts.checked_out }}</div>
+                    <div class="stat-lbl">Checked Out</div>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <!-- PROFILE & LOGOUT -->
+    <div class="sidebar-profile-section mt-auto">
+        <a href="{% url 'accounts:profile' %}" class="sidebar-profile-link" onclick="window.location.href='{% url "accounts:profile" %}'; return true;" style="display: block; position: relative; z-index: 10; cursor: pointer;">
+            <div class="profile-header-mini">
+                <img src="https://ui-avatars.com/api/?name={% if user.role == 'admin' or user.is_superuser %}AD{% elif user.role == 'security' %}SC{% elif user.role == 'reception' %}RC{% else %}EM{% endif %}&background=6366f1&color=fff&rounded=true" 
+                     class="profile-avatar-sidebar" alt="Avatar">
+                <div class="p-details">
+                    <div class="p-name">{{ user.get_full_name|default:user.username }}</div>
+                    <div class="p-role">Receptionist</div>
+                </div>
+            </div>
+        </a>
+        
+        <form method="post" action="{% url 'accounts:logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="sidebar-logout-btn">
+                <i class="fas fa-power-off"></i>
+                <span>Logout</span>
+            </button>
+        </form>
+    </div>
+</div>

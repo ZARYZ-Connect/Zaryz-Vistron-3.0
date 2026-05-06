@@ -1,0 +1,244 @@
+<!-- mailtemplate_list.html -->
+{% extends "dashboard/admin_base.html" %}
+{% load static %}
+
+{% block admin_css %}
+<link href="{% static 'css/list.css' %}" rel="stylesheet">
+<style>
+/* Modal Styling to Match Reference */
+.import-modal .modal-content {
+    border-radius: 16px;
+    border: none;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    background: #ffffff;
+}
+
+.btn-import-action {
+    background: var(--primary-gradient, linear-gradient(135deg, #7c4dff, #b388ff));
+    color: #ffffff !important;
+    width: 100%;
+    height: 48px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    border: none;
+    box-shadow: 0 4px 12px rgba(124, 77, 255, 0.3);
+    transition: all 0.2s ease;
+    text-decoration: none;
+}
+
+.btn-import-action:hover {
+    background: linear-gradient(135deg, #6c3ceb, #a378ff);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(124, 77, 255, 0.4);
+    color: #ffffff;
+}
+
+.upload-area-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border: 1.5px dashed #cbd5e1;
+    border-radius: 12px;
+    padding: 35px 20px;
+    background: #f8fafc;
+    cursor: pointer;
+    transition: all 0.2s;
+    width: 100%;
+}
+
+.upload-area-box:hover {
+    border-color: #94a3b8;
+    background: #f1f5f9;
+}
+
+.upload-area-box .upload-icon {
+    font-size: 2.2rem;
+    color: #7c4dff; /* Bold purple */
+    margin-bottom: 4px;
+}
+
+.upload-area-box .upload-title {
+    font-weight: 700;
+    color: #0f172a;
+    font-size: 1.05rem;
+}
+
+.upload-area-box .upload-subtitle {
+    color: #64748b;
+    font-size: 0.9rem;
+}
+</style>
+{% endblock %}
+
+{% block admin_content %}
+<div class="list-container">
+  <div class="list-card">
+    <!-- ===== Header ===== -->
+    <div class="page-header d-flex flex-row justify-content-between align-items-center mb-4 flex-nowrap">
+      <div class="header-left">
+        <h2 class="page-title m-0" style="font-size: 1.25rem !important;">
+          <i class="fas fa-envelope-open-text text-primary me-2"></i>
+          Templates
+        </h2>
+      </div>
+      <div class="header-right d-flex flex-row gap-2 flex-nowrap flex-shrink-0 align-items-center">
+        <button class="shadow-sm d-flex align-items-center justify-content-center" 
+          style="height: 30px !important; padding: 0 8px !important; border-radius: 10px; background: #ffffff; border: 1.5px solid #e5e7eb; color: #0f172a; font-weight: 700; font-size: 0.68rem !important; transition: all 0.2s;"
+          onmouseover="this.style.background='#f8fafc'; this.style.borderColor='#cbd5e1';"
+          onmouseout="this.style.background='#ffffff'; this.style.borderColor='#e5e7eb';"
+          data-bs-toggle="modal" data-bs-target="#importMailTemplateModal">
+          <i class="fas fa-file-import me-1" style="font-size: 0.75rem; color: #0f172a;"></i> Import
+        </button>
+        <a href="{% url 'dashboard:mailtemplate_add' %}" class="shadow-sm d-flex align-items-center justify-content-center text-decoration-none"
+          style="height: 30px !important; padding: 0 10px !important; border-radius: 10px; background: linear-gradient(135deg, #a78bfa, #8b5cf6); border: none; color: #ffffff; font-weight: 700; font-size: 0.68rem !important; transition: all 0.2s;"
+          onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 8px rgba(139, 92, 246, 0.2)';"
+          onmouseout="this.style.transform='none'; this.style.boxShadow='0 0.125rem 0.25rem rgba(0, 0, 0, 0.075)';"
+          >
+          <i class="fas fa-plus me-1" style="font-size: 0.75rem; color: #ffffff;"></i> Add
+        </a>
+      </div>
+    </div>
+
+    <!-- ===== Horizontal Stats Row ===== -->
+    <div class="row mb-4">
+      <div class="col-md-3 col-sm-6">
+        <div class="stat-item d-flex align-items-center p-3 rounded-4 bg-light border-0 shadow-sm" style="height: auto; min-width: 200px;">
+          <div class="stat-icon-wrap me-3 d-flex align-items-center justify-content-center bg-primary text-white rounded-3 flex-shrink-0" style="width: 42px; height: 42px; background: var(--primary-gradient) !important;">
+            <i class="fas fa-mail-bulk" style="font-size: 0.9rem;"></i>
+          </div>
+          <div class="overflow-hidden">
+            <div class="stat-label text-muted fw-bold text-uppercase mb-1" style="letter-spacing: 0.5px; font-size: 0.65rem;">Active Configs</div>
+            <div class="stat-number fw-bold mb-0" style="color: var(--text-main); font-size: 1.25rem;">{{ items|length }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== Table ===== -->
+    {% if items %}
+      <div class="modern-table table-responsive">
+        <table class="table align-middle m-0">
+                <thead class="table-header">
+                    <tr>
+                        <th>Access Key</th>
+                        <th>Template Details</th>
+                        <th>Subject Line</th>
+                        <th class="text-end" style="width: 120px;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="table-body stagger-animation">
+                    {% for item in items %}
+                    <tr>
+                        <td>
+                            <span class="luxe-id-badge">{{ item.key }}</span>
+                        </td>
+                        <td>
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="avatar-tile-luxe">
+                                    <i class="fas fa-file-code"></i>
+                                </div>
+                                <div class="d-flex flex-column">
+                                    <strong class="text-dark" style="font-size: 0.92rem; line-height: 1.2;">{{ item.title }}</strong>
+                                    <span class="text-muted small fw-600" style="font-size: 0.72rem;">Active System Email</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="text-muted" style="font-size: 0.85rem; max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="{{ item.subject }}">
+                                {{ item.subject }}
+                            </div>
+                        </td>
+                        <td class="text-end">
+                            <div class="table-actions-wrap justify-content-end">
+                                <a class="btn-action-luxe btn-edit-luxe" href="{% url 'dashboard:mailtemplate_edit' item.pk %}" title="Modify">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <a class="btn-action-luxe btn-delete-luxe" href="{% url 'dashboard:mailtemplate_delete' item.pk %}" title="Remove">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+        </table>
+      </div>
+    {% else %}
+      <div class="empty-state text-center py-5">
+        <div class="empty-icon mb-3" style="font-size: 3rem; opacity: 0.2;">
+          <i class="fas fa-envelope-open-text"></i>
+        </div>
+        <h4 class="empty-title">No Mail Templates Yet</h4>
+        <p class="text-muted">Establish email configurations using the <strong>Add</strong> button above.</p>
+      </div>
+    {% endif %}
+
+    <!-- ===== Footer ===== -->
+    <div class="mt-4 pt-3 border-top d-flex justify-content-start">
+      <a href="{% url 'dashboard:admin_dashboard' %}" class="btn-primary-modern px-4">
+        <i class="fas fa-chevron-left me-2"></i> Back to Dashboard
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Import Popup ===== -->
+<div class="modal fade import-modal" id="importMailTemplateModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            
+            <div class="modal-header border-0 pb-0 mt-3 px-4">
+                <h5 class="modal-title fs-4 fw-bold text-dark d-flex align-items-center">
+                    <i class="fas fa-sign-in-alt me-2" style="color: #7c4dff;"></i>
+                    Import Mail Templates
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            
+            <div class="modal-body pt-3 pb-4 px-4">
+                <p class="text-muted mb-4" style="font-size: 0.95rem; line-height: 1.5;">
+                    Upload a CSV file with <code style="color: #db2777; background: #fdf2f8; padding: 2px 6px; border-radius: 4px;">key, title, subject, body</code> columns to bulk-upload your notification templates.
+                </p>
+                
+                <a href="{% url 'dashboard:mailtemplate_import_template' %}" class="btn-import-action mb-4">
+                    <i class="fas fa-download"></i> Download CSV Template
+                </a>
+                
+                <form method="POST" action="{% url 'dashboard:mailtemplate_import' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    
+                    <label class="upload-area-box mb-4" for="importFileInput">
+                        <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                        <span class="upload-title">Click to choose CSV file</span>
+                        <span class="upload-subtitle" id="importFileName">No file selected</span>
+                        
+                        <input type="file" name="file" id="importFileInput" accept=".csv" required style="display: none;">
+                    </label>
+                    
+                    <button type="submit" class="btn-import-action">
+                        <i class="fas fa-upload"></i> Process & Import Templates
+                    </button>
+                </form>
+                
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block admin_js %}
+<script src="{% static 'js/list.js' %}"></script>
+<script>
+document.getElementById('importFileInput').addEventListener('change', function(e) {
+    const fileName = e.target.files[0]?.name || 'No file selected';
+    document.getElementById('importFileName').textContent = fileName;
+});
+</script>
+{% endblock %}
