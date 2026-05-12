@@ -11,24 +11,54 @@ from django.http import HttpResponseRedirect
 # ---------------------------------------------------
 # ROOT ROUTER (IMPORTANT FOR SAAS)
 # ---------------------------------------------------
+# ---------------------------------------------------
+# ROOT ROUTER (SaaS CORE)
+# ---------------------------------------------------
+from landing.views import LandingPageView
+
 def root_router(request):
+    """
+    Decides what to show at the root '/' based on the domain.
+    """
     if getattr(request, "organization", None):
-        # Tenant domain → go to tenant visitor landing
+        # 🏢 Organization Domain -> Show software landing
         return HttpResponseRedirect("/visitors/")
-    # Public domain → marketing landing
-    return render(request, "platform/index.html")
+    
+    if getattr(request, "is_platform", False):
+        # 🌐 Platform Domain -> Show marketing landing
+        return LandingPageView.as_view()(request)
+    
+    # fallback
+    return HttpResponseRedirect("/admin/")
+
+
+# ---------------------------------------------------
+# PLATFORM MARKETING PROTECTOR
+# ---------------------------------------------------
+from django.http import Http404
+
+def platform_only(view_func):
+    """
+    Decorator to restrict marketing views to the platform domain only.
+    """
+    def _wrapped_view(request, *args, **kwargs):
+        if not getattr(request, "is_platform", False):
+            raise Http404("Marketing pages are only available on the main platform domain.")
+        return view_func(request, *args, **kwargs)
+    return _wrapped_view
 
 # ---------------------------------------------------
 # PLATFORM MARKETING PAGES
 # ---------------------------------------------------
+@platform_only
 def features_page(request):
     return render(request, "platform/features.html")
 
-
+@platform_only
 def pricing_page(request):
     return render(request, "platform/pricing.html")
 
-
+@platform_only
 def contact_page(request):
     return render(request, "platform/contact.html")
 
@@ -39,10 +69,19 @@ def contact_page(request):
 urlpatterns = [
 
     # ---------------------------------------------------
-    # LANDING (MUST BE FIRST)
+    # ROOT ROUTING (MUST BE FIRST)
     # ---------------------------------------------------
-    path('', include('landing.urls')),
+    path('', root_router, name='root'),
 
+    # ---------------------------------------------------
+    # MARKETING & LANDING
+    # ---------------------------------------------------
+    path('site/', include('landing.urls')),
+    path("features/", features_page),
+    path("pricing/", pricing_page),
+    path("contact/", contact_page),
+    path("home/", platform_only(lambda request: render(request, "platform/index.html"))),
+    
     # ---------------------------------------------------
     # ADMIN
     # ---------------------------------------------------
@@ -75,19 +114,6 @@ urlpatterns = [
     # API
     # ---------------------------------------------------
     path("api/", include(("api.urls", "api"), namespace="api")),
-
-    # ---------------------------------------------------
-    # PLATFORM MARKETING ROUTES
-    # ---------------------------------------------------
-    path("features/", features_page),
-    path("pricing/", pricing_page),
-    path("contact/", contact_page),
-    path("home/", lambda request: render(request, "platform/index.html")),
-
-    # ---------------------------------------------------
-    # ROOT (MUST BE LAST)
-    # ---------------------------------------------------
-    path("", root_router),
 ]
 
 

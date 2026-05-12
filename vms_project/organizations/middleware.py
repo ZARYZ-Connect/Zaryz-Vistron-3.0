@@ -13,8 +13,7 @@ class OrganizationMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
-        # 🔥 ALWAYS ALLOW PLATFORM ACCESS FOR ADMIN
-        # This ensures you can manage Organizations regardless of the domain/IP used.
+        # 1. ALWAYS ALLOW ADMIN ACCESS (Platform level)
         if request.path.startswith('/admin'):
             request.organization = None
             request.is_platform = True
@@ -22,32 +21,30 @@ class OrganizationMiddleware:
             return self.get_response(request)
 
         host = request.get_host().split(":")[0].lower()
-        
-        # 1. PLATFORM / SUPER ADMIN (Explicit match)
-        platform_domains = [settings.PLATFORM_DOMAIN, '127.0.0.1', 'localhost']
+        platform_domains = [settings.PLATFORM_DOMAIN.lower(), '127.0.0.1', 'localhost']
         
         # Helper to check if host is an IP address
         is_ip = all(c.isdigit() or c == '.' for c in host) and host.count('.') == 3
+        
+        print(f"DEBUG: Middleware: Host='{host}', is_ip={is_ip}, path='{request.path}'")
 
-        if host in platform_domains:
-            # 🛠️ DEV FALLBACK: If on localhost/127.0.0.1 and in DEBUG mode, 
-            # we allow falling back to the FIRST active organization to make 
-            # development easier without subdomains.
-            if settings.DEBUG:
-                org = Organization.objects.filter(is_active=True).first()
-                if org:
-                    request.organization = org
-                    request.is_platform = False
-                    request.is_super_admin = False
-                    print(f"DEBUG: Middleware: Platform Host Dev Fallback: '{org.name}'")
-                    return self.get_response(request)
+        # 2. PLATFORM / LANDING PAGE DOMAIN
+        if host in platform_domains or is_ip:
+            try:
+                organization = Organization.objects.get(domain=host, is_active=True)
+                request.organization = organization
+                request.is_platform = False
+                request.is_super_admin = False
+                print(f"DEBUG: Middleware: Explicit Org match for IP/Platform host: {organization.name}")
+                return self.get_response(request)
+            except Organization.DoesNotExist:
+                request.organization = None
+                request.is_platform = True
+                request.is_super_admin = True
+                print(f"DEBUG: Middleware: No org match, treating as Platform.")
+                return self.get_response(request)
 
-            request.organization = None
-            request.is_platform = True
-            request.is_super_admin = True
-            return self.get_response(request)
-
-        # 2. ORGANIZATION DOMAIN (DB DRIVEN)
+        # 3. ORGANIZATION DOMAIN (DB DRIVEN)
         try:
             organization = Organization.objects.get(
                 domain=host,
@@ -56,24 +53,22 @@ class OrganizationMiddleware:
             request.organization = organization
             request.is_platform = False
             request.is_super_admin = False
+            print(f"DEBUG: Middleware: Resolved Org by domain: {organization.name}")
             
         except Organization.DoesNotExist:
-            # 🛠️ DEV FALLBACK: If no org is matched by subdomain/domain, 
-            # and we are in DEBUG mode, pick the first active one.
-            # This allows easy testing via IP address (Mobile/Tablet) or localhost.
             if settings.DEBUG:
                 org = Organization.objects.filter(is_active=True).first()
                 if org:
                     request.organization = org
                     request.is_platform = False
                     request.is_super_admin = False
-                    print(f"DEBUG: Middleware: Auto-resolved organization '{org.name}' for host: {host}")
+                    print(f"DEBUG: Middleware: Auto-resolved fallback Org: '{org.name}'")
                 else:
                     request.organization = None
                     request.is_platform = True
                     request.is_super_admin = True
+                    print(f"DEBUG: Middleware: No Org found, falling back to Platform.")
             else:
-                # Unknown or inactive domain in production
-                raise Http404(f"Could not find active organization for domain: {host}")
+                raise Http404(f"Domain '{host}' is not registered.")
 
         return self.get_response(request)
