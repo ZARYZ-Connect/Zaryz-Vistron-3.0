@@ -1,17 +1,14 @@
 #!/bin/sh
 set -e
 
-echo "==> Waiting for database..."
-until python -c "import psycopg2; psycopg2.connect(
-    dbname='$DB_NAME',
-    user='$DB_USER',
-    password='$DB_PASSWORD',
-    host='$DB_HOST',
-    port='$DB_PORT'
-)" 2>/dev/null; do
+echo "==> Waiting for database at $DB_HOST:$DB_PORT..."
+
+# Use a single-line python check — more reliable across shell environments
+until python -c "import psycopg2, sys; psycopg2.connect(dbname='$DB_NAME', user='$DB_USER', password='$DB_PASSWORD', host='$DB_HOST', port='$DB_PORT'); sys.exit(0)" 2>/dev/null; do
   echo "   DB not ready, retrying in 2s..."
   sleep 2
 done
+
 echo "==> Database is ready."
 
 echo "==> Running migrations..."
