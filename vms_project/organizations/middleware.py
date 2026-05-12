@@ -13,6 +13,14 @@ class OrganizationMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
+        # 🔥 ALWAYS ALLOW PLATFORM ACCESS FOR ADMIN
+        # This ensures you can manage Organizations regardless of the domain/IP used.
+        if request.path.startswith('/admin'):
+            request.organization = None
+            request.is_platform = True
+            request.is_super_admin = True
+            return self.get_response(request)
+
         host = request.get_host().split(":")[0].lower()
         
         # 1. PLATFORM / SUPER ADMIN (Explicit match)
