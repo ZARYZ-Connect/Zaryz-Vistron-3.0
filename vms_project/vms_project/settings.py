@@ -29,15 +29,8 @@ SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "dev-insecure-secret-key")
 # -----------------------------------------------------------------------------
 # ALLOWED HOSTS (SaaS READY)
 # -----------------------------------------------------------------------------
-ALLOWED_HOSTS = [
-    "zaryz.in",
-    ".zaryz.in",
-    "49.207.249.241",
-    '127.0.0.1', 'localhost', '.localhost',
-    "*",
-    "192.168.0.118",
-    "192.168.0.143",
-]
+env_hosts = os.getenv("ALLOWED_HOSTS", "*")
+ALLOWED_HOSTS = [h.strip() for h in env_hosts.split(",")]
 
 # -----------------------------------------------------------------------------
 # PROXY / NGINX
@@ -48,23 +41,10 @@ SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 # -----------------------------------------------------------------------------
 # CSRF & SESSION (🔥 THIS FIXES YOUR ADMIN LOGIN ISSUE 🔥)
 # -----------------------------------------------------------------------------
-CSRF_TRUSTED_ORIGINS = [
-    # "http://*.zaryz.in",
-    # "https://zaryz.in",
-    # "https://*.zaryz.in",
-    "http://127.0.0.1:8000",
-    "http://localhost:8000",
-    "http://[::1]:8000",
-    "http://info.localhost:8000",
-    "http://192.168.0.126:8000",
-    "http://192.168.0.126",
-    "http://192.168.0.151:8000",
-    "http://192.168.0.151",
-    "http://192.168.0.143:8000",
-    "http://192.168.0.143",
-]
+env_csrf = os.getenv("CSRF_TRUSTED_ORIGINS", "")
+CSRF_TRUSTED_ORIGINS = [o.strip() for o in env_csrf.split(",") if o.strip()]
 # PLATFORM DOMAIN (SaaS READY)
-PLATFORM_DOMAIN = os.getenv("PLATFORM_DOMAIN", "127.0.0.1" if DEBUG else "vistron.zaryz.in")
+PLATFORM_DOMAIN = os.getenv("PLATFORM_DOMAIN", "vistron.zaryz.in")
 
 # CSRF_COOKIE_DOMAIN = None
 # SESSION_COOKIE_DOMAIN = None
