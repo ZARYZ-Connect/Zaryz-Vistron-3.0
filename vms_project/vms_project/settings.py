@@ -203,7 +203,11 @@ USE_TZ = True
 STATIC_URL = "/static/"
 STATICFILES_DIRS = [BASE_DIR / "static"]
 STATIC_ROOT = BASE_DIR / "staticfiles"
-# WhiteNoise: compress static files and serve them via Gunicorn (no Nginx needed)
+
+# WhiteNoise: serve static files via Gunicorn (no Nginx config needed)
+# AUTOREFRESH = True → WhiteNoise re-checks staticfiles on every request,
+#   so 'collectstatic' changes are picked up WITHOUT restarting Gunicorn.
+WHITENOISE_AUTOREFRESH = True
 STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
 
 MEDIA_URL = "/media/"
