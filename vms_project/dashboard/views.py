@@ -29,55 +29,60 @@ from django.db.models import Q
 # ==================================================
 
 def require_org_admin(request):
+    """
+    Verifies the request comes from a valid tenant domain AND the user has admin rights.
+
+    SECURITY RULES:
+    - organization MUST be resolved by the middleware (domain-based) — no domain fallback.
+    - The user's org must match the domain's org (no cross-org access).
+    - The user must have admin or superuser role.
+    - Superusers must ALSO be on a valid tenant domain (use /admin for platform tasks).
+    """
     if not request.user.is_authenticated:
-        raise Http404("Authentication required")
+        from django.contrib.auth.views import redirect_to_login
+        return redirect_to_login(request.get_full_path())
 
+    # organization MUST come from the middleware — no auto-resolve fallbacks.
     organization = getattr(request, "organization", None)
-    
-    # 1. Fallback to user's assigned organization if domain-based resolution failed
-    if not organization:
-        organization = request.user.organization
-        
-    # 2. Last resort fallback for superusers (e.g. at platform domain)
-    if not organization and request.user.is_superuser:
-        from organizations.models import Organization
-        organization = Organization.objects.filter(is_active=True).first()
-            
-    if not organization:
-        raise Http404("ERR_NO_ORG: No organization found for this domain. Please use your organization URL.")
 
+    if not organization:
+        raise Http404(
+            "No organization is registered for this domain. "
+            "Please access the application through your organization's URL."
+        )
+
+    # Cross-org access prevention (superusers are also bound to their tenant domain)
     if not request.user.is_superuser and request.user.organization_id != organization.id:
-        raise Http404(f"ERR_CROSS_ORG: Cross-organization access denied. User Org: {request.user.organization_id}, Page Org: {organization.id}")
+        raise Http404("Access denied: you do not belong to this organization.")
 
     if not (request.user.role == "admin" or request.user.is_superuser):
-        raise Http404("ERR_NO_ADMIN: Admin privileges required")
+        raise Http404("Admin privileges required.")
 
     return organization
 
 
 def require_security_user(request):
+    """
+    Verifies the request comes from a valid tenant domain AND the user has security/reception rights.
+    """
     if not request.user.is_authenticated:
-        raise Http404("Authentication required")
+        from django.contrib.auth.views import redirect_to_login
+        return redirect_to_login(request.get_full_path())
 
+    # organization MUST come from the middleware — no auto-resolve fallbacks.
     organization = getattr(request, "organization", None)
-    
-    # 1. Fallback to user's assigned organization
+
     if not organization:
-        organization = request.user.organization
-        
-    # 2. Last resort fallback for superusers
-    if not organization and request.user.is_superuser:
-        from organizations.models import Organization
-        organization = Organization.objects.filter(is_active=True).first()
-            
-    if not organization:
-        raise Http404("Invalid domain for security access")
+        raise Http404(
+            "No organization is registered for this domain. "
+            "Please access the application through your organization's URL."
+        )
 
     if not request.user.is_superuser and request.user.organization_id != organization.id:
-        raise Http404("Cross-organization access denied")
+        raise Http404("Cross-organization access denied.")
 
     if request.user.role not in ["security", "reception"] and not request.user.is_superuser:
-        raise Http404("Security access only")
+        raise Http404("Security access only.")
 
     return organization
 

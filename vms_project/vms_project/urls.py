@@ -18,17 +18,23 @@ from landing.views import LandingPageView
 
 def root_router(request):
     """
-    Decides what to show at the root '/' based on the domain.
+    Decides what to show at the root '/' based on the domain resolved by OrganizationMiddleware.
+
+    - Tenant domain  → login page (if unauthenticated) or dashboard (if authenticated)
+    - Platform domain → marketing landing page
+    - Anything else   → admin (should only be reached by superusers)
     """
     if getattr(request, "organization", None):
-        # 🏢 Organization Domain -> Show software landing
-        return HttpResponseRedirect("/visitors/")
-    
+        # 🏢 Tenant domain → go to login or dashboard
+        if request.user.is_authenticated:
+            return HttpResponseRedirect("/dashboard/")
+        return HttpResponseRedirect("/accounts/login/")
+
     if getattr(request, "is_platform", False):
-        # 🌐 Platform Domain -> Show marketing landing
+        # 🌐 Platform domain → marketing landing page
         return LandingPageView.as_view()(request)
-    
-    # fallback
+
+    # Fallback — should not be reached in normal operation
     return HttpResponseRedirect("/admin/")
 
 
