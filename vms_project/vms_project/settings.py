@@ -21,16 +21,27 @@ load_dotenv(BASE_DIR / ".env")
 DJANGO_ENV = os.getenv("DJANGO_ENV", "dev").lower()
 DEBUG = DJANGO_ENV == "dev"
 
+# Safety guard: crash loudly if running in production with insecure defaults
+if not DEBUG:
+    _raw_key = os.getenv("DJANGO_SECRET_KEY", "")
+    if not _raw_key or _raw_key == "dev-insecure-secret-key" or "REPLACE_WITH" in _raw_key:
+        raise RuntimeError(
+            "\n[SECURITY ERROR] DJANGO_SECRET_KEY is not set or is using the dev default.\n"
+            "Set a strong secret key in your .env file before running in production."
+        )
+
 # -----------------------------------------------------------------------------
 # SECURITY
 # -----------------------------------------------------------------------------
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "dev-insecure-secret-key")
 
 # -----------------------------------------------------------------------------
-# ALLOWED HOSTS (SaaS READY)
+# ALLOWED HOSTS (SaaS READY — wildcard subdomain support)
 # -----------------------------------------------------------------------------
-env_hosts = os.getenv("ALLOWED_HOSTS", "*")
-ALLOWED_HOSTS = [h.strip() for h in env_hosts.split(",")]
+# In .env set: ALLOWED_HOSTS=vistron.zaryz.in,.zaryz.in,localhost
+# Django supports leading-dot notation: '.zaryz.in' matches ALL *.zaryz.in subdomains
+env_hosts = os.getenv("ALLOWED_HOSTS", "*" if DEBUG else "")
+ALLOWED_HOSTS = [h.strip() for h in env_hosts.split(",") if h.strip()]
 
 # -----------------------------------------------------------------------------
 # PROXY / NGINX
@@ -41,6 +52,8 @@ SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 # -----------------------------------------------------------------------------
 # CSRF & SESSION (🔥 THIS FIXES YOUR ADMIN LOGIN ISSUE 🔥)
 # -----------------------------------------------------------------------------
+# In .env set: CSRF_TRUSTED_ORIGINS=https://vistron.zaryz.in,https://*.zaryz.in
+# Django 4.x+ supports https://*.zaryz.in wildcard in CSRF_TRUSTED_ORIGINS
 env_csrf = os.getenv("CSRF_TRUSTED_ORIGINS", "")
 CSRF_TRUSTED_ORIGINS = [o.strip() for o in env_csrf.split(",") if o.strip()]
 # PLATFORM DOMAIN (SaaS READY)

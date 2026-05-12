@@ -7,31 +7,21 @@ services:
     ports:
       - "8000:8000"
     restart: always
-    environment:
-      DB_ENGINE: django.db.backends.postgresql
-      DB_NAME: vistron_db
-      DB_USER: vistron_user
-      DB_PASSWORD: vistron_pass
-      DB_HOST: db
-      DB_PORT: 5432
-      REDIS_HOST: redis
-      REDIS_PORT: 6379
+    env_file:
+      - .env
     depends_on:
       - db
       - redis
     volumes:
       - ./vms_project/media:/app/media
-      - ./vms_project/static:/app/static       # ← CSS/JS live sync
-      - ./vms_project/templates:/app/templates # ← HTML live sync
+      - staticfiles_data:/app/staticfiles
 
   db:
     image: postgres:15
     container_name: vistron_postgres
     restart: always
-    environment:
-      POSTGRES_DB: vistron_db
-      POSTGRES_USER: vistron_user
-      POSTGRES_PASSWORD: vistron_pass
+    env_file:
+      - .env
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
@@ -39,8 +29,7 @@ services:
     image: redis:7
     container_name: vistron_redis
     restart: always
-    ports:
-      - "6379:6379"
 
 volumes:
   postgres_data:
+  staticfiles_data:
