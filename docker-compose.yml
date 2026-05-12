@@ -16,9 +16,11 @@ services:
         condition: service_started
     volumes:
       - ./vms_project/media:/app/media
-      # Static files: written by collectstatic inside container, served by Nginx on host
+      # Static source files — CSS/JS live sync from server filesystem
+      - ./vms_project/static:/app/static
+      # Collected static files — WhiteNoise serves from here
       - ./vms_project/staticfiles:/app/staticfiles
-      # Template live-sync: changes on server reflect without rebuild
+      # Template live-sync — HTML changes reflect without rebuild
       - ./vms_project/templates:/app/templates
 
   db:

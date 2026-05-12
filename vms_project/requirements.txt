@@ -11,3 +11,4 @@ Pillow
 redis
 django-redis
 qrcode[pil]
+whitenoise
