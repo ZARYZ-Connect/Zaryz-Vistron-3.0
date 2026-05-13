@@ -20,15 +20,16 @@ def root_router(request):
     """
     Decides what to show at the root '/' based on the domain resolved by OrganizationMiddleware.
 
-    - Tenant domain  → login page (if unauthenticated) or dashboard (if authenticated)
+    - Tenant domain  → visitor kiosk home (unauthenticated) or dashboard (authenticated)
     - Platform domain → marketing landing page
     - Anything else   → admin (should only be reached by superusers)
     """
     if getattr(request, "organization", None):
-        # 🏢 Tenant domain → go to login or dashboard
+        # 🏢 Tenant domain → authenticated users go to dashboard,
+        #                     unauthenticated users see the visitor kiosk
         if request.user.is_authenticated:
             return HttpResponseRedirect("/dashboard/")
-        return HttpResponseRedirect("/accounts/login/")
+        return HttpResponseRedirect("/visitors/")
 
     if getattr(request, "is_platform", False):
         # 🌐 Platform domain → marketing landing page
