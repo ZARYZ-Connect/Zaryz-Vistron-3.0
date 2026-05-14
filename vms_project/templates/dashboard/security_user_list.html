@@ -1,0 +1,158 @@
+<!-- security_user_list.html -->
+{% extends "dashboard/admin_base.html" %}
+{% load static %}
+
+{% block admin_css %}
+<link href="{% static 'css/list.css' %}" rel="stylesheet">
+<style>
+/* Tablet Optimization: Shrink button when sidebar expands on hover */
+@media (min-width: 768px) and (max-width: 1100px) {
+    .modern-admin-sidebar:hover ~ .admin-main-wrapper .btn-primary-modern {
+        padding: 6px 12px !important;
+        font-size: 0.75rem !important;
+        max-width: fit-content;
+    }
+    
+    .modern-admin-sidebar:hover ~ .admin-main-wrapper .btn-primary-modern i {
+        font-size: 0.8rem;
+    }
+
+    .modern-admin-sidebar:hover ~ .admin-main-wrapper .page-header {
+        flex-wrap: wrap !important;
+        gap: 8px;
+    }
+}
+</style>
+{% endblock %}
+
+{% block admin_content %}
+<div class="list-container">
+  <div class="list-card">
+    <!-- ===== Header ===== -->
+    <div class="page-header d-flex flex-row justify-content-between align-items-center mb-4 flex-nowrap">
+      <div class="header-left">
+        <h2 class="page-title m-0" style="font-size: 1.25rem !important;">
+          <i class="fas fa-user-shield text-primary me-2"></i>
+          Security
+        </h2>
+        <p class="text-muted small mb-0">Staff access</p>
+      </div>
+      <a href="{% url 'dashboard:security_user_add' %}" class="btn-primary-modern shadow-sm flex-shrink-0" style="height: 30px !important; font-size: 0.68rem !important; padding: 0 8px !important; width: auto !important; min-width: 30px !important; display: flex; align-items: center; justify-content: center;">
+        <i class="fas fa-plus me-sm-1"></i>
+        <span class="d-none d-sm-inline">Add</span>
+      </a>
+    </div>
+
+    <!-- ===== Horizontal Stats Row (2 Columns) ===== -->
+    <div class="row gx-2 gy-3 mb-4">
+      <div class="col-6">
+        <div class="stat-item d-flex align-items-center p-2 p-md-3 rounded-4 bg-light border-0 shadow-sm" style="height: 100%;">
+          <div class="stat-icon-wrap me-2 me-md-3 d-none d-sm-flex align-items-center justify-content-center bg-primary text-white rounded-3 flex-shrink-0" style="width: 38px; height: 38px; background: var(--primary-gradient) !important;">
+            <i class="fas fa-users" style="font-size: 0.8rem;"></i>
+          </div>
+          <div class="overflow-hidden">
+            <div class="stat-label text-muted fw-bold text-uppercase mb-1" style="letter-spacing: 0.5px; font-size: 0.55rem;">Staff</div>
+            <div class="stat-number fw-bold mb-0" style="color: var(--text-main); font-size: 1.1rem;">{{ users|length }}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-6">
+        <div class="stat-item d-flex align-items-center p-2 p-md-3 rounded-4 bg-light border-0 shadow-sm" style="height: 100%;">
+          <div class="stat-icon-wrap me-2 me-md-3 d-none d-sm-flex align-items-center justify-content-center bg-success text-white rounded-3 flex-shrink-0" style="width: 38px; height: 38px; background: linear-gradient(135deg, #10b981 0%, #34d399 100%) !important;">
+            <i class="fas fa-shield-alt" style="font-size: 0.8rem;"></i>
+          </div>
+          <div class="overflow-hidden">
+            <div class="stat-label text-muted fw-bold text-uppercase mb-1" style="letter-spacing: 0.5px; font-size: 0.55rem;">Active</div>
+            <div class="stat-number fw-bold mb-0" style="color: var(--text-main); font-size: 1.1rem;">{{ users|length }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== Table ===== -->
+    {% if users %}
+      <div class="modern-table table-responsive">
+        <table class="table align-middle m-0">
+          <thead class="table-header">
+            <tr>
+              <th>Username</th>
+              <th>Full Name</th>
+              <th>Email Contact</th>
+              <th>System Role</th>
+              <th class="text-end" style="width: 120px;">Actions</th>
+            </tr>
+          </thead>
+          <tbody class="table-body stagger-animation">
+            {% for u in users %}
+              <tr>
+                <td>
+                  <div class="d-flex align-items-center gap-3">
+                    <div class="avatar-tile-luxe">
+                      {{ u.username|first|upper }}
+                    </div>
+                    <div class="d-flex flex-column">
+                        <strong class="text-dark" style="font-size: 0.92rem; line-height: 1.2;">{{ u.username }}</strong>
+                        <span class="text-muted small fw-600" style="font-size: 0.72rem;">Authorized Personnel</span>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                   <div class="text-dark fw-bold" style="font-size: 0.88rem;">{{ u.get_full_name|default:"-" }}</div>
+                </td>
+                <td>
+                  <a href="mailto:{{ u.email }}" class="text-primary text-decoration-none small fw-bold">
+                    <i class="fas fa-envelope me-1"></i>{{ u.email }}
+                  </a>
+                </td>
+                <td>
+                  {% if u.role == 'security' %}
+                    <span class="luxe-badge-success" style="font-size: 0.68rem; padding: 3px 10px;">
+                      <i class="fas fa-shield-alt me-1"></i>SECURITY
+                    </span>
+                  {% elif u.role == 'reception' %}
+                    <span class="luxe-badge-primary" style="font-size: 0.68rem; padding: 3px 10px;">
+                      <i class="fas fa-user-tie me-1"></i>RECEPTION
+                    </span>
+                  {% else %}
+                    <span class="badge bg-light text-muted border-0 fw-bold" style="font-size: 0.65rem; border-radius: 6px;">{{ u.role|upper }}</span>
+                  {% endif %}
+                </td>
+                <td class="text-end">
+                  <div class="table-actions-wrap justify-content-end">
+                    <a href="{% url 'dashboard:security_user_edit' u.id %}" class="btn-action-luxe btn-edit-luxe" title="Modify">
+                      <i class="fas fa-edit"></i>
+                    </a>
+                    <a href="{% url 'dashboard:security_user_delete' u.id %}" class="btn-action-luxe btn-delete-luxe" title="Remove">
+                      <i class="fas fa-trash"></i>
+                    </a>
+                  </div>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <div class="empty-state text-center py-5">
+        <div class="empty-icon mb-3" style="font-size: 3rem; opacity: 0.2;">
+          <i class="fas fa-user-shield"></i>
+        </div>
+        <h4 class="empty-title">No Security Users Defined</h4>
+        <p class="text-muted">Register personnel using the <strong>Add User</strong> button above.</p>
+      </div>
+    {% endif %}
+
+    <!-- ===== Footer ===== -->
+    <div class="mt-4 pt-3 border-top">
+      <a href="{% url 'dashboard:admin_dashboard' %}" class="btn-view-modern px-3" style="height: 38px;">
+        <i class="fas fa-arrow-left me-2"></i> Back to Dashboard
+      </a>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block admin_js %}
+<script src="{% static 'js/list.js' %}"></script>
+{% endblock %}

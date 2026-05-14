@@ -1,0 +1,235 @@
+{% load static %}
+<style>
+/* ─── Modern Zaryz Footer ─── */
+.footer-zaryz {
+    background: #111111; /* Very dark, matching screenshot */
+    color: #a0a0a0;
+    padding: 80px 40px 30px;
+    font-family: var(--font, 'Inter', sans-serif);
+    font-size: 0.95rem;
+    border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+.footer-zaryz .container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.footer-zaryz-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 40px;
+    margin-bottom: 60px;
+}
+
+.footer-col-title {
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin-bottom: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: default;
+}
+
+.footer-col-title i {
+    display: none; /* Hidden on desktop */
+    transition: transform 0.3s ease;
+}
+
+.footer-zaryz ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-zaryz ul li {
+    margin-bottom: 16px;
+}
+
+.footer-zaryz ul a {
+    color: #a0a0a0;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-zaryz ul a:hover {
+    color: #825ee4; /* Zaryz Brand color */
+}
+
+/* Active link */
+.footer-zaryz ul a.active-link {
+    color: #825ee4; 
+}
+
+.footer-bottom {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 30px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    gap: 20px;
+}
+
+.footer-bottom-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.footer-bottom-brand img {
+    height: 32px;
+    filter: brightness(0) invert(1);
+}
+
+.footer-bottom-brand span {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: -0.02em;
+}
+
+.footer-socials {
+    display: flex;
+    gap: 16px;
+}
+
+.footer-socials a {
+    color: #a0a0a0;
+    font-size: 1.2rem;
+    transition: color 0.3s ease;
+}
+
+.footer-socials a:hover {
+    color: #fff;
+}
+
+/* Mobile Accordion Styles */
+@media (max-width: 768px) {
+    .footer-zaryz-grid {
+        gap: 0;
+    }
+    
+    .footer-col-title {
+        cursor: pointer;
+        margin-bottom: 0;
+        padding: 16px 0;
+        border-bottom: 1px solid rgba(255,255,255,0.05);
+        margin-top: 0 !important;
+    }
+    
+    .footer-col-title i {
+        display: block;
+        font-size: 0.9rem;
+    }
+    
+    .footer-zaryz ul {
+        display: none; /* Hidden initially on mobile */
+        padding: 16px 0;
+    }
+
+    .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+    }
+}
+</style>
+
+<footer class="footer-zaryz">
+    <div class="container">
+        <div class="footer-zaryz-grid">
+            <!-- Column 1 -->
+            <div>
+                <h3 class="footer-col-title">Vistron Links <i class="fas fa-chevron-down"></i></h3>
+                <ul>
+                    <li><a href="/" class="active-link">Home</a></li>
+                    <li><a href="/#platform">Platform</a></li>
+                    <li><a href="/features/">Features</a></li>
+                    <li><a href="{% url 'blog_list' %}">Blogs</a></li>
+                    <li><a href="{% url 'video_list' %}">Videos</a></li>
+                </ul>
+            </div>
+            
+            <!-- Column 2 -->
+            <div>
+                <h3 class="footer-col-title">Discover Vistron <i class="fas fa-chevron-down"></i></h3>
+                <ul>
+                    <li><a href="/#features">What is Vistron?</a></li>
+                    <li><a href="/contact/">Support</a></li>
+                </ul>
+            </div>
+
+            <!-- Column 3 -->
+            <div>
+                <h3 class="footer-col-title">Features <i class="fas fa-chevron-down"></i></h3>
+                <ul>
+                    <li><a href="/features/#registration">Registration</a></li>
+                    <li><a href="/features/#approval">Approval</a></li>
+                    <li><a href="/features/#validation">Validation</a></li>
+                    <li><a href="/features/#monitoring">Monitoring</a></li>
+                    <li><a href="/features/#access">Access Settings</a></li>
+                    <li><a href="/#platform">Analytics</a></li>
+                    <li><a href="/#platform">Dashboard</a></li>
+                </ul>
+            </div>
+
+            <!-- Column 4 -->
+            <div>
+                <h3 class="footer-col-title">Legal <i class="fas fa-chevron-down"></i></h3>
+                <ul>
+                    <li><a href="{% url 'privacy_policy' %}">Privacy Policy</a></li>
+                    <li><a href="#" onclick="event.preventDefault(); window.resetCookiePreference && window.resetCookiePreference();">Cookie Preferences</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div>
+                © 2026 Zaryz Vistron. All rights reserved.
+            </div>
+            <div class="footer-bottom-brand">
+                <img src="{% static 'img/logo.png' %}" alt="Zaryz Logo">
+                <span>Zaryz Vistron</span>
+            </div>
+            <div class="footer-socials">
+                <a href="https://www.facebook.com/people/ZARYZ-Solutions/61556996235443/?name=xhp_nt__fb__action__open_user" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://x.com/zaryz_llp" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter"></i></a>
+                <a href="https://www.instagram.com/zaryz_solutions/" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.linkedin.com/company/zaryz-solutions/?viewAsMember=true" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin-in"></i></a>
+                <a href="https://www.youtube.com/@ZARYZ_Solutions" target="_blank" rel="noopener noreferrer"><i class="fab fa-youtube"></i></a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const colTitles = document.querySelectorAll('.footer-col-title');
+    colTitles.forEach(title => {
+        title.addEventListener('click', () => {
+            if (window.innerWidth <= 768) {
+                const ul = title.nextElementSibling;
+                if (ul && ul.tagName === 'UL') {
+                    const isOpen = ul.style.display === 'block';
+                    
+                    // Close all other lists first for a cleaner accordion effect (optional, but good UX)
+                    document.querySelectorAll('.footer-zaryz ul').forEach(otherUl => {
+                        if (otherUl !== ul) {
+                            otherUl.style.display = 'none';
+                            const otherIcon = otherUl.previousElementSibling?.querySelector('i');
+                            if (otherIcon) otherIcon.style.transform = 'rotate(0deg)';
+                        }
+                    });
+
+                    // Toggle current list
+                    ul.style.display = isOpen ? 'none' : 'block';
+                    const icon = title.querySelector('i');
+                    if (icon) icon.style.transform = isOpen ? 'rotate(0deg)' : 'rotate(180deg)';
+                }
+            }
+        });
+    });
+});
+</script>

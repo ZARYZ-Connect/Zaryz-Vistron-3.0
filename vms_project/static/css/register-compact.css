@@ -1,0 +1,145 @@
+body { margin:0; font-family: Inter, system-ui; }
+
+.saas-bg {
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background: radial-gradient(800px 400px at 80% 10%, #6d28d933, transparent),
+              linear-gradient(180deg,#0b1020,#111827);
+}
+
+.saas-card {
+  width:420px;
+  padding:36px;
+  border-radius:22px;
+  background: linear-gradient(180deg,#ffffffee,#f3f4ffea);
+  backdrop-filter: blur(24px);
+  box-shadow: 0 40px 120px #0008;
+  animation: pop 0.6s cubic-bezier(.22,1,.36,1);
+}
+
+@keyframes pop {
+  from { opacity:0; transform:scale(.9) translateY(30px); }
+  to { opacity:1; transform:none; }
+}
+
+.step-indicator {
+  display:flex;
+  gap:6px;
+  margin-bottom:20px;
+}
+.step-indicator span {
+  flex:1;
+  height:4px;
+  background:#e5e7eb;
+  border-radius:99px;
+}
+.step-indicator span.active {
+  background:linear-gradient(90deg,#6366f1,#8b5cf6);
+}
+
+.form-step { display:none; animation: slide .45s ease; }
+.form-step.active { display:block; }
+
+@keyframes slide {
+  from { opacity:0; transform:translateY(16px); }
+  to { opacity:1; transform:none; }
+}
+
+h2 { margin:0 0 4px; }
+.step-sub { font-size:13px; color:#6b7280; margin-bottom:18px; }
+
+input, select {
+  width:100%;
+  padding:12px 14px;
+  border-radius:10px;
+  border:1.5px solid #e5e7eb;
+  margin-bottom:14px;
+  font-size:14px;
+}
+
+.grid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+
+.actions { margin-top:20px; text-align:right; }
+.actions.split { display:flex; justify-content:space-between; }
+
+.btn-primary {
+  background:linear-gradient(135deg,#6366f1,#8b5cf6);
+  color:white;
+  padding:12px 22px;
+  border-radius:10px;
+  border:none;
+  cursor:pointer;
+}
+
+.btn-ghost {
+  background:white;
+  border:1.5px solid #e5e7eb;
+  padding:12px 20px;
+  border-radius:10px;
+  cursor:pointer;
+}
+
+.photo-wrap {
+  display:flex;
+  justify-content:center;
+  margin:14px 0;
+}
+.photo-wrap img {
+  width:140px;
+  height:140px;
+  border-radius:50%;
+  object-fit:cover;
+  box-shadow:0 20px 50px #6366f180;
+}
+
+.photo-actions {
+  display:flex;
+  justify-content:center;
+  gap:12px;
+}
+
+/* ================= FORCE REGISTER PAGE ISOLATION ================= */
+
+/* Kill Bootstrap container effect */
+.vms-glass-body main.container-fluid {
+  padding: 0 !important;
+}
+
+/* Hard isolate register page */
+.register-container {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+}
+
+/* Lock card size */
+.register-card {
+  width: 100%;
+  max-width: 520px !important;
+  min-width: 360px;
+
+  margin: 0 auto;
+}
+
+/* Inputs should NEVER stretch */
+.register-card input,
+.register-card select {
+  max-width: 100%;
+}
+
+/* Step indicator stays inside card */
+.step-indicator {
+  margin-bottom: 24px;
+}

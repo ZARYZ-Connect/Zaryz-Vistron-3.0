@@ -1,0 +1,429 @@
+{% extends "dashboard/admin_base.html" %}
+{% load static %}
+
+{% block admin_css %}
+<link href="{% static 'css/list.css' %}" rel="stylesheet">
+<!-- Premium Date Picker Library (Flatpickr) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<style>
+  /* Flatpickr Luxury Theme - ULTRA COMPACT WHITE */
+  .flatpickr-calendar {
+    background: rgba(255, 255, 255, 0.98) !important;
+    backdrop-filter: blur(25px) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1) !important;
+    border: 1px solid rgba(0, 0, 0, 0.05) !important;
+    padding: 10px !important;
+    width: 244px !important;
+    min-width: 244px !important;
+    color: var(--text-main) !important;
+  }
+
+  /* Override hardcoded flatpickr default widths */
+  .flatpickr-innerContainer, .flatpickr-rContainer, .flatpickr-days, .dayContainer {
+    width: 224px !important;
+    min-width: 224px !important;
+    max-width: 224px !important;
+  }
+
+  .flatpickr-day {
+    height: 30px !important;
+    line-height: 30px !important;
+    flex-basis: 30px !important;
+    max-width: 30px !important;
+    margin: 1px !important;
+    font-size: 0.8rem !important;
+    font-weight: 600 !important;
+    color: var(--text-main) !important;
+    border: none !important;
+  }
+
+  .flatpickr-day.selected {
+    background: var(--primary-gradient) !important;
+    border-radius: 8px !important;
+    color: white !important;
+    box-shadow: 0 4px 8px rgba(99, 102, 241, 0.25) !important;
+  }
+
+  .flatpickr-months .flatpickr-month {
+    height: 34px !important;
+    color: var(--text-main) !important;
+  }
+
+  .flatpickr-current-month {
+    font-size: 0.92rem !important;
+    font-weight: 800 !important;
+    color: var(--text-main) !important;
+    padding: 0 !important;
+  }
+
+  .flatpickr-weekday {
+    font-size: 0.7rem !important;
+    font-weight: 800 !important;
+    color: var(--primary-color) !important;
+    opacity: 0.5;
+    height: 24px !important;
+    line-height: 24px !important;
+  }
+
+  .flatpickr-day:hover {
+    background: rgba(99, 102, 241, 0.08) !important;
+    border-radius: 8px !important;
+  }
+
+  .flatpickr-calendar.arrowTop:before, .flatpickr-calendar.arrowTop:after { display: none !important; }
+</style>
+{% endblock %}
+
+{% block admin_content %}
+<div class="list-container">
+    
+    <!-- NEW TICKET STYLE HEADER -->
+    <!-- HORIZONTAL COMPACT HEADER -->
+    <div class="page-header d-flex flex-row justify-content-between align-items-center mb-4 flex-nowrap">
+        <div class="header-left">
+            <h2 class="page-title m-0" style="font-size: 1.25rem !important;">
+                <i class="fas fa-id-card text-primary me-2"></i>
+                Visitors
+            </h2>
+            <p class="text-muted small mb-0">Access logs</p>
+        </div>
+        <div class="header-right d-flex gap-2 flex-nowrap flex-shrink-0">
+            {% if show_export %}
+            <button type="button" id="export-btn" class="btn-primary-modern shadow-sm" style="height: 30px !important; padding: 0 8px !important; font-size: 0.68rem !important; min-width: 30px !important; width: auto !important; display: flex; align-items: center; justify-content: center;" title="Export CSV">
+                <i class="fas fa-file-export me-sm-1"></i>
+                <span class="d-none d-sm-inline">Export</span>
+            </button>
+            {% endif %}
+            <a href="{% url 'dashboard:visitor_list' %}" class="btn-view-ticket shadow-sm" style="height: 30px !important; width: 30px !important; padding: 0 !important; display: flex; align-items: center; justify-content: center; font-size: 0.7rem !important; min-width: 30px !important;" title="Reset Filters">
+                <i class="fas fa-redo"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- HORIZONTAL STATS ROW (4 Columns for Tablet) -->
+    <div class="row gx-2 gy-3 mb-4">
+        <div class="col-3">
+            <div class="stat-item d-flex align-items-center p-2 rounded-4 bg-light border-0 shadow-sm" style="height: 100%;">
+                <div class="overflow-hidden">
+                    <div class="stat-label text-muted fw-bold text-uppercase" style="letter-spacing: 0.5px; font-size: 0.5rem;">Total</div>
+                    <div class="stat-number fw-bold mb-0" style="color: var(--text-main); font-size: 1rem;">{{ visits.paginator.count }}</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="stat-item d-flex align-items-center p-2 rounded-4 bg-light border-0 shadow-sm" style="height: 100%;">
+                <div class="overflow-hidden">
+                    <div class="stat-label text-muted fw-bold text-uppercase" style="letter-spacing: 0.5px; font-size: 0.5rem;">Pending</div>
+                    <div class="stat-number fw-bold mb-0 text-warning" style="font-size: 1rem;">{{ pending_count|default:"0" }}</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="stat-item d-flex align-items-center p-2 rounded-4 bg-light border-0 shadow-sm" style="height: 100%;">
+                <div class="overflow-hidden">
+                    <div class="stat-label text-muted fw-bold text-uppercase" style="letter-spacing: 0.5px; font-size: 0.5rem;">In</div>
+                    <div class="stat-number fw-bold mb-0 text-primary" style="font-size: 1rem;">{{ checked_in_count|default:"0" }}</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="stat-item d-flex align-items-center p-2 rounded-4 bg-light border-0 shadow-sm" style="height: 100%;">
+                <div class="overflow-hidden">
+                    <div class="stat-label text-muted fw-bold text-uppercase" style="letter-spacing: 0.5px; font-size: 0.5rem;">Today</div>
+                    <div class="stat-number fw-bold mb-0 text-success" style="font-size: 1rem;">{{ today_count|default:"0" }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN DASHBOARD CARD -->
+    <div class="list-card">
+
+        <!-- HORIZONTAL FILTER ROW (Ticket Style) -->
+        <div class="filter-row-ticket">
+            <form id="filter-form" method="get" class="w-100 d-flex flex-wrap gap-2">
+                <input type="hidden" name="export" id="export-input" value="false">
+                
+                <!-- Search -->
+                <div class="filter-item search-box">
+                    <div class="search-box-wrap">
+                        <i class="fas fa-search"></i>
+                        <input type="text" name="search" class="form-control-ticket" placeholder="Search visitors..." value="{{ search_query }}">
+                    </div>
+                </div>
+
+                <!-- Status Filter -->
+                <div class="filter-item">
+                    <div class="custom-select-wrapper">
+                        <select name="status" class="form-select-ticket d-none">
+                            <option value="">All Status</option>
+                            <option value="pending" {% if status_filter == 'pending' %}selected{% endif %}>Pending</option>
+                            <option value="approved" {% if status_filter == 'approved' %}selected{% endif %}>Approved</option>
+                            <option value="checked_in" {% if status_filter == 'checked_in' %}selected{% endif %}>Checked In</option>
+                            <option value="checked_out" {% if status_filter == 'checked_out' %}selected{% endif %}>Checked Out</option>
+                            <option value="rejected" {% if status_filter == 'rejected' %}selected{% endif %}>Rejected</option>
+                        </select>
+                        <div class="custom-select-trigger-ticket d-flex align-items-center justify-content-between">
+                            <span>{% if status_filter %}{{ status_filter|title }}{% else %}All Status{% endif %}</span>
+                            <i class="fas fa-chevron-down ms-2 opacity-50"></i>
+                        </div>
+                        <div class="custom-options">
+                            <div class="custom-option" data-value="">All Status</div>
+                            <div class="custom-option" data-value="pending">Pending</div>
+                            <div class="custom-option" data-value="approved">Approved</div>
+                            <div class="custom-option" data-value="checked_in">Checked In</div>
+                            <div class="custom-option" data-value="checked_out">Checked Out</div>
+                            <div class="custom-option" data-value="rejected">Rejected</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Date Range -->
+                <div class="filter-item date-range-group">
+                    <div class="datepicker-wrap" id="start-date-wrap">
+                        <input type="text" name="start_date" id="start_date" class="form-control-ticket" value="{{ start_date }}" placeholder="From Date" data-input>
+                    </div>
+                    <div class="datepicker-wrap" id="end-date-wrap">
+                        <input type="text" name="end_date" id="end_date" class="form-control-ticket" value="{{ end_date }}" placeholder="To Date" data-input>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+
+        {% if visits %}
+        <!-- ── DESKTOP/TABLET TABLE ── -->
+        <div class="modern-table mt-4 border-0">
+            <div class="table-scroll">
+                <table class="table align-middle m-0 border-0">
+                    <thead class="table-header" style="background: #f8fafc; border-bottom: 1px solid #f1f5f9;">
+                        <tr>
+                            <th class="ps-4">VISITOR ID</th>
+                            <th>VISITOR NAME</th>
+                            <th>EMAIL/PHONE</th>
+                            <th>SCHEDULED DATE</th>
+                            <th>MEETING WITH</th>
+                            <th>STATUS</th>
+                            <th class="text-end pe-4">ACTIONS</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-body">
+                        {% for v in visits %}
+                        <tr class="ticket-table-row">
+                            <td class="ps-4">
+                                <span class="luxe-id-badge">#{{ v.id|stringformat:"04d" }}</span>
+                            </td>
+                            <td>
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="avatar-tile-luxe">
+                                        {{ v.full_name|first|upper }}
+                                    </div>
+                                    <div class="d-flex flex-column">
+                                        <strong class="text-dark" style="font-size: 0.92rem; line-height: 1.2;">{{ v.full_name }}</strong>
+                                        <span class="text-muted small fw-600" style="font-size: 0.72rem;">Scheduled Visitor</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="text-muted" style="font-size: 0.8rem;">
+                                <div>{{ v.email }}</div>
+                                <div>{{ v.phone }}</div>
+                            </td>
+                            <td class="fw-medium text-dark">
+                                {{ v.visit_date|date:"M d, Y" }}
+                            </td>
+                            <td>
+                                {% if v.whom_to_meet_employee %}
+                                    <span class="text-dark fw-600" style="font-size: 0.85rem;">{{ v.whom_to_meet_employee.name }}</span>
+                                {% else %}
+                                    <span class="text-muted">Unassigned</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if v.status == "pending" %}
+                                    <span class="status-badge status-pending">Pending</span>
+                                {% elif v.status == "approved" %}
+                                    <span class="status-badge status-approved">Approved</span>
+                                {% elif v.status == "rejected" %}
+                                    <span class="status-badge status-rejected">Rejected</span>
+                                {% elif v.status == "checked_in" %}
+                                    <span class="status-badge status-checked-in">In Premise</span>
+                                {% else %}
+                                    <span class="status-badge status-checked-out">Checked Out</span>
+                                {% endif %}
+                            </td>
+                            <td class="text-end pe-4">
+                                <a href="{% url 'dashboard:visitor_detail' v.pk %}" class="btn-view-modern px-3" style="height: 32px; font-size: 0.75rem;">
+                                    View
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ── MOBILE CARD LIST (≤600px only) ── -->
+        <div class="mobile-card-list">
+            {% for v in visits %}
+            <div class="mobile-visitor-card">
+                <div class="mvc-top">
+                    <div>
+                        <div class="mvc-id">#{{ v.id|stringformat:"04d" }}</div>
+                        <div class="mvc-name">{{ v.full_name }}</div>
+                    </div>
+                    <!-- Status chip -->
+                    {% if v.status == "pending" %}
+                        <span class="status-badge status-pending" style="background:#eff6ff;color:#1d4ed8;border:none;font-size:0.68rem;">Pending</span>
+                    {% elif v.status == "approved" %}
+                        <span class="status-badge status-approved" style="background:#f0fdf4;color:#15803d;border:none;font-size:0.68rem;">Approved</span>
+                    {% elif v.status == "rejected" %}
+                        <span class="status-badge status-rejected" style="background:#fef2f2;color:#b91c1c;border:none;font-size:0.68rem;">Rejected</span>
+                    {% elif v.status == "checked_in" %}
+                        <span class="status-badge status-checked-in" style="background:#f5f3ff;color:#6d28d9;border:none;font-size:0.68rem;">In Premise</span>
+                    {% else %}
+                        <span class="status-badge status-checked-out" style="background:#f9fafb;color:#475569;border:none;font-size:0.68rem;">Checked Out</span>
+                    {% endif %}
+                </div>
+
+                <div class="mvc-rows">
+                    <div class="mvc-row">
+                        <span class="mvc-label"><i class="fas fa-envelope me-1"></i>Email</span>
+                        <span class="mvc-value">{{ v.email }}</span>
+                    </div>
+                    <div class="mvc-row">
+                        <span class="mvc-label"><i class="fas fa-phone me-1"></i>Phone</span>
+                        <span class="mvc-value">{{ v.phone }}</span>
+                    </div>
+                    <div class="mvc-row">
+                        <span class="mvc-label"><i class="fas fa-calendar me-1"></i>Date</span>
+                        <span class="mvc-value">{{ v.visit_date|date:"M d, Y" }}</span>
+                    </div>
+                    <div class="mvc-row">
+                        <span class="mvc-label"><i class="fas fa-user-tie me-1"></i>Meeting</span>
+                        <span class="mvc-value">
+                            {% if v.whom_to_meet_employee %}{{ v.whom_to_meet_employee.name }}{% else %}Unassigned{% endif %}
+                        </span>
+                    </div>
+                </div>
+
+                <div class="mvc-footer">
+                    <span></span>
+                    <a href="{% url 'dashboard:visitor_detail' v.pk %}" class="btn-view-ticket">
+                        <i class="fas fa-eye me-1"></i> View Details
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        {% else %}
+        <div class="empty-state py-5 text-center stagger-animation">
+            <div class="empty-icon-wrap mb-4">
+                <div class="empty-icon-circle">
+                    <i class="fas fa-search"></i>
+                </div>
+            </div>
+            <h4 class="fw-bold text-dark mb-2">No results found</h4>
+            <p class="text-muted mx-auto" style="max-width: 320px; font-size: 0.9rem;">No visitors match your current filter criteria. Try adjusting your filters or search term.</p>
+            <a href="{% url 'dashboard:visitor_list' %}" class="btn-view-ticket mt-3">
+                <i class="fas fa-undo me-2"></i> Reset Filters
+            </a>
+        </div>
+        {% endif %}
+
+        <!-- TICKET STYLE PAGINATION FOOTER -->
+        <div class="pagination-footer-ticket">
+            <div class="footer-left-ticket">
+                <span>Showing <strong>{{ visits.start_index }}</strong> to <strong>{{ visits.end_index }}</strong> of <strong>{{ visits.paginator.count }}</strong></span>
+                <div class="per-page-container d-flex align-items-center">
+                    <span class="small text-muted me-2 d-none d-lg-inline" style="font-size: 0.7rem; font-weight: 700; text-transform: uppercase;">Per page:</span>
+                    
+                    <!-- UNIFIED: Expanding Pill for all viewports -->
+                    <div class="expandable-pagination-wrapper" id="pageExpander">
+                        <div class="expand-trigger">
+                            <div class="active-val">{{ visits.paginator.per_page }}</div>
+                        </div>
+                        <div class="expand-drawer">
+                            {% if visits.paginator.per_page != 5 %}<button class="pill-option" data-value="5">5</button>{% endif %}
+                            {% if visits.paginator.per_page != 10 %}<button class="pill-option" data-value="10">10</button>{% endif %}
+                            {% if visits.paginator.per_page != 25 %}<button class="pill-option" data-value="25">25</button>{% endif %}
+                            {% if visits.paginator.per_page != 50 %}<button class="pill-option" data-value="50">50</button>{% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-right-ticket">
+                <a href="{% if visits.has_previous %}?page={{ visits.previous_page_number }}&search={{ search_query }}&status={{ status_filter }}&start_date={{ start_date }}&end_date={{ end_date }}&per_page={{ visits.paginator.per_page }}{% else %}#{% endif %}" 
+                   class="page-nav-btn {% if not visits.has_previous %}disabled{% endif %}">
+                    <i class="fas fa-chevron-left"></i>
+                </a>
+                
+                <div class="page-indicator-ticket">
+                    {{ visits.number }} / {{ visits.paginator.num_pages }}
+                </div>
+
+                <a href="{% if visits.has_next %}?page={{ visits.next_page_number }}&search={{ search_query }}&status={{ status_filter }}&start_date={{ start_date }}&end_date={{ end_date }}&per_page={{ visits.paginator.per_page }}{% else %}#{% endif %}" 
+                   class="page-nav-btn {% if not visits.has_next %}disabled{% endif %}">
+                    <i class="fas fa-chevron-right"></i>
+                </a>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block admin_js %}
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="{% static 'js/list.js' %}"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const filterForm = document.getElementById('filter-form');
+    
+    // 1. MODERN DATE PICKER INITIALIZATION
+    flatpickr(".datepicker-wrap", {
+      wrap: true,
+      dateFormat: "Y-m-d",
+      altInput: true,
+      altFormat: "d-m-Y",
+      disableMobile: true,
+      animate: true,
+      onChange: function(selectedDates, dateStr, instance) {
+        if (dateStr) {
+          document.querySelector('.list-card').style.opacity = '0.6';
+          filterForm.submit();
+        }
+      }
+    });
+
+    // 2. Search Bar Auto-Filter (Debounced)
+    const searchInput = filterForm.querySelector('input[name="search"]');
+    if (searchInput) {
+      let typingTimer;
+      searchInput.addEventListener('keyup', function() {
+        clearTimeout(typingTimer);
+        typingTimer = setTimeout(() => {
+          if (this.value.length >= 2 || this.value.length === 0) {
+            document.querySelector('.list-card').style.opacity = '0.6';
+            filterForm.submit();
+          }
+        }, 800);
+      });
+    }
+
+    // 3. EXPORT HANDLER
+    const exportBtn = document.getElementById('export-btn');
+    const exportInput = document.getElementById('export-input');
+    if (exportBtn && exportInput) {
+      exportBtn.addEventListener('click', function() {
+        exportInput.value = 'true';
+        filterForm.submit();
+        setTimeout(() => { exportInput.value = 'false'; }, 500);
+      });
+    }
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organization Not Found — Vistron VMS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg-dark:    #0b0f1a;
+            --bg-card:    #111827;
+            --border:     rgba(99,102,241,0.25);
+            --accent:     #6366f1;
+            --accent-glow:rgba(99,102,241,0.35);
+            --red:        #ef4444;
+            --red-glow:   rgba(239,68,68,0.3);
+            --text:       #f1f5f9;
+            --muted:      #94a3b8;
+            --radius:     1rem;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        /* animated background blobs */
+        body::before, body::after {
+            content: '';
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.18;
+            pointer-events: none;
+            animation: drift 12s ease-in-out infinite alternate;
+        }
+        body::before {
+            width: 600px; height: 600px;
+            background: var(--red);
+            top: -200px; left: -200px;
+        }
+        body::after {
+            width: 500px; height: 500px;
+            background: var(--accent);
+            bottom: -150px; right: -150px;
+            animation-delay: -6s;
+        }
+        @keyframes drift {
+            from { transform: translate(0,0) scale(1); }
+            to   { transform: translate(40px,40px) scale(1.08); }
+        }
+
+        .card {
+            position: relative;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: calc(var(--radius) * 1.5);
+            padding: 3rem 3.5rem;
+            max-width: 540px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 0 60px var(--red-glow), 0 20px 60px rgba(0,0,0,0.5);
+            animation: pop 0.5s cubic-bezier(.34,1.56,.64,1) both;
+        }
+        @keyframes pop {
+            from { opacity: 0; transform: scale(.9) translateY(20px); }
+            to   { opacity: 1; transform: scale(1)  translateY(0);    }
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(239,68,68,0.12);
+            border: 1px solid rgba(239,68,68,0.35);
+            color: #fca5a5;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 0.35rem 1rem;
+            border-radius: 100px;
+            margin-bottom: 1.75rem;
+        }
+        .badge-dot {
+            width: 6px; height: 6px;
+            background: var(--red);
+            border-radius: 50%;
+            animation: blink 1.2s ease-in-out infinite;
+        }
+        @keyframes blink {
+            0%,100% { opacity: 1; }
+            50%      { opacity: 0.2; }
+        }
+
+        .error-code {
+            font-size: 7rem;
+            font-weight: 700;
+            line-height: 1;
+            letter-spacing: -0.04em;
+            background: linear-gradient(135deg, #ef4444 0%, #f97316 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text);
+        }
+
+        p {
+            color: var(--muted);
+            font-size: 0.925rem;
+            line-height: 1.7;
+            margin-bottom: 0.75rem;
+        }
+
+        .domain-pill {
+            display: inline-block;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 6px;
+            padding: 0.25rem 0.75rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            color: #fca5a5;
+            word-break: break-all;
+        }
+
+        .divider {
+            width: 100%;
+            height: 1px;
+            background: var(--border);
+            margin: 2rem 0;
+        }
+
+        .actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.7rem 1.5rem;
+            border-radius: 0.6rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: transform 0.18s, box-shadow 0.18s, background 0.18s;
+            cursor: pointer;
+        }
+        .btn:hover { transform: translateY(-2px); }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent) 0%, #818cf8 100%);
+            color: #fff;
+            box-shadow: 0 4px 20px var(--accent-glow);
+        }
+        .btn-primary:hover { box-shadow: 0 6px 28px var(--accent-glow); }
+
+        .btn-ghost {
+            background: rgba(255,255,255,0.06);
+            color: var(--muted);
+            border: 1px solid var(--border);
+        }
+        .btn-ghost:hover { background: rgba(255,255,255,0.1); color: var(--text); }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--muted);
+            letter-spacing: 0.02em;
+        }
+        .logo-dot {
+            width: 8px; height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+    <div class="card" role="main">
+
+        <div class="logo">
+            <span class="logo-dot"></span>
+            Vistron VMS
+        </div>
+
+        <div class="badge">
+            <span class="badge-dot"></span>
+            Tenant Not Found
+        </div>
+
+        <div class="error-code" aria-label="Error 404">404</div>
+
+        <h1>Organization Not Registered</h1>
+
+        <p>
+            The domain you are trying to access is not linked to any registered organization.
+        </p>
+
+        <p>
+            Requested domain:<br>
+            <span class="domain-pill">{{ host }}</span>
+        </p>
+
+        <div class="divider"></div>
+
+        <p>
+            If you believe this is a mistake, please contact your system administrator.
+            Registered organizations can be accessed at their designated tenant URL.
+        </p>
+
+        <div class="actions">
+            <a href="{{ platform_url }}" class="btn btn-primary">
+                ← Back to Platform
+            </a>
+            <a href="{{ platform_url }}/admin/" class="btn btn-ghost">
+                Admin Login
+            </a>
+        </div>
+
+    </div>
+</body>
+</html>

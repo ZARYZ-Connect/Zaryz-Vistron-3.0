@@ -1,0 +1,95 @@
+<!-- department_form.html -->
+
+{% extends "dashboard/admin_base.html" %}
+{% load static %}
+
+{% block admin_css %}
+<link rel="stylesheet" href="{% static 'css/form.css' %}">
+{% endblock %}
+
+{% block admin_content %}
+<div class="form-container">
+    <div class="form-card">
+        <!-- Form Header -->
+        <div class="form-header">
+            <div class="form-icon">
+                <i class="fas fa-{% if is_new %}plus{% else %}edit{% endif %}"></i>
+            </div>
+            <h1 class="form-title">
+                {% if is_new %}Create New Department{% else %}Edit Department{% endif %}
+            </h1>
+            <p class="form-subtitle">
+                {% if is_new %}
+                    Add a new department to organize your employees and visitors
+                {% else %}
+                    Update the department information
+                {% endif %}
+            </p>
+        </div>
+
+        <!-- Form -->
+        <form method="post" id="mainForm">
+            {% csrf_token %}
+            
+            <!-- Name Field -->
+            <div class="form-group">
+                <label class="form-label required" for="id_name">
+                    <i class="fas fa-tag me-2"></i>
+                    Department Name
+                </label>
+                <input type="text" 
+                       name="name" 
+                       id="id_name" 
+                       class="modern-input" 
+                       placeholder="Enter department name (e.g., Human Resources, IT, Finance)"
+                       value="{{ form.name.value|default:'' }}"
+                       maxlength="100"
+                       required>
+                
+                <!-- Character Counter -->
+                <div class="char-counter" id="charCounter">
+                    <span id="charCount">0</span>/100 characters
+                </div>
+                
+                <!-- Error Messages -->
+                {% if form.name.errors %}
+                <div class="error-messages">
+                    <ul class="error-list">
+                        {% for error in form.name.errors %}
+                        <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="btn-group">
+                <button class="btn-primary-modern" type="submit" id="submitBtn">
+                    {% if is_new %}
+                        <i class="fas fa-plus"></i>
+                        Create Department
+                    {% else %}
+                        <i class="fas fa-save"></i>
+                        Update Department
+                    {% endif %}
+                </button>
+                <a class="btn-secondary-modern" href="{% url 'dashboard:department_list' %}">
+                    <i class="fas fa-arrow-left"></i>
+                    Back to List
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block admin_js %}
+<script src="{% static 'js/form.js' %}"></script>
+<script>
+    // Initialize character counter
+    window.addEventListener('DOMContentLoaded', function() {
+        initCharCounter('id_name', 'charCount', 'charCounter', 100);
+    });
+</script>
+{% endblock %}

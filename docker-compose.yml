@@ -1,0 +1,47 @@
+name: vistron
+services:
+
+  web:
+    build: ./vms_project
+    container_name: vistron_saas
+    ports:
+      - "8000:8000"
+    restart: always
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    volumes:
+      - ./vms_project/media:/app/media
+      # Static source files — CSS/JS live sync from server filesystem
+      - ./vms_project/static:/app/static
+      # Collected static files — WhiteNoise serves from here
+      - ./vms_project/staticfiles:/app/staticfiles
+      # Template live-sync — HTML changes reflect without rebuild
+      - ./vms_project/templates:/app/templates
+
+  db:
+    image: postgres:15
+    container_name: vistron_postgres
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+  redis:
+    image: redis:7
+    container_name: vistron_redis
+    restart: always
+
+volumes:
+  postgres_data:

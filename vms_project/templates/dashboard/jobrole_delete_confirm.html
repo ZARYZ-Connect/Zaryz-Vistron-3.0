@@ -1,0 +1,81 @@
+<!-- ==================== 3. JOB ROLE DELETE ==================== -->
+{% extends "dashboard/admin_base.html" %}
+{% load static %}
+
+{% block admin_css %}
+<link rel="stylesheet" href="{% static 'css/delete-confirm.css' %}">
+{% endblock %}
+
+{% block admin_content %}
+<div class="delete-container">
+    <div class="delete-card">
+        <div class="warning-icon pulse">
+            <i class="fas fa-briefcase"></i>
+        </div>
+
+        <h2 class="delete-title">Delete Job Position</h2>
+        <p class="delete-message">Permanently delete job position:</p>
+        
+        <div class="item-name">{{ object.name }}</div>
+
+        <div class="item-details">
+            <div class="detail-item">
+                <span class="detail-label">
+                    <i class="fas fa-calendar"></i>Created
+                </span>
+                <span class="detail-value">{{ object.created_at|date:"M d, Y"|default:"Unknown" }}</span>
+            </div>
+            
+            {% if object.employee_set.count %}
+            <div class="detail-item">
+                <span class="detail-label">
+                    <i class="fas fa-users"></i>Employees
+                </span>
+                <span class="detail-value" style="color: var(--del-danger); font-weight: 600;">
+                    {{ object.employee_set.count }} assigned
+                </span>
+            </div>
+            {% endif %}
+        </div>
+
+        {% if object.employee_set.count %}
+        <div class="impact-warning">
+            <i class="fas fa-exclamation-circle"></i>
+            <div class="impact-text">
+                {{ object.employee_set.count }} employee(s) currently assigned
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="consequences">
+            <h6><i class="fas fa-exclamation-triangle"></i>Consequences</h6>
+            <ul>
+                <li>This action cannot be undone</li>
+                <li>Record permanently deleted</li>
+                {% if object.employee_set.count %}
+                <li><strong>{{ object.employee_set.count }} employee(s)</strong> need reassignment</li>
+                {% else %}
+                <li>No employees assigned</li>
+                {% endif %}
+                <li>Visitor records may be affected</li>
+            </ul>
+        </div>
+
+        <form method="post" id="deleteForm">
+            {% csrf_token %}
+            <div class="btn-group">
+                <button class="btn-delete" type="submit">
+                    <i class="fas fa-trash-alt"></i>Delete
+                </button>
+                <a class="btn-cancel" href="{% url 'dashboard:jobrole_list' %}">
+                    <i class="fas fa-times"></i>Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block admin_js %}
+<script src="{% static 'js/delete-confirm.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,412 @@
+/* ==== ULTRA-COMPACT MODERN DELETE CONFIRMATION ==== */
+:root {
+    --del-danger: #f5365c;
+    --del-danger-grad: linear-gradient(135deg, #f5365c 0%, #f56036 100%);
+    --del-warning: #fb6340;
+    --del-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+.delete-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 180px);
+    padding: 20px;
+}
+
+/* Compact Card - Much smaller! */
+.delete-card {
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: var(--del-shadow);
+    max-width: 420px;
+    width: 100%;
+    text-align: center;
+    animation: slideUp 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+}
+
+.delete-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--del-danger-grad);
+    border-radius: 16px 16px 0 0;
+}
+
+/* Smaller Warning Icon */
+.warning-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: rgba(245, 54, 92, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px;
+    border: 2px solid rgba(245, 54, 92, 0.25);
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.warning-icon i {
+    font-size: 1.5rem;
+    color: var(--del-danger);
+}
+
+/* Compact Typography */
+.delete-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #212529;
+    margin-bottom: 6px;
+    line-height: 1.3;
+}
+
+.delete-message {
+    color: #6c757d;
+    font-size: 0.8125rem;
+    line-height: 1.4;
+    margin-bottom: 6px;
+}
+
+.item-name {
+    background: var(--del-danger-grad);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 700;
+    font-size: 1.125rem;
+    padding: 4px 0;
+    margin: 8px 0 14px;
+    word-break: break-word;
+    line-height: 1.3;
+}
+
+/* Compact Details Section */
+.item-details {
+    background: rgba(94, 114, 228, 0.04);
+    border-radius: 10px;
+    padding: 12px;
+    margin: 12px 0;
+    text-align: left;
+}
+
+.detail-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 0;
+    gap: 10px;
+    font-size: 0.8125rem;
+}
+
+.detail-item:not(:last-child) {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.detail-label {
+    font-weight: 600;
+    color: #6c757d;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.detail-label i {
+    width: 14px;
+    font-size: 0.75rem;
+    opacity: 0.7;
+}
+
+.detail-value {
+    color: #212529;
+    font-weight: 500;
+    text-align: right;
+}
+
+/* Compact Consequences Box */
+.consequences {
+    background: rgba(245, 54, 92, 0.04);
+    border-left: 3px solid var(--del-danger);
+    padding: 12px;
+    border-radius: 8px;
+    margin: 14px 0;
+    text-align: left;
+}
+
+.consequences h6 {
+    color: var(--del-danger);
+    font-weight: 700;
+    font-size: 0.75rem;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.consequences h6 i {
+    font-size: 0.875rem;
+}
+
+.consequences ul {
+    margin: 0;
+    padding-left: 16px;
+    color: #6c757d;
+}
+
+.consequences li {
+    margin-bottom: 4px;
+    line-height: 1.4;
+    font-size: 0.8125rem;
+}
+
+.consequences li:last-child { margin-bottom: 0; }
+.consequences li strong { color: var(--del-danger); font-weight: 600; }
+
+/* Compact Impact Warning */
+.impact-warning {
+    background: rgba(251, 99, 64, 0.05);
+    border: 1px solid rgba(251, 99, 64, 0.2);
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin: 12px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-align: left;
+}
+
+.impact-warning i {
+    color: var(--del-warning);
+    font-size: 1rem;
+    flex-shrink: 0;
+}
+
+.impact-text {
+    color: var(--del-warning);
+    font-weight: 600;
+    font-size: 0.8125rem;
+    line-height: 1.4;
+}
+
+/* Compact Buttons */
+.btn-group {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin-top: 18px;
+}
+
+.btn-delete, .btn-cancel {
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-weight: 600;
+    font-size: 0.875rem;
+    transition: all 0.2s ease;
+    flex: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    cursor: pointer;
+    border: none;
+    text-decoration: none;
+}
+
+.btn-delete {
+    background: var(--del-danger-grad);
+    color: white;
+    box-shadow: 0 3px 10px rgba(245, 54, 92, 0.25);
+}
+
+.btn-delete:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 5px 15px rgba(245, 54, 92, 0.35);
+    color: white;
+}
+
+.btn-delete:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.btn-delete:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.btn-delete i, .btn-cancel i {
+    font-size: 0.875rem;
+}
+
+.btn-cancel {
+    background: white;
+    border: 2px solid rgba(94, 114, 228, 0.2);
+    color: #6c757d;
+}
+
+.btn-cancel:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 5px 15px rgba(94, 114, 228, 0.15);
+    background: linear-gradient(135deg, #5e72e4 0%, #825ee4 100%);
+    color: white;
+    border-color: transparent;
+    text-decoration: none;
+}
+
+.btn-cancel:active {
+    transform: translateY(0);
+}
+
+/* Admin Warning - Compact */
+.admin-warning {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--del-danger);
+    margin: 12px 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.admin-warning i {
+    font-size: 0.875rem;
+}
+
+/* Animations */
+@keyframes slideUp {
+    from { 
+        opacity: 0; 
+        transform: translateY(25px) scale(0.97); 
+    }
+    to { 
+        opacity: 1; 
+        transform: translateY(0) scale(1); 
+    }
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+.delete-card.loading { 
+    opacity: 0.7; 
+    pointer-events: none; 
+}
+
+/* Responsive - Even more compact on mobile */
+@media (max-width: 640px) {
+    .delete-container { 
+        padding: 16px; 
+        min-height: calc(100vh - 120px); 
+    }
+    
+    .delete-card { 
+        border-radius: 14px; 
+        padding: 20px 16px; 
+        max-width: 100%;
+    }
+    
+    .warning-icon { 
+        width: 48px; 
+        height: 48px; 
+        margin-bottom: 12px;
+    }
+    
+    .warning-icon i { 
+        font-size: 1.25rem; 
+    }
+    
+    .delete-title {
+        font-size: 1.125rem;
+    }
+    
+    .delete-message {
+        font-size: 0.8125rem;
+    }
+    
+    .item-name {
+        font-size: 1rem;
+        margin: 6px 0 12px;
+    }
+    
+    .btn-group { 
+        flex-direction: column; 
+        gap: 8px; 
+        margin-top: 16px;
+    }
+    
+    .btn-delete, .btn-cancel { 
+        padding: 11px 18px; 
+    }
+    
+    .item-details, .consequences {
+        padding: 10px;
+        margin: 10px 0;
+    }
+    
+    .detail-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 3px;
+        padding: 5px 0;
+    }
+    
+    .detail-value {
+        text-align: left;
+    }
+}
+
+/* Tablet */
+@media (min-width: 641px) and (max-width: 768px) {
+    .delete-card {
+        max-width: 400px;
+    }
+}
+
+/* Accessibility */
+.btn-delete:focus-visible, 
+.btn-cancel:focus-visible {
+    outline: 2px solid #5e72e4;
+    outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Modern glass effect on hover */
+.delete-card:hover {
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* Smooth scrollbar if content overflows */
+.delete-card::-webkit-scrollbar {
+    width: 6px;
+}
+
+.delete-card::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+}
+
+.delete-card::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+}
+
+.delete-card::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.3);
+}

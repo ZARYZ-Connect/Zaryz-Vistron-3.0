@@ -1,0 +1,121 @@
+<!-- templates/visitors/approve_result.html -->
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link href="{% static 'css/visitor-pages.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div class="result-container">
+  <div class="result-card">
+    <!-- Dynamic Icon based on message type -->
+    {% if 'success' in message|lower or 'approved' in message|lower or 'accepted' in message|lower %}
+      <div class="result-icon success">
+        <i class="fas fa-check-circle"></i>
+      </div>
+    {% elif 'error' in message|lower or 'failed' in message|lower or 'rejected' in message|lower %}
+      <div class="result-icon" style="background: var(--danger-gradient); box-shadow: 0 8px 24px rgba(239, 68, 68, 0.3);">
+        <i class="fas fa-exclamation-circle"></i>
+      </div>
+    {% else %}
+      <div class="result-icon warning">
+        <i class="fas fa-info-circle"></i>
+      </div>
+    {% endif %}
+
+    <!-- Title -->
+    <h1 class="result-title">
+      {% if 'success' in message|lower or 'approved' in message|lower %}
+        Action Completed
+      {% elif 'error' in message|lower or 'failed' in message|lower %}
+        Action Failed
+      {% else %}
+        Notification
+      {% endif %}
+    </h1>
+
+    <!-- Message Display -->
+    <div class="result-message">
+      {{ message }}
+    </div>
+
+    <!-- Contextual Alert -->
+    {% if 'success' in message|lower or 'approved' in message|lower %}
+      <div class="alert alert-success" style="border-radius: 12px; border-left: 4px solid #10b981; background: rgba(16, 185, 129, 0.05); margin: 24px 0;">
+        <div class="d-flex align-items-center gap-2">
+          <i class="fas fa-check-circle" style="color: #10b981; font-size: 1.125rem;"></i>
+          <small style="color: #6b7280; line-height: 1.5;">
+            The action has been completed successfully. All relevant parties have been notified via email.
+          </small>
+        </div>
+      </div>
+    {% elif 'error' in message|lower or 'failed' in message|lower %}
+      <div class="alert alert-danger" style="border-radius: 12px; border-left: 4px solid #ef4444; background: rgba(239, 68, 68, 0.05); margin: 24px 0;">
+        <div class="d-flex align-items-start gap-2">
+          <i class="fas fa-exclamation-triangle" style="color: #ef4444; font-size: 1.125rem; margin-top: 3px;"></i>
+          <div>
+            <small style="color: #6b7280; line-height: 1.5; display: block;">
+              An error occurred while processing your request. Please try again or contact support if the problem persists.
+            </small>
+          </div>
+        </div>
+      </div>
+    {% else %}
+      <div class="alert alert-info" style="border-radius: 12px; border-left: 4px solid #6366f1; background: rgba(99, 102, 241, 0.05); margin: 24px 0;">
+        <div class="d-flex align-items-center gap-2">
+          <i class="fas fa-info-circle" style="color: #6366f1; font-size: 1.125rem;"></i>
+          <small style="color: #6b7280; line-height: 1.5;">
+            Your request has been processed. Please check your email for further updates.
+          </small>
+        </div>
+      </div>
+    {% endif %}
+
+    <!-- Action Buttons -->
+    <div class="btn-group-centered" style="margin-top: 24px;">
+      <a href="{% url 'visitors:home' %}" class="home-btn-premium">
+        <span class="btn-icon"><i class="fas fa-home"></i></span>
+        <span class="btn-text">Back to Home</span>
+      </a>
+    </div>
+
+    <!-- Help Section -->
+    <div class="mt-4 p-3" style="background: white; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+      <p class="text-muted small text-center mb-2">
+        <i class="fas fa-question-circle me-2"></i>
+        Need assistance?
+      </p>
+      <div class="text-center">
+        <a href="#" class="text-decoration-none" style="color: #6366f1; font-weight: 600; font-size: 0.875rem;">
+          <i class="fas fa-headset me-1"></i>Contact Support
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/visitor-pages.js' %}"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Animate result icon
+    const resultIcon = document.querySelector('.result-icon');
+    if (resultIcon) {
+        const message = "{{ message|lower }}";
+        
+        if (message.includes('success') || message.includes('approved')) {
+            resultIcon.style.animation = 'successPulse 1s ease-out';
+        } else if (message.includes('error') || message.includes('failed')) {
+            resultIcon.style.animation = 'shake 0.5s ease-in-out';
+        } else {
+            resultIcon.style.animation = 'pulse 2s ease-in-out infinite';
+        }
+    }
+    
+    // Auto-scroll to top
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+<link rel="stylesheet" href="{% static 'css/security-sidebar.css' %}">
+<style>
+/* ─── Navbar ─────────────────────────── */
+
+
+/* ─── Navbar appearance ─── */
+.vms-glass-navbar {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 64px;
+    z-index: 1050;
+    background: linear-gradient(135deg, rgba(30, 27, 75, 0.95) 0%, rgba(49, 46, 129, 0.95) 100%) !important;
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
+}
+
+/* ─── Layout shell ───────────────────── */
+.security-layout-flex {
+    display: flex;
+    align-items: stretch;
+    min-height: calc(100vh - 64px);
+}
+
+/* ─── Mobile overlay ─────────────────── */
+.sidebar-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.4);
+    backdrop-filter: blur(4px);
+    z-index: 1045;
+    opacity: 0; visibility: hidden;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+.sidebar-overlay.active { opacity: 1; visibility: visible; }
+
+/* ─── Tablet: Rail Mode (768 – 1200 px) ─ */
+@media (min-width: 768px) and (max-width: 1200px) {
+    /* When the security rail expands on hover or click, push the content */
+    .modern-security-sidebar:hover ~ .security-main-wrapper,
+    .modern-security-sidebar.active ~ .security-main-wrapper {
+        margin-left: 240px;
+    }
+}
+
+/* ─── Mobile: Drawer (≤ 767 px) ─────── */
+@media (max-width: 767px) {
+    .security-main-wrapper {
+        margin-left: 0 !important;
+        padding: 16px;
+    }
+}
+</style>
+{% block security_css %}{% endblock %}
+{% endblock %}
+
+{% block content %}
+<div class="security-layout-container">
+    <!-- Mobile overlay -->
+    <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+    <!-- Rail layout: sidebar and wrapper are direct siblings -->
+    <div class="security-layout-flex">
+        {% include 'components/security_sidebar.html' %}
+        <div class="security-main-wrapper">
+            {% block security_content %}{% endblock %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function toggleSidebar() {
+    const sidebar = document.querySelector(".modern-admin-sidebar") || document.querySelector(".modern-security-sidebar");
+    const overlay = document.querySelector(".sidebar-overlay");
+    if(sidebar) sidebar.classList.toggle("active");
+    if(overlay) overlay.classList.toggle("active");
+}
+
+// Auto-toggle active state based on current URL if not explicitly set
+document.addEventListener("DOMContentLoaded", function() {
+    const currentPath = window.location.pathname;
+    const navItems = document.querySelectorAll('.sidebar-nav-item');
+    
+    navItems.forEach(item => {
+        if(item.getAttribute('href') === currentPath) {
+            navItems.forEach(i => i.classList.remove('active-custom'));
+            item.classList.add('active-custom');
+        }
+    });
+});
+</script>
+{% block security_js %}{% endblock %}
+{% endblock %}

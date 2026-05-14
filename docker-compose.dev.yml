@@ -1,0 +1,41 @@
+name: vistron-dev
+services:
+
+  web:
+    build: ./vms_project
+    container_name: vistron_saas_dev
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env.dev
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    volumes:
+      - ./vms_project:/app
+      - ./vms_project/media:/app/media
+      - ./vms_project/static:/app/static
+      - ./vms_project/templates:/app/templates
+
+  db:
+    image: postgres:15
+    container_name: vistron_postgres_dev
+    env_file:
+      - .env.dev
+    volumes:
+      - postgres_data_dev:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+  redis:
+    image: redis:7
+    container_name: vistron_redis_dev
+
+volumes:
+  postgres_data_dev:

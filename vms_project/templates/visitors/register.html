@@ -1,0 +1,279 @@
+{% extends "base.html" %}
+{% load static %}
+{% block profile_trigger %}
+<div class="vms-hamburger-trigger d-lg-none">
+    <i class="fas fa-bars"></i>
+</div>
+<div class="vms-avatar-tile d-none d-lg-flex">
+    <span>{% if user.role == 'admin' or user.is_superuser %}AD{% elif user.role == 'security' %}SC{% elif user.role == 'reception' %}RC{% else %}EM{% endif %}</span>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/register-flow.css' %}">
+<style>
+  .field-error {
+    color: #ff4d4f;
+    font-size: 13px;
+    margin-top: 6px;
+    display: none;
+    /* Hidden by default */
+  }
+
+
+  .has-error .field-error {
+    display: block;
+  }
+
+  .has-error input {
+    border: 1px solid #ff4d4f !important;
+    background-color: rgba(255, 77, 79, 0.1) !important;
+  }
+
+  /* Toast Notification */
+  #vms-toast {
+    visibility: hidden;
+    min-width: 250px;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 8px;
+    padding: 16px;
+    position: fixed;
+    z-index: 9999;
+    left: 50%;
+    bottom: 30px;
+    transform: translateX(-50%);
+    font-size: 14px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+
+  #vms-toast.show {
+    visibility: visible;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+  }
+
+  @keyframes fadein {
+    from {
+      bottom: 0;
+      opacity: 0;
+    }
+
+    to {
+      bottom: 30px;
+      opacity: 1;
+    }
+  }
+
+  @keyframes fadeout {
+    from {
+      bottom: 30px;
+      opacity: 1;
+    }
+
+    to {
+      bottom: 0;
+      opacity: 0;
+    }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<script>
+  const serverStep = Number("{{ current_step|default:1 }}");
+</script>
+
+<div class="flow-wrapper">
+  <div class="flow-card">
+
+    <!-- STEPPER -->
+    <div class="stepper">
+      <div class="step"><span class="dot">1</span><span class="label">PERSONAL</span><span class="line"></span></div>
+      <div class="step"><span class="dot">2</span><span class="label">VISIT</span><span class="line"></span></div>
+      <div class="step"><span class="dot">3</span><span class="label">MEETING</span><span class="line"></span></div>
+      <div class="step"><span class="dot">4</span><span class="label">PHOTO</span></div>
+    </div>
+
+    <form method="post" enctype="multipart/form-data" novalidate id="visitForm" autocomplete="off">
+      {% csrf_token %}
+
+      <!-- STEP 1 -->
+      <section class="flow-step">
+        <h2>Personal Details</h2>
+
+        <div class="{% if form.full_name.errors %}has-error{% endif %}">
+          <label>Full Name *</label>
+          {{ form.full_name }}
+          {% if form.full_name.errors %}
+          <div class="field-error">{{ form.full_name.errors.0 }}</div>
+          {% endif %}
+        </div>
+
+        <div class="{% if form.phone.errors %}has-error{% endif %}" id="phone-group">
+          <label>Phone Number *</label>
+
+          <div class="phone-wrapper">
+            <span class="phone-prefix">+91</span>
+            {{ form.phone }}
+            <div class="field-error" id="phone-error">Please enter a valid 10-digit phone number</div>
+
+            {% if form.phone.errors %}
+            <div class="field-error" style="display:block;">{{ form.phone.errors.0 }}</div>
+            {% endif %}
+          </div>
+
+          <div class="form-group" id="email-group">
+            <label>Email Address *</label>
+            {{ form.email }}
+            <div class="field-error" id="email-error">Please enter a valid email address</div>
+            {% if form.email.errors %}
+            <div class="field-error server-error" style="display:block;">{{ form.email.errors.0 }}</div>
+            {% endif %}
+          </div>
+
+          <div class="actions right">
+            <button type="button" class="btn primary next">Continue →</button>
+          </div>
+      </section>
+
+      <!-- STEP 2 -->
+      <section class="flow-step">
+        <h2>Visit Details</h2>
+
+        <div class="{% if form.visit_type.errors %}has-error{% endif %}">
+          <label>Visit Type *</label>
+          {{ form.visit_type }}
+          {% if form.visit_type.errors %}
+          <div class="field-error">{{ form.visit_type.errors.0 }}</div>
+          {% endif %}
+        </div>
+
+        <div class="{% if form.visit_date.errors %}has-error{% endif %}">
+          <label>Visit Date *</label>
+          {{ form.visit_date }}
+          {% if form.visit_date.errors %}
+          <div class="field-error">{{ form.visit_date.errors.0 }}</div>
+          {% endif %}
+        </div>
+
+        <div class="grid-2">
+          <div class="{% if form.start_time.errors %}has-error{% endif %}">
+            <label>Check-in *</label>
+            {{ form.start_time }}
+          </div>
+
+          <div class="{% if form.end_time.errors %}has-error{% endif %}">
+            <label>Check-out *</label>
+            {{ form.end_time }}
+          </div>
+        </div>
+
+        {% if form.non_field_errors %}
+        <div class="field-error">{{ form.non_field_errors.0 }}</div>
+        {% endif %}
+
+        <div class="actions between">
+          <button type="button" class="btn ghost back">← Back</button>
+          <button type="button" class="btn primary next">Continue →</button>
+        </div>
+      </section>
+
+      <!-- STEP 3 -->
+      <section class="flow-step">
+        <h2>Meeting Details</h2>
+
+        <label>Department</label>
+        {{ form.department }}
+
+        <div class="{% if form.whom_to_meet_employee.errors %}has-error{% endif %}">
+          <label>Person to Meet *</label>
+          {{ form.whom_to_meet_employee }}
+        </div>
+
+        <div class="{% if form.purpose.errors %}has-error{% endif %}">
+          <label>Purpose *</label>
+          {{ form.purpose }}
+        </div>
+
+        <div class="actions between">
+          <button type="button" class="btn ghost back">← Back</button>
+          <button type="button" class="btn primary next">Continue →</button>
+        </div>
+      </section>
+
+      <!-- STEP 4 -->
+      <section class="flow-step">
+        <h2>Verification Photo</h2>
+
+        {{ form.photo }}
+
+        <div class="photo-layout">
+          <div class="photo-actions">
+            <button type="button" id="openCamera" class="btn primary full">
+              📸 Capture Photo
+            </button>
+
+            <button type="button" class="btn ghost full back">
+              ← Back
+            </button>
+
+            <button type="submit" id="submitBtn" class="btn primary full" disabled>
+              ✔ Complete Registration
+            </button>
+          </div>
+
+          <div class="photo-circle" id="photoPreview">
+            No photo yet
+          </div>
+        </div>
+
+        <video id="video" autoplay playsinline style="display:none;"></video>
+        <canvas id="canvas" style="display:none;"></canvas>
+      </section>
+
+    </form>
+  </div>
+</div>
+
+<!-- Toast Container -->
+<div id="vms-toast"></div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/register-flow.js' %}"></script>
+
+<script>
+
+  /* BACK BUTTON */
+  document.querySelectorAll(".back").forEach(btn => {
+    btn.addEventListener("click", function () {
+      const step = this.closest(".flow-step");
+      const prevStep = step.previousElementSibling;
+
+      if (prevStep) {
+        step.classList.remove("active");
+        prevStep.classList.add("active");
+      }
+    });
+  });
+
+
+  document.addEventListener("DOMContentLoaded", function () {
+    // Other logic if any (none currently in this block)
+  });
+
+  /* FIX WHITE INPUT ON BACK NAVIGATION */
+  window.addEventListener("pageshow", function (event) {
+    if (event.persisted || performance.getEntriesByType("navigation")[0].type === "back_forward") {
+      document.querySelectorAll("input, textarea, select").forEach(el => {
+        el.style.backgroundColor = "rgba(255,255,255,0.12)";
+        el.style.color = "#ffffff";
+        el.style.webkitTextFillColor = "#ffffff";
+      });
+    }
+  });
+</script>
+{% endblock %}

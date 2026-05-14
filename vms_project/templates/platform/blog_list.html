@@ -1,0 +1,206 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blogs & Insights | Zaryz Vistron</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/landing.css' %}">
+    <style>
+        .blog-page { color: #fff; min-height: 100vh; overflow-x: hidden; }
+        .blog-hero { padding: 180px 0 100px; position: relative; z-index: 10; }
+    </style>
+</head>
+<body class="blog-page">
+
+    
+    <div class="noise"></div>
+
+
+    <!-- ═══════════════════ NAVBAR ═══════════════════ -->
+  <header class="nav" id="navbar">
+    <div class="nav-inner">
+      <a href="/" class="logo" data-magnetic>
+        <img src="{% static 'img/logo.png' %}" alt="Zaryz Vistron">
+        <span>ZARYZ VISTRON</span>
+      </a>
+
+      <button class="menu-toggle" id="menu-toggle" onclick="toggleMenu()" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+
+      <nav class="nav-links" id="nav-links">
+        <div class="sidebar-header-mobile">
+            <a href="/" class="sidebar-brand-mobile">
+                <img src="{% static 'img/logo.png' %}" alt="Logo">
+                <span>ZARYZ VISTRON</span>
+            </a>
+        </div>
+        <a href="/" class="nav-link"><i class="fas fa-home"></i><span>Home</span></a>
+        <a href="/blog/" class="nav-link" data-no-smooth><i class="fas fa-book-open"></i><span>Blogs</span></a>
+        <a href="/videos/" class="nav-link" data-no-smooth><i class="fas fa-play-circle"></i><span>Videos</span></a>
+        <a href="/features/" class="nav-link"><i class="fas fa-star"></i><span>Features</span></a>
+
+        <a href="/contact/" class="nav-link"><i class="fas fa-envelope"></i><span>Contact</span></a>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="/contact/" class="btn-ghost">Request Demo</a>
+      </div>
+    </div>
+  </header>
+
+    <main class="blog-hero">
+        <!-- Animated mesh background (Static version) -->
+        <div class="hero-mesh" style="opacity: 0.4;">
+            <div class="mesh-blob mesh-1"></div>
+            <div class="mesh-blob mesh-2"></div>
+        </div>
+
+        <div class="section-inner" style="max-width: 1260px; margin: 0 auto; padding: 0 40px; position: relative; z-index: 10;">
+            
+            <div style="max-width: 600px; margin-bottom: 80px;">
+                <div class="section-label">Knowledge Hub</div>
+                <h1 style="font-size: 4rem; font-weight: 900; letter-spacing: -0.04em; line-height: 1.1; margin: 16px 0 24px;">
+                    Insights on <em style="font-family: 'Instrument Serif', serif; font-style: italic; font-weight: 400; color: #825ee4;">Modern Security</em>
+                </h1>
+                <p style="font-size: 1.2rem; color: rgba(255,255,255,0.5); line-height: 1.6;">
+                    Expert takes on visitor management, workplace safety, and the future of enterprise security protocols.
+                </p>
+                <div style="margin-top: 32px; border-left: 2px solid #825ee4; padding-left: 20px;">
+                    <h2 style="font-family: 'Instrument Serif', serif; font-style: italic; font-weight: 400; color: #fff; font-size: 2rem; letter-spacing: 1px;">Coming Soon...</h2>
+                </div>
+            </div>
+
+            <div class="blog-grid">
+                {% for post in posts %}
+                <a href="{% url 'blog_detail' post.slug %}" class="blog-card reveal-up">
+                    <div class="blog-img-wrap">
+                        {% if post.featured_img %}
+                        <img src="{{ post.featured_img.url }}" alt="{{ post.title }}">
+                        {% else %}
+                        <div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; background: #1a1f26; font-size: 2.5rem; color: #825ee4;">📝</div>
+                        {% endif %}
+                        <span class="blog-badge">{{ post.category.name|default:"General" }}</span>
+                    </div>
+                    <div class="blog-content">
+                        <div class="blog-meta">
+                            <span>{{ post.created_at|date:"M d, Y" }}</span>
+                            <div class="blog-dot"></div>
+                            <span>{{ post.read_time|default:"5 min read" }}</span>
+                        </div>
+                        <h3>{{ post.title }}</h3>
+                        <p>{{ post.excerpt|default:post.content|striptags|truncatewords:25 }}</p>
+                        <div class="blog-footer">
+                            <span class="blog-link">Read Full Story →</span>
+                            <span style="font-size: 0.7rem; color: rgba(255,255,255,0.3); font-weight: 700;">ARTICLE</span>
+                        </div>
+                    </div>
+                </a>
+                {% empty %}
+                <!-- Demo Post 1 -->
+                <div class="blog-card reveal-up" style="--delay: 0s;">
+                    <div class="blog-img-wrap">
+                        <div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; background: linear-gradient(135deg, #0f172a, #1e293b); font-size: 3rem;">🔐</div>
+                        <span class="blog-badge">Security</span>
+                    </div>
+                    <div class="blog-content">
+                        <div class="blog-meta">
+                            <span>April 14, 2024</span>
+                            <div class="blog-dot"></div>
+                            <span>6 min read</span>
+                        </div>
+                        <h3>The Evolution of Contactless Entry Systems</h3>
+                        <p>Discover how QR-based visitor management is revolutionizing premise security across modern enterprise environments.</p>
+                        <div class="blog-footer">
+                            <span class="blog-link">Preview Content →</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Demo Post 2 -->
+                <div class="blog-card reveal-up" style="--delay: 0.1s;">
+                    <div class="blog-img-wrap">
+                        <div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; background: linear-gradient(135deg, #1e1b4b, #312e81); font-size: 3rem;">🏢</div>
+                        <span class="blog-badge">Workplace</span>
+                    </div>
+                    <div class="blog-content">
+                        <div class="blog-meta">
+                            <span>April 12, 2024</span>
+                            <div class="blog-dot"></div>
+                            <span>4 min read</span>
+                        </div>
+                        <h3>Streamlining Front-Desk Operations with Automation</h3>
+                        <p>How automation reduces receptionist burnout and improves the first impression for high-value corporate visitors.</p>
+                        <div class="blog-footer">
+                            <span class="blog-link">Preview Content →</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Demo Post 3 -->
+                <div class="blog-card reveal-up" style="--delay: 0.2s;">
+                    <div class="blog-img-wrap">
+                        <div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; background: linear-gradient(135deg, #164e63, #0891b2); font-size: 3rem;">📊</div>
+                        <span class="blog-badge">Compliance</span>
+                    </div>
+                    <div class="blog-content">
+                        <div class="blog-meta">
+                            <span>April 10, 2024</span>
+                            <div class="blog-dot"></div>
+                            <span>8 min read</span>
+                        </div>
+                        <h3>Navigating Compliance: ISO 27001 and Visitor Logs</h3>
+                        <p>A technical guide on maintaining data integrity and privacy while keeping robust visitor logs for auditing purposes.</p>
+                        <div class="blog-footer">
+                            <span class="blog-link">Preview Content →</span>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div style="margin-top: 100px; text-align: center; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 60px;">
+                <p style="color: rgba(255,255,255,0.4); font-size: 0.9rem; margin-bottom: 24px;">Don't miss our latest updates.</p>
+                <div class="hero-cta" style="justify-content: center;">
+                    <a href="/" class="btn-primary">Back to Home</a>
+                    <a href="/blog/" class="btn-outline">Load More Articles</a>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    {% include 'platform/_footer.html' %}
+    <script>
+        // Reveal elements on scroll
+        const reveals = document.querySelectorAll('.reveal-up');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const delay = entry.target.style.getPropertyValue('--delay') || '0s';
+                    entry.target.style.transitionDelay = delay;
+                    entry.target.classList.add('revealed');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        reveals.forEach(el => observer.observe(el));
+
+
+
+        /* ── Mobile Menu Toggle ── */
+        function toggleMenu() {
+            const navLinks = document.getElementById('nav-links');
+            const menuBtn = document.getElementById('menu-toggle');
+            if (navLinks && menuBtn) {
+                navLinks.classList.toggle('open');
+                menuBtn.classList.toggle('open');
+            }
+        }
+    </script>
+</body>
+</html>

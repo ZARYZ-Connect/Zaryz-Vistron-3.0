@@ -1,0 +1,190 @@
+<!-- templates/visitors/otp_success.html -->
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link href="{% static 'css/visitor-pages.css' %}" rel="stylesheet">
+<style>
+  /* Sky Shot Animations */
+  .sky-shot {
+    position: absolute;
+    bottom: -50px;
+    width: 6px;
+    height: 40px;
+    background: linear-gradient(to top, transparent, #8b5cf6, #6366f1);
+    border-radius: 6px;
+    animation: shootUp 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    z-index: 100;
+  }
+
+  @keyframes shootUp {
+    0% { transform: translateY(0); opacity: 1; height: 30px; }
+    80% { opacity: 1; }
+    100% { transform: translateY(-70vh); opacity: 0; height: 10px; }
+  }
+
+  .sky-spark {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    animation: explodeSpark 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    z-index: 100;
+    box-shadow: 0 0 12px currentColor;
+  }
+
+  @keyframes explodeSpark {
+    0% { transform: translate(0, 0) scale(1); opacity: 1; }
+    100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="success-container">
+  <div class="success-card">
+    <!-- Success Icon -->
+    <div class="success-icon">
+      <i class="fas fa-check"></i>
+    </div>
+
+    <!-- Visitor Photo & Org -->
+
+
+    <!-- Header -->
+    <h1 class="success-title">Registration Submitted!</h1>
+    <p class="success-message">
+      Thank you, <strong>{{ visit.full_name }}</strong>! Your visitor request has been successfully submitted.
+    </p>
+
+
+
+    <!-- What Happens Next? -->
+    <div style="text-align: left; background: rgba(255, 255, 255, 0.1); border-left: 4px solid white; border-radius: 10px; padding: 14px 16px; margin: 16px 0 24px;">
+      <h6 style="color: white; font-weight: 700; margin-bottom: 8px; font-size: 0.95rem;">
+        <i class="fas fa-concierge-bell me-2"></i>What Happens Next?
+      </h6>
+      <ul style="margin: 0; padding-left: 18px; color: rgba(255, 255, 255, 0.85); font-size: 0.85rem; line-height: 1.5;">
+        <li>Your host has been notified of your request.</li>
+        <li>You will receive an email once the request is approved.</li>
+        <li>Please wait in the reception area for further instructions.</li>
+      </ul>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="btn-group-centered" style="margin-top: 24px;">
+      <a href="{% url 'visitors:home' %}" class="home-btn-premium">
+        <span class="btn-icon"><i class="fas fa-home"></i></span>
+        <span class="btn-text">Back to Home</span>
+      </a>
+    </div>
+
+    <!-- Support Section -->
+    <div class="mt-4 p-2" style="background: rgba(255, 255, 255, 0.05); border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.1);">
+      <p class="text-center mb-0" style="color: rgba(255, 255, 255, 0.7); font-size: 0.75rem;">
+        <i class="fas fa-question-circle me-1"></i>
+        Need help? Contact our reception desk
+      </p>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/visitor-pages.js' %}"></script>
+<script>
+  // Sky Shot Celebration Animation
+  document.addEventListener('DOMContentLoaded', function () {
+    const container = document.querySelector('.success-container');
+    container.style.position = 'relative'; // Ensure particles map correctly
+
+    // Trigger icon pulse
+    const successIcon = document.querySelector('.success-icon');
+    if (successIcon) {
+      setTimeout(() => {
+        successIcon.style.animation = 'successPulse 1s ease-out';
+      }, 100);
+    }
+
+    // Sky Shot Logic
+    function launchSkyShot(delay) {
+      setTimeout(() => {
+        const shot = document.createElement('div');
+        shot.className = 'sky-shot';
+        
+        // Random horizontal start (15% to 85% width)
+        const startX = 15 + Math.random() * 70;
+        shot.style.left = startX + '%';
+        
+        container.appendChild(shot);
+        
+        // Explode when shot reaches apogee (800ms)
+        setTimeout(() => {
+          shot.remove();
+          createExplosion(startX);
+        }, 800);
+      }, delay);
+    }
+
+    function createExplosion(x) {
+      const numSparks = 20 + Math.floor(Math.random() * 15);
+      const explosionHeight = 20 + Math.random() * 20; // Explosion clusters roughly top 20-40% of screen
+      
+      for(let i = 0; i < numSparks; i++) {
+        const spark = document.createElement('div');
+        spark.className = 'sky-spark';
+        spark.style.left = x + '%';
+        spark.style.top = explosionHeight + '%';
+        
+        // Random radial trajectory
+        const angle = Math.random() * Math.PI * 2;
+        const distance = 60 + Math.random() * 150;
+        const tx = Math.cos(angle) * distance;
+        const ty = Math.sin(angle) * distance;
+        
+        spark.style.setProperty('--tx', `${tx}px`);
+        spark.style.setProperty('--ty', `${ty}px`);
+        
+        // Brand palette map: #6366f1, #8b5cf6 matching --primary-gradient
+        const colors = ['#6366f1', '#8b5cf6', '#a78bfa', '#c4b5fd', '#ffffff'];
+        spark.style.background = colors[Math.floor(Math.random() * colors.length)];
+        
+        container.appendChild(spark);
+        
+        // Cleanup after decay
+        setTimeout(() => { spark.remove(); }, 1200);
+      }
+    }
+
+    // --- EXPLOSIVE CELEBRATION LOGIC ---
+    const celebrationStart = Date.now();
+    const celebrationDuration = 60000; // 60s
+    let burstFired = false;
+
+    function celebrationLoop() {
+        const elapsed = Date.now() - celebrationStart;
+        if (elapsed < celebrationDuration) {
+            
+            // 1. INITIAL MASSIVE BURST: 10 shots in the first second
+            if (!burstFired) {
+                for (let i = 0; i < 10; i++) {
+                    launchSkyShot(Math.random() * 800); // spread across nearly 1s
+                }
+                burstFired = true;
+            }
+
+            // 2. SUSTAINED CELEBRATION: Steady shots for 60 seconds
+            // Randomly launch 1-3 shots every ~1.5s interval
+            launchSkyShot(0);
+            if (Math.random() > 0.4) launchSkyShot(Math.random() * 500);
+            if (Math.random() > 0.7) launchSkyShot(Math.random() * 800);
+            
+            // Continue loop
+            setTimeout(celebrationLoop, 1500 + Math.random() * 1000);
+        }
+    }
+
+    celebrationLoop();
+  });
+</script>
+{% endblock %}

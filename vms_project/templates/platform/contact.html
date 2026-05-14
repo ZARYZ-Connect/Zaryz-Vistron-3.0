@@ -1,0 +1,352 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us | Zaryz Vistron</title>
+    <meta name="description" content="Get in touch with the Zaryz Vistron team. Enterprise support, demos, and consultations.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/landing.css' %}">
+    <style>
+        /* Force all content visible — no scroll reveal needed on a standalone page */
+        .reveal-up { opacity: 1 !important; transform: none !important; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        ::placeholder { color: rgba(255,255,255,.25); }
+        /* Remove the gap — section-contact has its own padding */
+        .contact-page-wrap { padding-top: 0; }
+        .section-contact { border-top: none !important; }
+
+        /* Success Popup */
+        .success-popup-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6); backdrop-filter: blur(5px);
+            z-index: 9999; display: none; align-items: center; justify-content: center;
+            opacity: 0; transition: opacity 0.3s ease;
+        }
+        .success-popup-overlay.show {
+            display: flex; opacity: 1;
+        }
+        .success-popup-card {
+            background: linear-gradient(135deg, #0b1220 0%, #1a1e35 100%); 
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px; padding: 40px; text-align: center; color: #fff;
+            max-width: 400px; width: 90%; transform: translateY(20px);
+            transition: transform 0.3s ease;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(20px);
+        }
+        .success-popup-overlay.show .success-popup-card {
+            transform: translateY(0);
+        }
+        .success-icon {
+            font-size: 48px; color: #4ade80; margin-bottom: 20px;
+        }
+        .success-popup-card h3 {
+            font-size: 24px; font-weight: 600; margin-bottom: 10px; font-family: 'Outfit', sans-serif;
+        }
+        .success-popup-card p {
+            color: rgba(255,255,255,0.7); font-size: 15px; line-height: 1.5;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Particles layer -->
+    <div id="particles-layer"></div>
+
+    <!-- Background orbs (matching homepage) -->
+    <div class="bg-orb bg-orb-1"></div>
+    <div class="bg-orb bg-orb-2"></div>
+    <div class="bg-orb bg-orb-3"></div>
+    <div class="bg-orb bg-orb-4"></div>
+    <div class="bg-orb bg-orb-5"></div>
+
+
+
+    <!-- Noise overlay -->
+    <div class="noise"></div>
+
+    <!-- ═══════════════════ NAVBAR ═══════════════════ -->
+  <header class="nav" id="navbar">
+    <div class="nav-inner">
+      <a href="/" class="logo" data-magnetic>
+        <img src="{% static 'img/logo.png' %}" alt="Zaryz Vistron">
+        <span>ZARYZ VISTRON</span>
+      </a>
+
+      <button class="menu-toggle" id="menu-toggle" onclick="toggleMenu()" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+
+      <nav class="nav-links" id="nav-links">
+        <div class="sidebar-header-mobile">
+            <a href="/" class="sidebar-brand-mobile">
+                <img src="{% static 'img/logo.png' %}" alt="Logo">
+                <span>ZARYZ VISTRON</span>
+            </a>
+        </div>
+        <a href="/" class="nav-link"><i class="fas fa-home"></i><span>Home</span></a>
+        <a href="/blog/" class="nav-link" data-no-smooth><i class="fas fa-book-open"></i><span>Blogs</span></a>
+        <a href="/videos/" class="nav-link" data-no-smooth><i class="fas fa-play-circle"></i><span>Videos</span></a>
+        <a href="/features/" class="nav-link"><i class="fas fa-star"></i><span>Features</span></a>
+
+        <a href="/contact/" class="nav-link"><i class="fas fa-envelope"></i><span>Contact</span></a>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="/contact/" class="btn-ghost">Request Demo</a>
+      </div>
+    </div>
+  </header>
+
+    <!-- ═══════════════════ CONTACT SECTION ═══════════════════ -->
+    <div class="contact-page-wrap">
+        <section id="contact" class="section-contact">
+            <!-- Background blobs -->
+            <div class="contact-blobs">
+                <div class="blob-1"></div>
+                <div class="blob-2"></div>
+            </div>
+
+            <div class="section-inner">
+                <div class="contact-header">
+                    <div class="section-label">Get in Touch</div>
+                    <h2 class="section-title">
+                        Let's Start a <em>Conversation</em>
+                    </h2>
+                    <p class="section-sub">
+                        Have a question, need a demo, or want to discuss enterprise pricing? Our team responds within 24 hours.
+                    </p>
+                </div>
+
+                <!-- Glass Card -->
+                <div class="contact-vms-card">
+
+                    <!-- LEFT — Info panel -->
+                    <div class="contact-vms-info">
+                        <div class="info-intro">
+                            <div class="info-badge">Zaryz Vistron</div>
+                            <h3 class="info-title">Enterprise-grade support at your fingertips.</h3>
+                            <p class="info-desc">Our experts are ready to walk you through a personalised demo and answer any technical questions.</p>
+                        </div>
+
+                        <div class="info-list">
+                            <div class="info-item">
+                                <div class="info-icon">📧</div>
+                                <div class="info-text">
+                                    <div class="info-label">Email</div>
+                                    <div class="info-val">vms@zaryz.com</div>
+                                </div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-icon">📞</div>
+                                <div class="info-text">
+                                    <div class="info-label">Phone</div>
+                                    <div class="info-val">+91 9035350053</div>
+                                </div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-icon">🕐</div>
+                                <div class="info-text">
+                                    <div class="info-label">Response time</div>
+                                    <div class="info-val">Within 24 hours</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- RIGHT — Form panel -->
+                    <div class="contact-vms-form-panel">
+                        <div class="form-intro">
+                            <h3 class="form-title">Send us a message</h3>
+                            <p class="form-subtitle">Fill in the details below and we'll get back to you shortly.</p>
+                        </div>
+
+                        <form id="agContactForm" class="contact-vms-form">
+                            {% csrf_token %}
+                            <input type="text" name="website" style="display:none" tabindex="-1" autocomplete="off"/>
+
+                            <div class="form-row-2">
+                                <div class="form-group-vms">
+                                    <label for="id_full_name">Full Name *</label>
+                                    <input type="text" id="id_full_name" name="full_name" required minlength="2" maxlength="255"
+                                           placeholder="Enter your name" class="vms-input-ag"/>
+                                    <span class="ag-field-error"></span>
+                                </div>
+                                <div class="form-group-vms">
+                                    <label for="id_email">Email *</label>
+                                    <input type="email" id="id_email" name="email" required
+                                           placeholder="Enter your email" class="vms-input-ag"/>
+                                    <span class="ag-field-error"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-row-2">
+                                <div class="form-group-vms">
+                                    <label for="id_phone">Phone Number</label>
+                                    <input type="text" id="id_phone" name="phone" maxlength="50"
+                                           placeholder="Enter your phone number" class="vms-input-ag"/>
+                                    <span class="ag-field-error"></span>
+                                </div>
+                                <div class="form-group-vms">
+                                    <label for="id_company">Company</label>
+                                    <input type="text" id="id_company" name="company" maxlength="255"
+                                           placeholder="Enter your company name" class="vms-input-ag"/>
+                                    <span class="ag-field-error"></span>
+                                </div>
+                            </div>
+
+
+
+                            <div class="form-group-vms">
+                                <label for="id_message">Message *</label>
+                                <textarea id="id_message" name="message" rows="5" required minlength="10" maxlength="5000"
+                                          placeholder="Your message..." class="vms-input-ag vms-textarea-ag"></textarea>
+                                <div class="form-footer-vms">
+                                    <span class="ag-field-error"></span>
+                                    <span class="ag-char-count">0 / 5000</span>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="ag-contact-submit-premium">
+                                <span class="ag-btn-label">
+                                    Send Message
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2L15 22 11 13 2 9l20-7z"/></svg>
+                                </span>
+                                <span class="ag-btn-spinner" aria-hidden="true"></span>
+                            </button>
+
+                            <div class="ag-form-feedback" aria-live="polite" style="text-align:center; font-size:.88rem; padding:8px 0;"></div>
+                        </form>
+                    </div>
+
+                </div><!-- end glass card -->
+            </div>
+        </section>
+    </div>
+
+    <!-- ═══════════════════ SUCCESS POPUP ═══════════════════ -->
+    <div id="successPopup" class="success-popup-overlay">
+        <div class="success-popup-card">
+            <div class="success-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h3>Thank You!</h3>
+            <p>Thank you for the mail, our team will contact you shortly.</p>
+            <button onclick="closeSuccessPopup()" class="btn-ghost" style="margin-top:20px; width: 100%; border: 1px solid rgba(255,255,255,0.2); padding: 12px; border-radius: 8px; background: rgba(255,255,255,0.1); color: white; cursor: pointer; transition: background 0.3s;">Close</button>
+        </div>
+    </div>
+
+    {% include 'platform/_footer.html' %}
+
+    <script>
+    /* ── Menu Toggle ── */
+    function toggleMenu() {
+        const navLinks = document.getElementById('nav-links');
+        const menuBtn  = document.getElementById('menu-toggle');
+        if (navLinks && menuBtn) {
+            navLinks.classList.toggle('open');
+            menuBtn.classList.toggle('open');
+        }
+    }
+
+
+
+    /* ── Navbar scroll effect ── */
+    window.addEventListener('scroll', () => {
+        const navbar = document.getElementById('navbar');
+        if (navbar) navbar.classList.toggle('scrolled', window.scrollY > 50);
+    }, { passive: true });
+
+    /* ── Contact form submit ── */
+    (function(){
+        const form = document.getElementById('agContactForm');
+        if (!form) return;
+        const feedback = form.querySelector('.ag-form-feedback');
+        const textarea = form.querySelector('textarea');
+        textarea?.addEventListener('input', () => {
+            const counter = form.querySelector('.ag-char-count');
+            if (counter) counter.textContent = `${textarea.value.length} / 5000`;
+        });
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const btn     = form.querySelector('.ag-contact-submit-premium');
+            const label   = btn ? btn.querySelector('.ag-btn-label')   : null;
+            const spinner = btn ? btn.querySelector('.ag-btn-spinner') : null;
+            
+            if (btn)     btn.disabled         = true;
+            if (label)   label.style.opacity  = '0';
+            if (spinner) spinner.style.display = 'block';
+            if (feedback) { feedback.textContent = ''; }
+
+            try {
+                // Minimum 1.5s loading time for UX (shows the loading animation)
+                const minDelay = new Promise(resolve => setTimeout(resolve, 1500));
+                
+                const fetchPromise = fetch('/contact/', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': form.querySelector('[name=csrfmiddlewaretoken]').value,
+                        'X-Requested-With': 'XMLHttpRequest',
+                    },
+                    body: new FormData(form),
+                }).then(res => res.json().then(data => ({ res, data })));
+
+                const [{ res, data }] = await Promise.all([fetchPromise, minDelay]);
+
+                if (res.ok && data.success) {
+                    form.reset();
+                    feedback.textContent = '';
+                    const popup = document.getElementById('successPopup');
+                    if (popup) {
+                        popup.style.display = 'flex';
+                        // trigger reflow for animation
+                        void popup.offsetWidth;
+                        popup.classList.add('show');
+                    }
+                } else {
+                    let errMsg = data.message || 'Something went wrong. Please try again.';
+                    if (data.errors) {
+                        const firstField = Object.keys(data.errors)[0];
+                        errMsg = `${firstField}: ${data.errors[firstField][0]}`;
+                    }
+                    feedback.textContent = errMsg;
+                    feedback.style.color = '#f87171';
+                }
+            } catch (err) {
+                feedback.textContent = 'Network error. Please try again later.';
+                feedback.style.color = '#f87171';
+            } finally {
+                if (btn)     btn.disabled         = false;
+                if (label)   label.style.opacity  = '1';
+                if (spinner) spinner.style.display = 'none';
+            }
+        });
+    })();
+
+    /* ── Mobile Menu Toggle ── */
+    function toggleMenu() {
+        const navLinks = document.getElementById('nav-links');
+        const menuBtn = document.getElementById('menu-toggle');
+        if (navLinks && menuBtn) {
+            navLinks.classList.toggle('open');
+            menuBtn.classList.toggle('open');
+        }
+    }
+
+    function closeSuccessPopup() {
+        const popup = document.getElementById('successPopup');
+        if (popup) {
+            popup.classList.remove('show');
+            setTimeout(() => {
+                popup.style.display = 'none';
+            }, 300);
+        }
+    }
+    </script>
+</body>
+</html>

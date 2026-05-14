@@ -1,0 +1,112 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy | Zaryz Vistron</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/landing.css' %}">
+    <style>
+        .privacy-page-wrap { padding: 120px 40px; max-width: 900px; margin: 0 auto; color: rgba(255,255,255,0.8); line-height: 1.7; font-family: 'Outfit', sans-serif; position: relative; z-index: 2; }
+        .privacy-page-wrap h1 { font-family: 'Instrument Serif', serif; font-size: 3.5rem; color: #fff; margin-bottom: 20px; text-align: center; }
+        .privacy-page-wrap h2 { font-size: 1.5rem; color: #fff; margin-top: 40px; margin-bottom: 15px; }
+        .privacy-page-wrap p { margin-bottom: 20px; }
+        .privacy-page-wrap ul { margin-bottom: 20px; padding-left: 20px; }
+        .privacy-page-wrap li { margin-bottom: 10px; }
+    </style>
+</head>
+<body class="landing-page">
+    <div id="particles-layer"></div>
+    <div class="noise"></div>
+    
+
+    
+  <header class="nav" id="navbar">
+    <div class="nav-inner">
+      <a href="/" class="logo" data-magnetic>
+        <img src="{% static 'img/logo.png' %}" alt="Zaryz Vistron">
+        <span>ZARYZ VISTRON</span>
+      </a>
+
+      <button class="menu-toggle" id="menu-toggle" onclick="toggleMenu()" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+
+      <nav class="nav-links" id="nav-links">
+        <div class="sidebar-header-mobile">
+            <a href="/" class="sidebar-brand-mobile">
+                <img src="{% static 'img/logo.png' %}" alt="Logo">
+                <span>ZARYZ VISTRON</span>
+            </a>
+        </div>
+        <a href="/" class="nav-link"><i class="fas fa-home"></i><span>Home</span></a>
+        <a href="/blog/" class="nav-link" data-no-smooth><i class="fas fa-book-open"></i><span>Blogs</span></a>
+        <a href="/videos/" class="nav-link" data-no-smooth><i class="fas fa-play-circle"></i><span>Videos</span></a>
+        <a href="/features/" class="nav-link"><i class="fas fa-star"></i><span>Features</span></a>
+
+        <a href="/contact/" class="nav-link"><i class="fas fa-envelope"></i><span>Contact</span></a>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="/contact/" class="btn-ghost">Request Demo</a>
+      </div>
+    </div>
+  </header>
+
+    <div class="privacy-page-wrap">
+        <h1>Privacy Policy</h1>
+        <p><em>Last Updated: May 2026</em></p>
+        
+        <h2>1. Introduction</h2>
+        <p>Zaryz Vistron ("we", "our", or "us") is committed to protecting your privacy. This Privacy Policy explains how our Visitor Management System collects, uses, and safeguards the personal information of our clients and their visitors.</p>
+
+        <h2>2. Data We Collect</h2>
+        <p>When interacting with the Zaryz Vistron platform, we may collect the following types of information:</p>
+        <ul>
+            <li><strong>Visitor Data:</strong> Names, phone numbers, email addresses, company affiliations, and host details collected during the check-in process.</li>
+            <li><strong>Security Data:</strong> Photographs, ID scans, timestamps of arrival and departure, and digital signatures.</li>
+            <li><strong>System Data:</strong> Essential cookies necessary for the operation of our platform, log files, and device information for security auditing.</li>
+        </ul>
+
+        <h2>3. How We Use Your Data</h2>
+        <p>The information we collect is strictly used for the following purposes:</p>
+        <ul>
+            <li>To facilitate secure building access and maintain accurate visitor logs.</li>
+            <li>To ensure compliance with local security and safety regulations, including emergency evacuation procedures.</li>
+            <li>To notify hosts of their visitor's arrival.</li>
+        </ul>
+
+        <h2>4. Data Retention</h2>
+        <p>We retain visitor data only for as long as necessary to fulfill the purposes outlined in this policy or as required by law. Most visitor logs are automatically securely purged from our active databases after 30 to 90 days, depending on the client's enterprise configuration.</p>
+
+        <h2>5. Information Sharing</h2>
+        <p>We do not sell, rent, or trade your personal information to third-party marketers. Data is only accessible to authorized administrators of the respective client and may be disclosed to law enforcement only when legally required.</p>
+
+        <h2>6. Your Rights</h2>
+        <p>Under regulations such as GDPR and CCPA, you have the right to request access to the personal data we hold about you, request corrections, or ask for complete deletion of your data from our systems. To exercise these rights, please contact the building administration where you registered, or contact us directly.</p>
+
+        <h2>7. Contact Us</h2>
+        <p>If you have any questions or concerns about this Privacy Policy or our data practices, please contact us via our <a href="/contact/" style="color: #4ade80;">Contact Page</a>.</p>
+    </div>
+
+    {% include 'platform/_footer.html' %}
+    
+    <script>
+
+
+    /* ── Mobile Menu Toggle ── */
+    function toggleMenu() {
+        const navLinks = document.getElementById('nav-links');
+        const menuBtn = document.getElementById('menu-toggle');
+        if (navLinks && menuBtn) {
+            navLinks.classList.toggle('open');
+            menuBtn.classList.toggle('open');
+        }
+    }
+    </script>
+</body>
+</html>

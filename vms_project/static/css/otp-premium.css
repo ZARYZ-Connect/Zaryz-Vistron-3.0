@@ -1,0 +1,298 @@
+/* ============================
+   BACKGROUND
+============================ */
+.otp-wrapper {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #0F172A 0%, #1E1B4B 100%);
+    position: relative;
+    overflow: hidden;
+    padding: 20px; /* guarantees card never touches edges on small devices */
+}
+
+/* Soft Glow Orb */
+.otp-wrapper::before {
+    content: "";
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(124, 77, 255, 0.25), transparent 70%);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    filter: blur(120px);
+    pointer-events: none;
+}
+
+/* ============================
+   GLASSMORPHIC CARD
+============================ */
+.otp-card {
+    position: relative;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    width: 360px; /* Reduced from 400px to be more compact */
+    max-width: 100%;
+    padding: 24px 24px; /* Reduced vertical padding to compress height */
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    color: white;
+    z-index: 2;
+    animation: float 4s ease-in-out infinite;
+}
+
+/* ============================
+   FLOAT ANIMATION
+============================ */
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-15px);
+    }
+}
+
+/* ============================
+   ICON
+============================ */
+.otp-icon {
+    width: 56px; /* smaller icon */
+    height: 56px;
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto 12px auto; /* reduced bottom margin */
+    font-size: 1.5rem;
+    box-shadow: 0 8px 32px rgba(99, 102, 241, 0.3);
+}
+
+/* ============================
+   TITLE & SUBTEXT
+============================ */
+.otp-card h2 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+    color: white;
+    letter-spacing: -0.02em;
+}
+
+.otp-subtext {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.875rem;
+    margin-bottom: 18px; /* compressed gap */
+    line-height: 1.4;
+}
+
+/* ============================
+   OTP INPUT BOXES
+============================ */
+.otp-inputs {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 18px; /* compressed gap */
+    width: 100%;
+}
+
+.otp-box {
+    flex: 1;
+    min-width: 0;
+    height: 50px; /* reduced height */
+    text-align: center;
+    font-size: 1.25rem;
+    font-weight: 700;
+    border-radius: 12px;
+    border: 2px solid rgba(255, 255, 255, 0.25);
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+.otp-box::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+/* Focus state */
+.otp-box:focus {
+    border-color: rgba(255, 255, 255, 0.7);
+    background: rgba(255, 255, 255, 0.18);
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.15);
+}
+
+/* Hover state */
+.otp-box:hover {
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* ============================
+   VERIFY BUTTON (GLOW)
+============================ */
+.btn-verify {
+    width: 100%;
+    height: auto;
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    color: white;
+    border: none;
+    padding: 12px 20px; /* compressed padding */
+    border-radius: 14px;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4);
+    animation: none;
+}
+
+.btn-verify:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(99, 102, 241, 0.6);
+}
+
+/* ============================
+   RESEND SECTION
+============================ */
+.otp-resend {
+    margin-top: 16px; /* compressed gap */
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.otp-resend a {
+    color: rgba(255, 255, 255, 0.95);
+    text-decoration: underline;
+    font-weight: 600;
+}
+
+.resend-btn {
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.95);
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0;
+    margin-left: 6px;
+    text-decoration: underline;
+}
+
+.resend-btn:disabled {
+    color: rgba(255, 255, 255, 0.4);
+    cursor: not-allowed;
+    text-decoration: none;
+}
+
+/* ============================
+   INFO BOX
+============================ */
+.otp-info {
+    margin-top: 12px; /* reduced gap */
+    background: rgba(255, 255, 255, 0.08); /* slightly softer */
+    padding: 8px 12px; /* compressed padding */
+    border-radius: 10px; /* matched proportional border radius */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 0.75rem; /* smaller text */
+    color: rgba(255, 255, 255, 0.65);
+    line-height: 1.4;
+}
+
+/* ============================
+   FOOTER
+============================ */
+.otp-footer {
+    margin-top: 16px; /* compressed gap */
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.4);
+    letter-spacing: 0.05em;
+}
+
+/* ============================
+   ERROR MESSAGE
+============================ */
+.otp-error {
+    margin-top: 16px;
+    margin-bottom: 12px;
+    padding: 12px 16px;
+    border-radius: 10px;
+    background: rgba(239, 68, 68, 0.15);
+    border: 1px solid rgba(239, 68, 68, 0.4);
+    color: #fca5a5;
+    font-size: 0.875rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    animation: shake 0.3s ease-in-out;
+}
+
+@keyframes shake {
+    0% { transform: translateX(0px); }
+    25% { transform: translateX(-4px); }
+    50% { transform: translateX(4px); }
+    75% { transform: translateX(-4px); }
+    100% { transform: translateX(0px); }
+}
+
+/* ============================
+   TOAST MESSAGE
+============================ */
+.otp-toast {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    backdrop-filter: blur(8px);
+    color: white;
+    padding: 12px 18px;
+    border-radius: 12px;
+    font-size: 0.875rem;
+    box-shadow: 0 10px 25px rgba(99, 102, 241, 0.3);
+    z-index: 9999;
+    animation: fadeInUp 0.3s ease;
+}
+
+@keyframes fadeInUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* ============================
+   RESPONSIVE
+============================ */
+@media (max-width: 639px) {
+    .otp-card {
+        width: 100%; /* uses available width inside wrapper padding */
+        max-width: 340px; /* limits maximum expansion playfully */
+        padding: 20px 18px; /* further compress vertical space on mobile */
+        border-radius: 20px;
+    }
+
+    .otp-inputs {
+        gap: 6px;
+    }
+
+    .otp-box {
+        height: 48px; /* slight shrink */
+        font-size: 1.1rem;
+        border-radius: 10px;
+    }
+
+    .btn-verify {
+        height: 46px; /* shrink button */
+        font-size: 1rem;
+        padding: 10px 16px;
+    }
+}

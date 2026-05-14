@@ -1,0 +1,207 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+<link rel="stylesheet" href="{% static 'css/security-sidebar.css' %}">
+<style>
+  /* ─── Main content area alignment ──────── */
+  .security-main-wrapper {
+      margin-left: 280px; 
+      padding: 24px;
+      min-height: calc(100vh - 64px);
+      background: radial-gradient(1200px 600px at 10% -10%, rgba(99, 102, 241, 0.15), transparent 60%),
+                  radial-gradient(800px 500px at 90% 10%, rgba(139, 92, 246, 0.15), transparent 55%),
+                  linear-gradient(180deg, #0b1020 0%, #0f172a 40%, #111827 100%) !important;
+  }
+
+  @media (max-width: 1200px) {
+      .security-main-wrapper { 
+          margin-left: 72px; 
+          padding: 20px;
+          transition: margin-left 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+  }
+
+  @media (max-width: 767px) {
+      .security-main-wrapper {
+          margin-left: 0 !important;
+          padding: 16px;
+      }
+  }
+
+  .security-card {
+    background: rgba(30, 41, 59, 0.5) !important;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    color: white;
+  }
+
+  .security-card:hover {
+    transform: translateY(-5px);
+    background: rgba(30, 41, 59, 0.7) !important;
+    border-color: rgba(99, 102, 241, 0.5);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+  }
+
+  .status-pill {
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+
+  .status-approved {
+    background: rgba(34, 197, 94, 0.2);
+    color: #4ade80;
+    border: 1px solid rgba(34, 197, 94, 0.3);
+  }
+
+  .status-in {
+    background: rgba(99, 102, 241, 0.2);
+    color: #818cf8;
+    border: 1px solid rgba(99, 102, 241, 0.3);
+  }
+
+  .visitor-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-weight: 700;
+    font-size: 1.2rem;
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-container-fluid p-0">
+
+    <!-- Mobile overlay -->
+    <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+    <div class="admin-layout-flex">
+
+        <!-- SIDEBAR -->
+        {% include 'components/security_sidebar.html' %}
+
+        <!-- MAIN CONTENT -->
+        <div class="security-main-wrapper">
+          <div class="dashboard-shell">
+
+            <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+              <div>
+                <h2 class="text-white mb-1">
+                  <i class="fas fa-shield-alt text-primary me-2"></i>
+                  Security Checkpoint
+                </h2>
+                <p class="text-white-50 mb-0">Visitor manage and entry/exit control</p>
+              </div>
+
+              <div class="vms-stat-badge">
+                <span class="badge rounded-pill bg-primary px-3 py-2">
+                  <i class="fas fa-users me-2"></i>
+                  {{ visits|length }} Visitors Today
+                </span>
+              </div>
+            </div>
+
+            {% if visits %}
+              <div class="row g-4">
+                {% for v in visits %}
+                  <div class="col-md-6 col-lg-4">
+                    <div class="card security-card h-100 border-0">
+                      <div class="card-body p-4">
+
+                        <!-- HEADER -->
+                        <div class="d-flex align-items-center gap-3 mb-4">
+                          <div class="visitor-avatar">
+                            {{ v.full_name|first|upper }}
+                          </div>
+                          <div>
+                            <div class="h6 mb-0 text-white fw-bold">{{ v.full_name }}</div>
+                            <small class="text-white-50">{{ v.email }}</small>
+                          </div>
+                        </div>
+
+                        <!-- DETAILS -->
+                        <div class="vms-info-grid mb-4">
+                          <div class="d-flex align-items-center gap-2 mb-2 text-white-50">
+                            <i class="fas fa-clock w-20"></i>
+                            <span>{{ v.start_time|time:"H:i" }} - {{ v.end_time|time:"H:i" }}</span>
+                          </div>
+
+                          <div class="d-flex align-items-center gap-2 text-white-50">
+                            <i class="fas fa-user-tie w-20"></i>
+                            <span>{% if v.whom_to_meet_employee %}{{ v.whom_to_meet_employee.name }}{% else %}—{% endif %}</span>
+                          </div>
+                        </div>
+
+                        <!-- STATUS & ACTION -->
+                        <div class="d-flex align-items-center justify-content-between">
+                          {% if v.status == "approved" %}
+                            <span class="status-pill status-approved">
+                              <i class="fas fa-check-circle me-1"></i> Approved
+                            </span>
+                            <form method="post" action="{% url 'dashboard:security_checkin' v.pk %}">
+                              {% csrf_token %}
+                              <button class="btn-primary-modern px-4" style="height: 34px; font-size: 0.75rem; border-radius: 20px;">
+                                <i class="fas fa-sign-in-alt me-1"></i> Check In
+                              </button>
+                            </form>
+                          {% elif v.status == "checked_in" %}
+                            <span class="status-pill status-in">
+                              <i class="fas fa-sign-in-alt me-1"></i> In Building
+                            </span>
+                            <form method="post" action="{% url 'dashboard:security_checkout' v.pk %}">
+                              {% csrf_token %}
+                              <button class="btn-warning-modern px-4" style="height: 34px; font-size: 0.75rem; border-radius: 20px; background: var(--danger-gradient) !important;">
+                                <i class="fas fa-sign-out-alt me-1"></i> Check Out
+                              </button>
+                            </form>
+                          {% endif %}
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                {% endfor %}
+              </div>
+
+            {% else %}
+              <div class="text-center py-5">
+                <div class="vms-empty-state">
+                  <i class="fas fa-user-slash fa-4x text-white-50 mb-4 opacity-25"></i>
+                  <h4 class="text-white">No Scheduled Visitors</h4>
+                  <p class="text-white-50 mx-auto" style="max-width: 300px;">
+                    Approved visitors for today will appear here for security processing.
+                  </p>
+                </div>
+              </div>
+            {% endif %}
+
+          </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/security.js' %}"></script>
+<script>
+function toggleSidebar() {
+    const sidebar = document.querySelector(".modern-security-sidebar");
+    const overlay = document.querySelector(".sidebar-overlay");
+    if (sidebar) sidebar.classList.toggle("active");
+    if (overlay) overlay.classList.toggle("active");
+}
+</script>
+{% endblock %}

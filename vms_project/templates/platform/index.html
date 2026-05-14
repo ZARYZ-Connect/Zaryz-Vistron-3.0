@@ -1,0 +1,1299 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zaryz Vistron | Enterprise Visitor Management Platform</title>
+  <meta name="description" content="The most sophisticated visitor management platform for modern enterprises. Secure, scalable, intelligent.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="{% static 'css/landing.css' %}">
+</head>
+
+<body class="landing-page">
+  <div id="particles-layer"></div>
+
+  <!-- CSS-only drifting background orbs -->
+  <div class="bg-orb bg-orb-1"></div>
+  <div class="bg-orb bg-orb-2"></div>
+  <div class="bg-orb bg-orb-3"></div>
+  <div class="bg-orb bg-orb-4"></div>
+  <div class="bg-orb bg-orb-5"></div>
+  <div class="bg-orb bg-orb-6"></div>
+  <div class="bg-orb bg-orb-7"></div>
+  <div class="bg-orb bg-orb-8"></div>
+  <div class="bg-orb bg-orb-9"></div>
+  <div class="bg-orb bg-orb-10"></div>
+
+
+  <!-- Noise overlay -->
+
+
+  <div class="noise"></div>
+
+
+
+  <!-- ═══════════════════ NAVBAR ═══════════════════ -->
+  <header class="nav" id="navbar">
+    <div class="nav-inner">
+      <a href="/" class="logo" data-magnetic>
+        <img src="{% static 'img/logo.png' %}" alt="Zaryz Vistron">
+        <span>ZARYZ VISTRON</span>
+      </a>
+
+      <button class="menu-toggle" id="menu-toggle" onclick="toggleMenu()" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+
+      <nav class="nav-links" id="nav-links">
+        <div class="sidebar-header-mobile">
+            <a href="/" class="sidebar-brand-mobile">
+                <img src="{% static 'img/logo.png' %}" alt="Logo">
+                <span>ZARYZ VISTRON</span>
+            </a>
+        </div>
+        <a href="/" class="nav-link"><i class="fas fa-home"></i><span>Home</span></a>
+        <a href="/blog/" class="nav-link" data-no-smooth><i class="fas fa-book-open"></i><span>Blogs</span></a>
+        <a href="/videos/" class="nav-link" data-no-smooth><i class="fas fa-play-circle"></i><span>Videos</span></a>
+        <a href="/features/" class="nav-link"><i class="fas fa-star"></i><span>Features</span></a>
+
+        <a href="/contact/" class="nav-link"><i class="fas fa-envelope"></i><span>Contact</span></a>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="/contact/" class="btn-ghost">Request Demo</a>
+      </div>
+    </div>
+  </header>
+
+
+  <!-- ═══════════════════ HERO ═══════════════════ -->
+  <section class="hero" id="hero">
+
+    <!-- Animated mesh background -->
+    <div class="hero-mesh">
+      <div class="mesh-blob mesh-1"></div>
+      <div class="mesh-blob mesh-2"></div>
+      <div class="mesh-blob mesh-3"></div>
+      <div class="mesh-blob mesh-4"></div>
+    </div>
+
+    <!-- Grid lines -->
+    <div class="hero-grid"></div>
+
+    <div class="hero-inner">
+
+      <!-- Left: Typography -->
+      <div class="hero-copy">
+
+        <div class="hero-badge">
+          <span class="live-dot"></span>
+          Enterprise Ready
+        </div>
+
+        <h1 class="hero-title">
+          <span class="title-line title-line-1">Smart Visitor</span>
+          <span class="title-line title-line-2 gradient-text">Management</span>
+          <span class="title-line title-line-3" style="font-size: 0.6em; margin-top: 10px; opacity: 0.85;">Built for Enterprises</span>
+        </h1>
+
+        <p class="hero-sub">
+          The most sophisticated platform for modern security operations.
+          <em>Streamlined entry. Intelligent control</em>
+        </p>
+
+
+        <div class="hero-cta">
+          <a href="#contact" class="btn-primary" data-magnetic>
+            <span>Schedule Demo</span>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a href="#features" class="btn-outline">
+            <span>Explore Features</span>
+          </a>
+        </div>
+
+      </div>
+
+      <!-- Right: Dashboard visual -->
+      <div class="hero-visual" id="hero-visual">
+        <div class="visual-glow"></div>
+        <div class="dashboard-frame" id="dash-frame" data-tilt>
+          <img src="{% static 'img/admin-preview.png' %}" alt="Zaryz Vistron Admin Dashboard" style="width: 100%; height: auto; display: block;" decoding="async" fetchpriority="high">
+        </div>
+        <!-- Floating cards -->
+        <div class="float-card float-card-1">
+          <div class="fc-icon">🔐</div>
+          <div class="fc-text">
+            <strong>QR Verified</strong>
+            <span>Gate A · 09:44</span>
+          </div>
+        </div>
+        <div class="float-card float-card-2">
+          <div class="fc-icon">📧</div>
+          <div class="fc-text">
+            <strong>Email Sent</strong>
+            <span>Approval notified</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Scroll indicator -->
+    <div class="scroll-hint">
+      <div class="scroll-line"></div>
+      <i class="fas fa-chevron-down" style="font-size: 0.7em; margin-top: -12px; opacity: 0.9; color: #ffffff;"></i>
+      <span style="margin-top: 4px; color: #ffffff; opacity: 0.9;">Scroll Down</span>
+    </div>
+
+  </section>
+
+  <!-- ═══════════════════ REGISTRATION WORKFLOW ═══════════════════ -->
+  <section id="registration-workflow" style="padding: 100px 40px; position: relative; z-index: 2; overflow: hidden; background: linear-gradient(180deg, transparent, rgba(130,94,228,0.03) 50%, transparent);">
+
+    <div style="text-align: center; margin-bottom: 80px;">
+      <div class="section-label reveal-up">Streamlined Access</div>
+      <h2 class="section-title reveal-up">Frictionless <em>Registration</em></h2>
+      <p class="section-sub reveal-up" style="max-width: 600px; margin: 0 auto;">
+        Experience a smooth, automated workflow from the security gate to the host.
+      </p>
+    </div>
+
+    <style>
+      .workflow-row {
+        display: grid;
+        grid-template-columns: 1fr 2fr 1fr;
+        align-items: center;
+        gap: 30px;
+        max-width: 1400px;
+        margin: 0 auto;
+        position: relative;
+      }
+      .wf-card {
+        background: rgba(11,18,32,0.6);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 20px;
+        padding: 20px;
+        box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+        position: relative;
+        backdrop-filter: blur(10px);
+        transition: transform 0.3s ease, border-color 0.3s ease;
+      }
+      .wf-card:hover {
+        transform: translateY(-5px);
+        border-color: rgba(130,94,228,0.3);
+      }
+      .wf-card img {
+        width: 100%;
+        border-radius: 12px;
+        display: block;
+        opacity: 0.9;
+        transition: opacity 0.3s;
+      }
+      .wf-card:hover img {
+        opacity: 1;
+      }
+      .wf-card-label {
+        position: absolute;
+        top: -16px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: linear-gradient(135deg, #825ee4, #5e72e4);
+        color: #fff;
+        padding: 6px 20px;
+        border-radius: 30px;
+        font-size: 0.85rem;
+        font-weight: 800;
+        letter-spacing: 0.05em;
+        white-space: nowrap;
+        box-shadow: 0 6px 16px rgba(130,94,228,0.4);
+      }
+      .wf-anim-center {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        height: 450px;
+        width: 100%;
+      }
+
+      /* Connection lines for visual flow */
+      .wf-conn-line {
+        position: absolute;
+        top: 50%;
+        width: 40px;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, rgba(130,94,228,0.8), transparent);
+        z-index: 1;
+        opacity: 0.6;
+      }
+      .wf-conn-left { left: -20px; }
+      .wf-conn-right { right: -20px; }
+      
+      .wf-conn-dot {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 6px;
+        height: 6px;
+        background: #825ee4;
+        border-radius: 50%;
+        box-shadow: 0 0 10px #825ee4;
+      }
+      .wf-conn-left .wf-conn-dot { animation: dataFlowLeft 3s infinite linear; }
+      .wf-conn-right .wf-conn-dot { animation: dataFlowRight 3s infinite linear; }
+      
+      @keyframes dataFlowLeft {
+        0% { left: 0; opacity: 0; }
+        10% { opacity: 1; }
+        90% { opacity: 1; }
+        100% { left: 100%; opacity: 0; }
+      }
+      @keyframes dataFlowRight {
+        0% { left: 0; opacity: 0; }
+        10% { opacity: 1; }
+        90% { opacity: 1; }
+        100% { left: 100%; opacity: 0; }
+      }
+
+      @media (max-width: 1024px) {
+        .workflow-row { grid-template-columns: 1fr; gap: 60px; }
+        .wf-anim-center { order: -1; height: auto; } /* Animation on top for mobile */
+        .wf-conn-line { display: none; }
+      }
+    </style>
+
+    <div class="workflow-row reveal-up">
+      <!-- Left: Security Dashboard -->
+      <div class="wf-card">
+        <div class="wf-card-label">Security Dashboard</div>
+        <img src="{% static 'img/kiosk-screen.jpg' %}" alt="Security Dashboard">
+      </div>
+
+      <!-- Center: Animation -->
+      <div class="wf-anim-center">
+        <div class="wf-conn-line wf-conn-left">
+          <div class="wf-conn-dot"></div>
+        </div>
+        <div class="wf-conn-line wf-conn-right">
+          <div class="wf-conn-dot"></div>
+        </div>
+
+        <!-- The SVG Animation -->
+        <svg width="100%" height="100%" viewBox="0 0 800 500" fill="none" xmlns="http://www.w3.org/2000/svg" style="max-height: 450px; display: block; margin: 0 auto; overflow: visible;">
+          <style>
+            .outline { stroke: rgba(255,255,255,0.9); stroke-width: 3.5; stroke-linecap: round; stroke-linejoin: round; }
+            .fill-bg { fill: rgba(11,18,32,0.95); }
+            .fill-white { fill: #ffffff; }
+            .fill-dark { fill: #1f2937; }
+            .pattern-stroke { stroke: rgba(255,255,255,0.8); stroke-width: 2.5; stroke-linecap: round; }
+          </style>
+
+          <!-- Background City/Lines -->
+          <g stroke="rgba(255,255,255,0.15)" stroke-width="2">
+            <!-- Left Buildings -->
+            <path d="M50 350 L50 150 L120 150 L120 200 L180 200 L180 350" fill="none"/>
+            <path d="M0 250 L50 250" fill="none"/>
+            <!-- Right Buildings -->
+            <path d="M620 350 L620 220 L680 220 L680 120 L760 120 L760 350" fill="none"/>
+          </g>
+          
+          <!-- Floor Perspective Grid -->
+          <g stroke="rgba(255,255,255,0.06)" stroke-width="1.5">
+            <!-- Extended Horizontal Lines -->
+            <path d="M-1000 500 L1800 500 M-1000 470 L1800 470 M-1000 440 L1800 440 M-1000 410 L1800 410" />
+            <!-- Extended Diagonal Lines -->
+            <path d="M400 350 L400 500 M400 350 L200 500 M400 350 L600 500 M400 350 L0 500 M400 350 L800 500 M400 350 L-200 500 M400 350 L1000 500 M400 350 L-400 500 M400 350 L1200 500 M400 350 L-600 500 M400 350 L1400 500" />
+          </g>
+
+          <!-- Floating Signs -->
+          <g transform="translate(300, 30)">
+            <animateTransform attributeName="transform" type="translate" values="300,30; 300,22; 300,30" dur="4s" repeatCount="indefinite" />
+            <!-- Registration Sign -->
+            <rect x="0" y="0" width="100" height="60" rx="4" class="fill-bg outline"/>
+            <rect x="5" y="5" width="90" height="50" rx="2" fill="none" class="outline" stroke-width="2"/>
+            <text x="50" y="20" fill="#fff" font-size="10" font-family="sans-serif" text-anchor="middle" font-weight="bold" letter-spacing="1">REGISTRATION</text>
+            <line x1="15" y1="35" x2="60" y2="35" class="outline" stroke-width="2"/>
+            <line x1="15" y1="45" x2="50" y2="45" class="outline" stroke-width="2"/>
+            <rect x="70" y="25" width="15" height="25" class="fill-white"/>
+          </g>
+
+          <g transform="translate(420, 20)">
+            <animateTransform attributeName="transform" type="translate" values="420,20; 420,28; 420,20" dur="5s" repeatCount="indefinite" />
+            <!-- Welcome Sign -->
+            <rect x="0" y="0" width="100" height="60" rx="4" class="fill-bg outline"/>
+            <rect x="5" y="5" width="90" height="50" rx="2" fill="none" class="outline" stroke-width="2"/>
+            <text x="50" y="20" fill="#fff" font-size="10" font-family="sans-serif" text-anchor="middle" font-weight="bold" letter-spacing="1">WELCOME</text>
+            <rect x="15" y="25" width="20" height="20" class="fill-white"/>
+            <line x1="45" y1="30" x2="85" y2="30" class="outline" stroke-width="2"/>
+            <line x1="45" y1="40" x2="75" y2="40" class="outline" stroke-width="2"/>
+          </g>
+
+          <!-- ==================== RECEPTIONIST (BEHIND DESK) ==================== -->
+          <g class="receptionist" transform="translate(120, 110)">
+            <!-- Chair (White styling) -->
+            <path d="M80 180 C60 180, 40 160, 40 120 C40 80, 70 60, 100 60" fill="none" stroke="#ffffff" stroke-width="8" stroke-linecap="round"/>
+            <!-- Legs/wheels -->
+            <line x1="80" y1="180" x2="80" y2="280" stroke="#ffffff" stroke-width="6"/>
+            <line x1="60" y1="280" x2="100" y2="280" stroke="#ffffff" stroke-width="6" stroke-linecap="round"/>
+            <circle cx="65" cy="285" r="7" fill="#ffffff"/>
+            <circle cx="95" cy="285" r="7" fill="#ffffff"/>
+
+            <!-- Torso -->
+            <path d="M70 180 C80 100, 70 80, 110 80 C140 80, 150 100, 150 180 Z" class="fill-bg outline"/>
+            <!-- Dash/Triangle Patterns -->
+            <path d="M80 100 L90 105 M120 90 L125 100 M90 130 L100 125 M130 140 L135 150 M110 160 L115 170 M85 160 L95 165 M135 110 L145 115" class="pattern-stroke"/>
+
+            <!-- Head -->
+            <path d="M100 80 C90 40, 140 40, 140 80 Z" class="fill-white outline"/> <!-- Face -->
+            <!-- Hair shape (Slate gray for visibility) -->
+            <path d="M90 70 C90 30, 145 30, 145 70 C145 90, 130 100, 130 100 C130 100, 100 110, 90 70 Z" fill="#334155" class="outline"/> 
+            <circle cx="120" cy="65" r="2.5" fill="#111"/> <!-- Eye -->
+            <path d="M125 75 Q130 80 135 75" fill="none" stroke="#111" stroke-width="2.5" stroke-linecap="round"/> <!-- Smile -->
+            <circle cx="105" cy="65" r="5" class="fill-white outline"/> <!-- Ear -->
+          </g>
+
+          <!-- ==================== DESK (FRONT) ==================== -->
+          <g transform="translate(180, 230)">
+            <!-- Main Desk Block (White styling for visibility) -->
+            <!-- Top surface -->
+            <path d="M0 50 L350 0 L400 20 L50 80 Z" fill="#ffffff" stroke="#ffffff" stroke-width="2" stroke-linejoin="round"/>
+            <!-- Left side -->
+            <path d="M0 50 L50 80 L50 220 L0 180 Z" fill="#e2e8f0" stroke="#ffffff" stroke-width="2" stroke-linejoin="round"/>
+            <!-- Front face -->
+            <path d="M50 80 L400 20 L400 140 L50 220 Z" fill="#f8fafc" stroke="#ffffff" stroke-width="2" stroke-linejoin="round"/>
+            <!-- Front Panel detail -->
+            <path d="M200 85 L350 60 L350 140 L200 170 Z" fill="rgba(11,18,32,0.05)" stroke="#cbd5e1" stroke-width="2"/>
+          </g>
+
+          <!-- ==================== RECEPTIONIST ARMS (OVER DESK) ==================== -->
+          <g transform="translate(120, 110)">
+            <!-- Arm & Hand (Pointing) -->
+            <g>
+              <animateTransform attributeName="transform" type="rotate" values="0 110 100; -10 110 100; 0 110 100" dur="4s" repeatCount="indefinite"/>
+              <path d="M110 95 C140 100, 180 80, 200 65" fill="none" class="outline" stroke-width="15"/>
+              <path d="M110 95 C140 100, 180 80, 200 65" fill="none" stroke="rgba(11,18,32,0.95)" stroke-width="10" stroke-linecap="round"/>
+              <!-- Humanoid Pointing Hand -->
+              <g transform="translate(195, 52) rotate(-15) scale(0.65)">
+                <rect x="0" y="10" width="18" height="26" rx="5" class="fill-white outline"/> <!-- Palm -->
+                <rect x="14" y="10" width="26" height="8" rx="4" class="fill-white outline"/> <!-- Pointing Index Finger -->
+                <rect x="14" y="19" width="12" height="7" rx="3.5" class="fill-white outline"/> <!-- Folded Middle Finger -->
+                <rect x="14" y="27" width="10" height="7" rx="3.5" class="fill-white outline"/> <!-- Folded Ring Finger -->
+                <rect x="4" y="15" width="14" height="7" rx="3.5" class="fill-white outline" transform="rotate(-25 4 15)"/> <!-- Thumb -->
+              </g>
+            </g>
+
+            <!-- Other Arm (Resting on desk) -->
+            <path d="M90 110 C80 150, 120 180, 160 170" fill="none" class="outline" stroke-width="12"/>
+            <!-- Humanoid Resting Hand -->
+            <g transform="translate(155, 162) rotate(15) scale(0.6)">
+                <rect x="0" y="0" width="18" height="14" rx="4" class="fill-white outline"/> <!-- Palm -->
+                <rect x="15" y="0" width="12" height="6" rx="3" class="fill-white outline"/> <!-- Index -->
+                <rect x="15" y="7" width="10" height="6" rx="3" class="fill-white outline"/> <!-- Middle -->
+                <rect x="4" y="-4" width="12" height="6" rx="3" class="fill-white outline" transform="rotate(20 4 -4)"/> <!-- Thumb -->
+            </g>
+          </g>
+
+          <!-- ==================== DESK ITEMS ==================== -->
+          <g transform="translate(180, 230)">
+            <!-- Papers/Cards -->
+            <path d="M160 55 L200 45 L220 55 L180 65 Z" class="fill-bg outline"/>
+            <path d="M160 50 L200 40 L220 50 L180 60 Z" class="fill-bg outline"/>
+            <path d="M160 45 L200 35 L220 45 L180 55 Z" class="fill-white outline"/>
+
+            <!-- Keyboard -->
+            <path d="M80 60 L140 45 L160 55 L100 70 Z" class="fill-bg outline"/>
+            <!-- Keys pattern -->
+            <path d="M90 60 L130 50 M95 63 L135 53 M100 66 L140 56" stroke="rgba(255,255,255,0.5)" stroke-width="2"/>
+
+            <!-- Mouse -->
+            <path d="M60 75 Q70 70 75 75 Q70 80 60 75" class="fill-bg outline"/>
+
+            <!-- ID Card (Lanyard) -->
+            <path d="M110 80 L140 70 L150 80 L120 90 Z" class="fill-bg outline"/>
+            <rect x="120" y="75" width="10" height="10" class="fill-white" transform="matrix(0.95 -0.3 0.3 0.95 0 0)"/>
+
+            <!-- Desktop Monitor -->
+            <!-- Stand -->
+            <path d="M180 15 L190 40 L210 35 L190 10 Z" class="fill-bg outline"/>
+            <!-- Screen -->
+            <path d="M130 -30 L260 -50 L250 20 L120 40 Z" class="fill-bg outline" stroke-linejoin="round"/>
+            <circle cx="190" cy="-10" r="10" class="fill-white"/> <!-- Logo/circle on back of monitor -->
+
+            <!-- Scanner Kiosk -->
+            <g transform="translate(280, -40)">
+              <!-- Base -->
+              <path d="M40 80 L80 70 L90 80 L50 90 Z" class="fill-bg outline"/>
+              <path d="M50 75 L60 40 L70 40 L65 75 Z" class="fill-bg outline"/>
+              <!-- Tablet/Scanner Screen -->
+              <path d="M10 0 L70 -15 L80 50 L20 65 Z" class="fill-bg outline" stroke-width="5" stroke-linejoin="round"/>
+              <path d="M15 5 L65 -8 L73 48 L23 60 Z" class="fill-white outline"/>
+              
+              <!-- Screen Content -->
+              <!-- QR Code area -->
+              <g transform="translate(30, 5) scale(0.6)">
+                <rect x="0" y="0" width="30" height="30" fill="none" stroke="#111" stroke-width="2"/>
+                <rect x="5" y="5" width="8" height="8" fill="#111"/>
+                <rect x="17" y="5" width="8" height="8" fill="#111"/>
+                <rect x="5" y="17" width="8" height="8" fill="#111"/>
+                <rect x="15" y="15" width="10" height="10" fill="#111"/>
+              </g>
+              
+              <!-- Text -->
+              <text x="45" y="30" fill="#111" font-size="6" font-family="sans-serif" font-weight="bold" text-anchor="middle" transform="rotate(-15, 45, 30)">SCAN</text>
+              <text x="47" y="38" fill="#111" font-size="5" font-family="sans-serif" font-weight="bold" text-anchor="middle" transform="rotate(-15, 47, 38)">VISITOR PASS</text>
+              
+              <!-- Scan Area Box -->
+              <path d="M30 45 L35 44 M55 39 L60 38 M32 55 L37 54 M57 48 L62 47" stroke="#111" stroke-width="2" stroke-linecap="round"/>
+              
+              <!-- Scanning Line Animation -->
+              <line x1="25" y1="42" x2="65" y2="32" stroke="#4ade80" stroke-width="2" opacity="0.8">
+                <animate attributeName="y1" values="40; 55; 40" dur="2s" repeatCount="indefinite"/>
+                <animate attributeName="y2" values="30; 45; 30" dur="2s" repeatCount="indefinite"/>
+              </line>
+            </g>
+          </g>
+
+          <!-- ==================== VISITOR (RIGHT) ==================== -->
+          <g class="visitor" transform="translate(560, 70)">
+            <!-- Standing Legs -->
+            <!-- Left Leg -->
+            <path d="M10 240 L0 380 L20 380 L20 240 Z" class="fill-bg outline" stroke-linejoin="round"/>
+            <path d="M0 380 L-10 390 L15 390 L20 380 Z" class="fill-bg outline"/> <!-- Shoe -->
+            <!-- Right Leg -->
+            <path d="M35 240 L35 380 L55 380 L50 240 Z" class="fill-bg outline" stroke-linejoin="round"/>
+            <path d="M35 380 L25 390 L50 390 L55 380 Z" class="fill-bg outline"/> <!-- Shoe -->
+
+            <!-- Torso (Suit Jacket) -->
+            <path d="M0 130 C-10 130, -20 200, 0 240 L50 240 C60 200, 70 130, 60 130 Z" class="fill-bg outline" stroke-linejoin="round"/>
+            
+            <!-- White Shirt & Tie -->
+            <path d="M20 130 L40 130 L30 240 Z" class="fill-white outline"/>
+            <path d="M25 130 L35 130 L32 200 L28 200 Z" class="fill-bg outline"/> <!-- Tie -->
+
+            <!-- Head -->
+            <circle cx="35" cy="80" r="25" class="fill-white outline"/>
+            <!-- Hair (Slate gray for visibility) -->
+            <path d="M10 80 C10 40, 60 40, 60 80 C60 90, 70 95, 55 95 C40 95, 45 85, 35 85 C25 85, 20 95, 10 80 Z" fill="#334155" class="outline"/>
+            <!-- Face details -->
+            <circle cx="25" cy="80" r="2" fill="#111"/>
+            <circle cx="40" cy="80" r="2" fill="#111"/>
+            <path d="M30 90 Q35 95 40 90" fill="none" stroke="#111" stroke-width="2" stroke-linecap="round"/>
+            <!-- Ear -->
+            <circle cx="55" cy="85" r="6" class="fill-white outline"/>
+
+            <!-- Arm holding phone -->
+            <g>
+              <animateTransform attributeName="transform" type="translate" values="0,0; -5,-5; 0,0" dur="4s" repeatCount="indefinite"/>
+              <!-- Upper arm -->
+              <path d="M10 140 L-40 180 L-30 190 L15 155 Z" class="fill-bg outline"/>
+              <!-- Lower arm -->
+              <path d="M-40 180 L-80 130 L-70 125 L-30 190 Z" class="fill-bg outline"/>
+              <!-- Humanoid Hand Gripping Phone -->
+              <g transform="translate(-95, 115) rotate(-35) scale(0.65)">
+                <rect x="0" y="0" width="18" height="22" rx="5" class="fill-white outline"/> <!-- Palm back -->
+                <rect x="14" y="-2" width="8" height="18" rx="4" class="fill-white outline"/> <!-- Knuckles/Fingers wrapped -->
+                <!-- Thumb extending upwards slightly -->
+                <rect x="-6" y="8" width="12" height="7" rx="3.5" class="fill-white outline" transform="rotate(-30 -6 8)"/> 
+              </g>
+              
+              <!-- Smartphone showing QR -->
+              <g transform="translate(-105, 100) rotate(15)">
+                <rect x="0" y="0" width="24" height="40" rx="3" class="fill-bg outline" stroke-width="2"/>
+                <rect x="3" y="3" width="18" height="34" rx="1" class="fill-white"/>
+                <!-- QR on phone -->
+                <g transform="translate(6, 12) scale(0.4)">
+                   <rect x="0" y="0" width="30" height="30" fill="none" stroke="#111" stroke-width="3"/>
+                   <rect x="5" y="5" width="8" height="8" fill="#111"/>
+                   <rect x="17" y="5" width="8" height="8" fill="#111"/>
+                   <rect x="5" y="17" width="8" height="8" fill="#111"/>
+                   <rect x="15" y="15" width="10" height="10" fill="#111"/>
+                </g>
+                
+                <!-- Connecting Line to Scanner -->
+                <line x1="0" y1="20" x2="-80" y2="40" stroke="#4ade80" stroke-width="2" stroke-dasharray="4 4" opacity="0.6">
+                   <animate attributeName="stroke-dashoffset" values="0; -100" dur="2s" repeatCount="indefinite" linear="linear"/>
+                </line>
+              </g>
+            </g>
+
+            <!-- Right Arm (hanging down) -->
+            <path d="M50 140 C60 180, 80 200, 85 240" fill="none" class="outline" stroke-width="15"/>
+            <path d="M50 140 C60 180, 80 200, 85 240" fill="none" stroke="rgba(11,18,32,0.95)" stroke-width="11" stroke-linecap="round"/>
+            <!-- Humanoid Hand (Hanging down) -->
+            <g transform="translate(77, 240) rotate(5) scale(0.65)">
+               <rect x="0" y="0" width="16" height="18" rx="4" class="fill-white outline"/> <!-- Palm back -->
+               <rect x="0" y="16" width="5" height="12" rx="2.5" class="fill-white outline"/> <!-- Index Finger down -->
+               <rect x="5.5" y="17" width="5" height="14" rx="2.5" class="fill-white outline"/> <!-- Middle Finger down -->
+               <rect x="11" y="15" width="5" height="10" rx="2.5" class="fill-white outline"/> <!-- Ring Finger down -->
+               <!-- Thumb slightly separated -->
+               <rect x="-5" y="6" width="6" height="12" rx="3" class="fill-white outline" transform="rotate(20 -5 6)"/> 
+            </g>
+
+          </g>
+
+          <!-- ==================== SPEECH BUBBLES ==================== -->
+          <!-- Receptionist Bubble -->
+          <g transform="translate(250, 80)">
+            <animateTransform attributeName="transform" type="translate" values="250,80; 250,75; 250,80" dur="3s" repeatCount="indefinite"/>
+            <path d="M0 0 L60 0 L60 40 L20 40 L10 55 L10 40 L0 40 Z" class="fill-white outline"/>
+            <circle cx="20" cy="20" r="4" fill="#111"/>
+            <circle cx="30" cy="20" r="4" fill="#111"/>
+            <circle cx="40" cy="20" r="4" fill="#111"/>
+          </g>
+
+          <!-- Visitor Bubble (Showing QR) -->
+          <g transform="translate(480, 60)">
+            <animateTransform attributeName="transform" type="translate" values="480,60; 480,65; 480,60" dur="3.5s" repeatCount="indefinite"/>
+            <path d="M0 0 L80 0 L80 40 L60 40 L70 55 L50 40 L0 40 Z" class="fill-white outline"/>
+            
+            <circle cx="20" cy="20" r="3" fill="#111"/>
+            <circle cx="30" cy="20" r="3" fill="#111"/>
+            <circle cx="40" cy="20" r="3" fill="#111"/>
+            
+            <!-- Mini QR in speech bubble -->
+            <g transform="translate(50, 10) scale(0.6)">
+               <rect x="0" y="0" width="30" height="30" fill="none" stroke="#111" stroke-width="3"/>
+               <rect x="5" y="5" width="8" height="8" fill="#111"/>
+               <rect x="17" y="5" width="8" height="8" fill="#111"/>
+               <rect x="5" y="17" width="8" height="8" fill="#111"/>
+               <rect x="15" y="15" width="10" height="10" fill="#111"/>
+            </g>
+          </g>
+
+        </svg>
+      </div>
+
+      <!-- Right: Admin Dashboard -->
+      <div class="wf-card">
+        <div class="wf-card-label">Admin Dashboard</div>
+        <img src="{% static 'img/admin-screen.jpg' %}" alt="Admin Dashboard">
+      </div>
+    </div>
+  </section>
+
+  <section id="features" class="section-features">
+
+    <div class="section-inner">
+      <div class="section-label reveal-up">Complete Lifecycle Management</div>
+      <h2 class="section-title reveal-up">Enterprise Visitor<br><em>Lifecycle</em></h2>
+      <p class="section-sub reveal-up">From arrival to departure, every touchpoint secured and streamlined.</p>
+
+      <div class="features-grid">
+
+        <a href="/features/#registration" class="feature-card-premium reveal-up" data-magnetic-card style="display: block; text-decoration: none; color: inherit;">
+          <div class="fc-num">01 / REGISTRATION</div>
+          <div class="fc-icon-wrap">
+            <svg class="icon-reg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <h3>Visitor Registration</h3>
+          <p>Seamless pre-registration and on-site check-in with digital forms and identity verification.</p>
+          <div class="fc-arrow">→</div>
+        </a>
+
+        <a href="/features/#approval" class="feature-card-premium reveal-up" data-magnetic-card style="--delay:0.1s; display: block; text-decoration: none; color: inherit;">
+          <div class="fc-num">02 / APPROVAL</div>
+          <div class="fc-icon-wrap">
+            <svg class="icon-appr" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline class="checkmark" points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          </div>
+          <h3>Approval Workflow</h3>
+          <p>Automated routing to hosts with customizable approval chains and instant notifications.</p>
+          <div class="fc-arrow">→</div>
+        </a>
+
+        <a href="/features/#validation" class="feature-card-premium reveal-up" data-magnetic-card style="--delay:0.2s; display: block; text-decoration: none; color: inherit;">
+          <div class="fc-num">03 / VALIDATION</div>
+          <div class="fc-icon-wrap">
+            <svg class="icon-qr" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 7h3v3H7zm7 0h3v3h-3zm-7 7h3v3H7zm7 0h3v3h-3z"/><rect class="scan-line" x="4" y="4" width="16" height="2" fill="#4ade80" /></svg>
+          </div>
+          <h3>QR Gate Validation</h3>
+          <p>Contactless access with dynamic QR codes that integrate with physical security systems.</p>
+          <div class="fc-arrow">→</div>
+        </a>
+
+        <a href="/features/#monitoring" class="feature-card-premium reveal-up" data-magnetic-card style="--delay:0.05s; display: block; text-decoration: none; color: inherit;">
+          <div class="fc-num">04 / MONITORING</div>
+          <div class="fc-icon-wrap">
+            <svg class="icon-sec" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <h3>Security Monitoring</h3>
+          <p>Real-time tracking and compliance monitoring.</p>
+          <div class="fc-arrow">→</div>
+        </a>
+
+        <a href="/features/#access" class="feature-card-premium reveal-up" data-magnetic-card style="--delay:0.15s; display: block; text-decoration: none; color: inherit;">
+          <div class="fc-num">05 / ACCESS</div>
+          <div class="fc-icon-wrap">
+            <svg class="icon-rbac" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path class="orbit" d="M19.07 4.93a9 9 0 0 0-12.74 0"/><path class="orbit" d="M4.93 19.07a9 9 0 0 0 12.74 0"/></svg>
+          </div>
+          <h3>Role Based Access</h3>
+          <p>Granular permissions and access zones tailored to your organizational hierarchy.</p>
+          <div class="fc-arrow">→</div>
+        </a>
+
+      </div>
+    </div>
+
+  </section>
+
+
+  <!-- ═══════════════════ MARQUEE ═══════════════════ -->
+  <div class="marquee-wrap">
+    <div class="marquee-track">
+      <span>Real-time Analytics</span>
+      <span class="marquee-dot">◆</span>
+      <span>QR Access Control</span>
+      <span class="marquee-dot">◆</span>
+      <span>Digital Badges</span>
+      <span class="marquee-dot">◆</span>
+      <span>Email Automation</span>
+      <span class="marquee-dot">◆</span>
+      <span>Instant Notifications</span>
+      <span class="marquee-dot">◆</span>
+      <span>Digital Check-ins</span>
+      <span class="marquee-dot">◆</span>
+      <span>Live Dashboards</span>
+      <span class="marquee-dot">◆</span>
+
+      <!-- Duplicate for seamless loop -->
+      <span>Real-time Analytics</span>
+      <span class="marquee-dot">◆</span>
+      <span>QR Access Control</span>
+      <span class="marquee-dot">◆</span>
+      <span>Digital Badges</span>
+      <span class="marquee-dot">◆</span>
+      <span>Email Automation</span>
+      <span class="marquee-dot">◆</span>
+      <span>Instant Notifications</span>
+      <span class="marquee-dot">◆</span>
+      <span>Digital Check-ins</span>
+      <span class="marquee-dot">◆</span>
+      <span>Live Dashboards</span>
+      <span class="marquee-dot">◆</span>
+    </div>
+  </div>
+
+
+
+
+  <!-- ═══════════════════ VIDEO DEMOS ═══════════════════ -->
+  <section id="demos" class="section-demos">
+    <div class="section-inner">
+      
+      <div class="demos-header reveal-up" style="display: flex; justify-content: space-between; align-items: flex-end; gap: 20px; flex-wrap: wrap; margin-bottom: 48px;">
+        <div style="flex: 1; min-width: 250px;">
+          <div class="section-label">Tutorial Library</div>
+          <h2 class="section-title" style="margin-bottom: 0;">We will guide you for the <em>Vistron</em></h2>
+        </div>
+        <div style="margin-left: auto;">
+          <a href="/videos/" class="btn-outline">View All →</a>
+        </div>
+      </div>
+
+      <div class="vp-grid">
+        
+        <!-- Demo 1 -->
+        <div class="vp-card reveal-up" style="--thumb-grad: linear-gradient(135deg,#004d40,#00695c);">
+          <div class="vp-thumb" onclick="window.location.href='/videos/'" style="cursor:pointer;">
+            <div class="vp-thumb-bg"></div><div class="vp-thumb-noise"></div>
+            <div class="vp-thumb-icon">▶</div>
+            <span class="vp-num-badge">01 / 03</span>
+          </div>
+          <div class="vp-body">
+            <div class="vp-meta">
+              <span class="vp-cat-pill" style="--cat-color:#34d399; --cat-bg:rgba(52,211,153,.08); --cat-border:rgba(52,211,153,.2);">Registration</span>
+              <span class="vp-duration-label">~12 min</span>
+            </div>
+            <h3 class="vp-card-title">Visitor Registration Walkthrough</h3>
+            <p class="vp-card-desc">End-to-end visitor registration flow — from digital form to host approval.</p>
+            <div class="vp-footer">
+              <a href="/videos/" class="vp-notify" style="text-decoration:none;">Watch Now →</a>
+              <span class="vp-level">Core Feature</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Demo 2 -->
+        <div class="vp-card reveal-up" style="--delay:0.1s; --thumb-grad: linear-gradient(135deg,#451a03,#92400e);">
+          <div class="vp-thumb" onclick="window.location.href='/videos/'" style="cursor:pointer;">
+            <div class="vp-thumb-bg"></div><div class="vp-thumb-noise"></div>
+            <div class="vp-thumb-icon">▶</div>
+            <span class="vp-num-badge">02 / 03</span>
+          </div>
+          <div class="vp-body">
+            <div class="vp-meta">
+              <span class="vp-cat-pill" style="--cat-color:#fbbf24; --cat-bg:rgba(251,191,36,.08); --cat-border:rgba(251,191,36,.2);">QR Check-In</span>
+              <span class="vp-duration-label">~9 min</span>
+            </div>
+            <h3 class="vp-card-title">QR Gate Scanning Setup</h3>
+            <p class="vp-card-desc">Configure contactless entry and the security guard's mobile scanning view.</p>
+            <div class="vp-footer">
+              <a href="/videos/" class="vp-notify" style="text-decoration:none;">Watch Now →</a>
+              <span class="vp-level">Security</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Demo 3 -->
+        <div class="vp-card reveal-up" style="--delay:0.2s; --thumb-grad: linear-gradient(135deg,#500724,#9d174d);">
+          <div class="vp-thumb" onclick="window.location.href='/videos/'" style="cursor:pointer;">
+            <div class="vp-thumb-bg"></div><div class="vp-thumb-noise"></div>
+            <div class="vp-thumb-icon">▶</div>
+            <span class="vp-num-badge">03 / 03</span>
+          </div>
+          <div class="vp-body">
+            <div class="vp-meta">
+              <span class="vp-cat-pill" style="--cat-color:#f472b6; --cat-bg:rgba(236,72,153,.08); --cat-border:rgba(236,72,153,.2);">Analytics</span>
+              <span class="vp-duration-label">~11 min</span>
+            </div>
+            <h3 class="vp-card-title">Admin Reporting Dashboard</h3>
+            <p class="vp-card-desc">Explore visitor count trends, peak hour heatmaps, and export logs.</p>
+            <div class="vp-footer">
+              <a href="/videos/" class="vp-notify" style="text-decoration:none;">Watch Now →</a>
+              <span class="vp-level">Enterprise</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════ PLATFORM ═══════════════════ -->
+  <section id="platform" class="section-platform">
+
+    <div class="section-inner">
+      <div class="platform-layout">
+
+        <div class="platform-left">
+          <div class="section-label reveal-up">Powerful Capabilities</div>
+          <h2 class="section-title reveal-up">Platform<br><em>Built to Scale</em></h2>
+          <p class="section-sub reveal-up">Enterprise-grade architecture designed to grow with your organization's most complex security needs.</p>
+
+          <div class="platform-list">
+            <div class="pl-item reveal-up">
+              <div class="pl-check">✓</div>
+              <div>
+                <strong>Dynamic Approval Workflows</strong>
+                <p>Route visitor requests to specific host employees for pre-approval via automated emails.</p>
+              </div>
+            </div>
+            <div class="pl-item reveal-up" style="--delay:0.05s">
+              <div class="pl-check">✓</div>
+              <div>
+                <strong>Advanced visitor analytics</strong>
+                <p>Track check-ins, check-outs, and monitor peak traffic through real-time admin dashboards.</p>
+              </div>
+            </div>
+            <div class="pl-item reveal-up" style="--delay:0.1s">
+              <div class="pl-check">✓</div>
+              <div>
+                <strong>Custom Mail & Branding</strong>
+                <p>Manage your own SMTP configurations and visually customize notification templates.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="platform-right">
+          <div class="platform-cards-grid">
+            <div class="pc-card reveal-up" data-magnetic-card>
+              <div class="pcc-top">
+                <div class="pcc-icon">
+                  <svg class="icon-layers" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="10" width="4" height="11" rx="1"/>
+                    <rect x="10" y="3" width="4" height="18" rx="1"/>
+                    <rect x="17" y="13" width="4" height="8" rx="1"/>
+                  </svg>
+                </div>
+                <span class="pcc-tag">Insights</span>
+              </div>
+              <h4>Live Analytics</h4>
+              <p>Real-time dashboards with visitor tracking, peak analysis, and historical logs.</p>
+            </div>
+            <div class="pc-card reveal-up" data-magnetic-card style="--delay:0.08s">
+              <div class="pcc-top">
+                <div class="pcc-icon">
+                  <div class="bell-pulse"></div>
+                  <svg class="icon-bell" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+                    <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+                  </svg>
+                </div>
+                <span class="pcc-tag">Communication</span>
+              </div>
+              <h4>Smart Notifications</h4>
+              <p>Automated email notifications for OTPs, host approvals, and digital check-in receipts.</p>
+            </div>
+            <div class="pc-card reveal-up" data-magnetic-card style="--delay:0.16s">
+              <div class="pcc-top">
+                <div class="pcc-icon">
+                  <svg class="icon-layers" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                    <circle cx="9" cy="7" r="4"/>
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                  </svg>
+                </div>
+                <span class="pcc-tag">Management</span>
+              </div>
+              <h4>Directory Control</h4>
+              <p>Manage structural hierarchies including departments, job positions, and security personnel.</p>
+            </div>
+            <div class="pc-card reveal-up" data-magnetic-card style="--delay:0.24s">
+              <div class="pcc-top">
+                <div class="pcc-icon">
+                  <svg class="icon-layers" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                    <path d="M7 7h3v3H7z"/>
+                    <path d="M14 7h3v3h-3z"/>
+                    <path d="M7 14h3v3H7z"/>
+                    <path d="M14 14h3v3h-3z"/>
+                  </svg>
+                </div>
+                <span class="pcc-tag">Validation</span>
+              </div>
+              <h4>QR Architecture</h4>
+              <p>Robust QR code badge generation and contactless security gate scanning.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </section>
+
+
+
+
+
+<!--=== FAQ ===-->
+<section class="section-faq" id="faq">
+  <div class="section-inner">
+    <div style="text-align: center; margin-bottom: 48px;">
+      <div class="section-label reveal-up">FAQ</div>
+      <h2 class="section-title reveal-up">Frequently Asked <em>Questions</em></h2>
+    </div>
+    <div class="ag-faq-list" id="faq-list-container">
+      <!-- FAQ 1 -->
+      <div class="ag-faq-item reveal-up">
+        <button class="ag-faq-question" aria-expanded="false" onclick="agToggleFAQ(this)">
+          <span>Why switch from manual registers to digital check-ins?</span>
+          <svg class="ag-faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 9l6 6 6-6"/>
+          </svg>
+        </button>
+        <div class="ag-faq-answer" aria-hidden="true">
+          <div class="ag-faq-answer-inner">
+            Manual logs are slow, error-prone, and insecure. A digital system ensures faster check-ins, real-time tracking, and a seamless experience for both visitors and employees.
+          </div>
+        </div>
+      </div>
+      <!-- FAQ 2 -->
+      <div class="ag-faq-item reveal-up">
+        <button class="ag-faq-question" aria-expanded="false" onclick="agToggleFAQ(this)">
+          <span>How does VMS enhance front desk efficiency?</span>
+          <svg class="ag-faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 9l6 6 6-6"/>
+          </svg>
+        </button>
+        <div class="ag-faq-answer" aria-hidden="true">
+          <div class="ag-faq-answer-inner">
+            With instant check-ins and automated notifications, reception workload is reduced significantly. Visitors are processed quickly, avoiding queues and delays.
+          </div>
+        </div>
+      </div>
+      <!-- FAQ 3 -->
+      <div class="ag-faq-item reveal-up">
+        <button class="ag-faq-question" aria-expanded="false" onclick="agToggleFAQ(this)">
+          <span>Can a VMS improve visitor experience?</span>
+          <svg class="ag-faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 9l6 6 6-6"/>
+          </svg>
+        </button>
+        <div class="ag-faq-answer" aria-hidden="true">
+          <div class="ag-faq-answer-inner">
+            Yes. A smooth, contactless check-in process creates a strong first impression and reflects a modern, professional workplace.
+          </div>
+        </div>
+      </div>
+      <!-- FAQ 4 -->
+      <div class="ag-faq-item reveal-up">
+        <button class="ag-faq-question" aria-expanded="false" onclick="agToggleFAQ(this)">
+          <span>How does real-time notification help employees?</span>
+          <svg class="ag-faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 9l6 6 6-6"/>
+          </svg>
+        </button>
+        <div class="ag-faq-answer" aria-hidden="true">
+          <div class="ag-faq-answer-inner">
+            Employees are instantly alerted when their visitor arrives, reducing waiting time and improving overall coordination.
+          </div>
+        </div>
+      </div>
+      <!-- FAQ 5 -->
+      <div class="ag-faq-item reveal-up">
+        <button class="ag-faq-question" aria-expanded="false" onclick="agToggleFAQ(this)">
+          <span>Is a Visitor Management System suitable for small businesses?</span>
+          <svg class="ag-faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 9l6 6 6-6"/>
+          </svg>
+        </button>
+        <div class="ag-faq-answer" aria-hidden="true">
+          <div class="ag-faq-answer-inner">
+            Absolutely. VMS solutions are scalable and help businesses of all sizes improve security, efficiency, and professionalism without complexity.
+          </div>
+        </div>
+      </div>
+
+      <!-- Hidden FAQs Container -->
+      <div id="hidden-faqs" style="max-height: 0; overflow: hidden; transition: max-height 0.6s cubic-bezier(0.16, 1, 0.3, 1);">
+        <!-- FAQ 6 -->
+        <div class="ag-faq-item" style="opacity: 1; transform: none;">
+          <button class="ag-faq-question" aria-expanded="false" onclick="agToggleFAQ(this)">
+            <span>What makes a smart workplace today?</span>
+            <svg class="ag-faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M6 9l6 6 6-6"/>
+            </svg>
+          </button>
+          <div class="ag-faq-answer" aria-hidden="true">
+            <div class="ag-faq-answer-inner">
+              A smart workplace uses digital tools like VMS to automate processes, enhance security, and deliver seamless experiences for visitors and staff.
+            </div>
+          </div>
+        </div>
+        <!-- FAQ 7 -->
+        <div class="ag-faq-item" style="opacity: 1; transform: none;">
+          <button class="ag-faq-question" aria-expanded="false" onclick="agToggleFAQ(this)">
+            <span>How does VMS support a contactless environment?</span>
+            <svg class="ag-faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M6 9l6 6 6-6"/>
+            </svg>
+          </button>
+          <div class="ag-faq-answer" aria-hidden="true">
+            <div class="ag-faq-answer-inner">
+              Digital check-ins, QR-based entry, and automated approvals reduce physical contact, making workplaces safer and more hygienic.
+            </div>
+          </div>
+        </div>
+        <!-- FAQ 8 -->
+        <div class="ag-faq-item" style="opacity: 1; transform: none;">
+          <button class="ag-faq-question" aria-expanded="false" onclick="agToggleFAQ(this)">
+            <span>What are the biggest challenges in visitor management today?</span>
+            <svg class="ag-faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M6 9l6 6 6-6"/>
+            </svg>
+          </button>
+          <div class="ag-faq-answer" aria-hidden="true">
+            <div class="ag-faq-answer-inner">
+              Manual tracking, lack of real-time updates, and security risks. A VMS solves these by automating the entire visitor flow.
+            </div>
+          </div>
+        </div>
+        <!-- FAQ 9 -->
+        <div class="ag-faq-item" style="opacity: 1; transform: none; border-bottom: none;">
+          <button class="ag-faq-question" aria-expanded="false" onclick="agToggleFAQ(this)">
+            <span>How can businesses create a better first impression?</span>
+            <svg class="ag-faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M6 9l6 6 6-6"/>
+            </svg>
+          </button>
+          <div class="ag-faq-answer" aria-hidden="true">
+            <div class="ag-faq-answer-inner">
+              By replacing outdated processes with a fast, digital visitor system that ensures smooth entry and professional interaction.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- View More Button -->
+      <div style="text-align: center; margin-top: 32px;">
+        <button id="view-more-faqs-btn" onclick="toggleMoreFAQs()" class="btn-ghost reveal-up" style="border: 1px solid rgba(255,255,255,0.2); border-radius: 50px; padding: 12px 32px; cursor: pointer; transition: all 0.3s;">
+          View All FAQs
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!--=== Contact ===-->
+<section id="contact" style="padding: 120px 40px; text-align: center; position: relative; z-index: 2;">
+    <h2 class="section-title reveal-up" style="margin-bottom: 24px;">For queries contact</h2>
+    <p class="section-sub reveal-up" style="max-width: 800px; margin: 0 auto 40px; font-size: 1.25rem;">
+        Experience seamless support tailored to your enterprise. Reach out for dedicated assistance from our expert team.
+    </p>
+    <a href="/contact/" class="btn-primary reveal-up" style="padding: 16px 40px; font-size: 1.1rem; border-radius: 50px;">Contact Us</a>
+</section>
+
+<!-- === Cookie Consent Banner === -->
+<div id="cookie-banner" style="display: none; position: fixed; bottom: 30px; right: 30px; z-index: 9999; background: rgba(11,18,32,0.95); backdrop-filter: blur(10px); border: 1px solid rgba(130,94,228,0.3); border-radius: 12px; padding: 24px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); width: calc(100% - 60px); max-width: 380px; color: #fff; flex-direction: column; gap: 16px; font-family: 'Inter', sans-serif;">
+  <div>
+    <h4 style="margin: 0 0 8px 0; font-size: 1.1rem; color: #fff;">We value your privacy</h4>
+    <p style="margin: 0; font-size: 0.85rem; color: rgba(255,255,255,0.7); line-height: 1.6;">
+      We use cookies to enhance your user experience and analyze site traffic. By clicking "Accept", you consent to our use of cookies. 
+      <a href="{% url 'privacy_policy' %}" class="cookie-policy-link" style="color: #4ade80; text-decoration: underline; display: inline-block; margin-top: 4px;">Read our Privacy Policy</a>.
+    </p>
+  </div>
+  <div style="display: flex; gap: 10px; width: 100%;">
+    <button onclick="acceptCookies()" style="flex: 1; background: linear-gradient(135deg, #825ee4, #5e72e4); border: none; padding: 10px 16px; border-radius: 8px; color: #fff; font-weight: 600; cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">Accept</button>
+    <button onclick="declineCookies()" style="flex: 1; background: transparent; border: 1px solid rgba(255,255,255,0.2); padding: 10px 16px; border-radius: 8px; color: #fff; font-weight: 600; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='transparent'">Decline</button>
+  </div>
+</div>
+
+<script>
+  function acceptCookies() {
+    localStorage.setItem('zaryz_cookie_consent', 'accepted');
+    const banner = document.getElementById('cookie-banner');
+    banner.style.opacity = '0';
+    banner.style.transition = 'opacity 0.3s ease';
+    setTimeout(() => banner.style.display = 'none', 300);
+  }
+  
+  function declineCookies() {
+    localStorage.setItem('zaryz_cookie_consent', 'declined');
+    const banner = document.getElementById('cookie-banner');
+    banner.style.opacity = '0';
+    banner.style.transition = 'opacity 0.3s ease';
+    setTimeout(() => banner.style.display = 'none', 300);
+  }
+
+  function resetCookiePreference() {
+    localStorage.removeItem('zaryz_cookie_consent');
+    const banner = document.getElementById('cookie-banner');
+    banner.style.display = 'flex';
+    banner.style.opacity = '0';
+    banner.style.transition = 'opacity 0.5s ease-in-out';
+    setTimeout(() => banner.style.opacity = '1', 100);
+  }
+
+  // Intercept privacy policy link to prevent smooth scroll handler catching it
+  document.addEventListener('DOMContentLoaded', function() {
+    // Show banner if no choice has been made
+    if (!localStorage.getItem('zaryz_cookie_consent')) {
+      const banner = document.getElementById('cookie-banner');
+      banner.style.display = 'flex';
+      banner.style.opacity = '0';
+      banner.style.transition = 'opacity 0.5s ease-in-out';
+      setTimeout(() => { banner.style.opacity = '1'; }, 800);
+    }
+
+    // Prevent nav smooth-scroll from hijacking the Privacy Policy link
+    const policyLink = document.querySelector('.cookie-policy-link');
+    if (policyLink) {
+      policyLink.addEventListener('click', function(e) {
+        e.stopPropagation();
+        window.location.href = '/privacy-policy/';
+      });
+    }
+  });
+</script>
+
+  {% include 'platform/_footer.html' %}
+
+
+<script>
+/* ── FAQ Accordion (unified) ── */
+function agToggleFAQ(btn) {
+  const item   = btn.closest('.ag-faq-item');
+  const answer = item.querySelector('.ag-faq-answer');
+  const isOpen = btn.getAttribute('aria-expanded') === 'true';
+  document.querySelectorAll('.ag-faq-item').forEach(el => {
+    el.querySelector('button').setAttribute('aria-expanded','false');
+    el.querySelector('.ag-faq-answer').style.maxHeight = null;
+    el.querySelector('.ag-faq-answer').setAttribute('aria-hidden','true');
+    el.classList.remove('ag-faq-item--open');
+  });
+  if (!isOpen) {
+    btn.setAttribute('aria-expanded','true');
+    answer.setAttribute('aria-hidden','false');
+    answer.style.maxHeight = answer.scrollHeight + 'px';
+    item.classList.add('ag-faq-item--open');
+    
+    // If we are inside the hidden container and it's open, recalculate its max-height
+    const hiddenContainer = item.closest('#hidden-faqs');
+    if (hiddenContainer && hiddenContainer.style.maxHeight && hiddenContainer.style.maxHeight !== '0px') {
+        hiddenContainer.style.maxHeight = hiddenContainer.scrollHeight + answer.scrollHeight + 'px';
+    }
+  }
+}
+
+/* ── View More FAQs ── */
+function toggleMoreFAQs() {
+  const container = document.getElementById('hidden-faqs');
+  const btn = document.getElementById('view-more-faqs-btn');
+  
+  if (container.style.maxHeight === '0px' || !container.style.maxHeight) {
+    // Open
+    container.style.maxHeight = container.scrollHeight + 500 + 'px'; // +500 buffer for when items are clicked open
+    btn.textContent = 'Show Less FAQs';
+    setTimeout(() => { container.style.overflow = 'visible'; }, 600);
+  } else {
+    // Close
+    container.style.maxHeight = '0px';
+    container.style.overflow = 'hidden';
+    btn.textContent = 'View All FAQs';
+    
+    // Also close any open FAQ items inside the hidden container
+    container.querySelectorAll('.ag-faq-item--open button').forEach(b => agToggleFAQ(b));
+  }
+}
+
+/* ── Contact Form AJAX ── */
+(function(){
+  const form = document.getElementById('agContactForm');
+  if (!form) return;
+  const feedback = form.querySelector('.ag-form-feedback');
+  const textarea = form.querySelector('textarea');
+  textarea?.addEventListener('input', () => {
+    const counter = form.querySelector('.ag-char-count');
+    if (counter) counter.textContent = `${textarea.value.length} / 5000`;
+  });
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const btn     = form.querySelector('.ag-contact-submit-premium');  /* fixed selector */
+    const label   = btn ? btn.querySelector('.ag-btn-label')   : null;
+    const spinner = btn ? btn.querySelector('.ag-btn-spinner') : null;
+    if (btn)     btn.disabled          = true;
+    if (label)   label.style.opacity   = '0';
+    if (spinner) spinner.style.display = 'inline-block';
+    if (feedback) { feedback.textContent = ''; feedback.className = 'ag-form-feedback'; }
+    try {
+      const res = await fetch('/contact/', {
+        method: 'POST',
+        headers: {
+          'X-CSRFToken': form.querySelector('[name=csrfmiddlewaretoken]').value,
+          'X-Requested-With': 'XMLHttpRequest',
+        },
+        body: new FormData(form),
+      });
+      const data = await res.json();
+      if (data.success) {
+        if (feedback) {
+          feedback.textContent = data.message;
+          feedback.classList.add('ag-form-feedback--success');
+        }
+        form.reset();
+        const counter = form.querySelector('.ag-char-count');
+        if (counter) counter.textContent = '0 / 5000';
+        // Show success message for 10 seconds then reload the page
+        setTimeout(() => { window.location.reload(); }, 10000);
+      } else {
+        if (feedback) {
+          feedback.textContent = data.message || 'Something went wrong. Please try again.';
+          feedback.classList.add('ag-form-feedback--error');
+        }
+      }
+    } catch(err) {
+      console.error('Contact form error:', err);
+      if (feedback) {
+        feedback.textContent = 'Network error. Please try again.';
+        feedback.classList.add('ag-form-feedback--error');
+      }
+    } finally {
+      if (btn)     btn.disabled          = false;
+      if (label)   label.style.opacity   = '1';
+      if (spinner) spinner.style.display = 'none';
+    }
+  });
+})();
+</script>
+
+  <script>
+
+    /* ── Navbar scroll ── */
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      const isScrolled = window.scrollY > 60;
+      navbar.classList.toggle('scrolled', isScrolled);
+    });
+
+    /* ── Mobile menu ── */
+    function toggleMenu() {
+      document.getElementById('nav-links').classList.toggle('open');
+      document.getElementById('menu-toggle').classList.toggle('open');
+    }
+
+    /* ── Scroll reveals ── */
+    const reveals = document.querySelectorAll('.reveal-up');
+    const revealObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          const delay = e.target.style.getPropertyValue('--delay') || '0s';
+          e.target.style.transitionDelay = delay;
+          e.target.classList.add('visible');
+          revealObs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    reveals.forEach(el => revealObs.observe(el));
+
+    /* ── Stat counters ── */
+    const statNums = document.querySelectorAll('.stat-num');
+    const countObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (!e.isIntersecting) return;
+        const target = +e.target.dataset.count;
+        let current = 0;
+        const step = target / 50;
+        const timer = setInterval(() => {
+          current = Math.min(current + step, target);
+          e.target.textContent = Math.floor(current).toLocaleString();
+          if (current >= target) clearInterval(timer);
+        }, 30);
+        countObs.unobserve(e.target);
+      });
+    }, { threshold: 0.5 });
+    statNums.forEach(el => countObs.observe(el));
+
+    /* ── Performance optimizations applied: heavy scroll/mouse listeners removed ── */
+
+    /* ── Chart bar animation ── */
+    const bars = document.querySelectorAll('.chart-bar');
+    bars.forEach((bar, i) => {
+      setTimeout(() => {
+        bar.style.height = bar.style.getPropertyValue('--h');
+      }, i * 120 + 600);
+    });
+
+    /* ── Mobile & Tablet Menu Toggle ── */
+    function toggleMenu() {
+      const navLinks = document.getElementById('nav-links');
+      const menuBtn = document.getElementById('menu-toggle');
+      if (navLinks && menuBtn) {
+        navLinks.classList.toggle('open');
+        menuBtn.classList.toggle('open');
+      }
+    }
+
+    // Elite UX: Auto-close menu & Force smooth native scrolling
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', (e) => {
+        const targetId = link.getAttribute('href');
+        if (targetId && targetId.startsWith('#')) {
+          e.preventDefault();
+          const targetSection = document.querySelector(targetId);
+          if (targetSection) {
+            targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        }
+        
+        const navLinks = document.getElementById('nav-links');
+        const menuBtn = document.getElementById('menu-toggle');
+        if (navLinks && navLinks.classList.contains('open')) {
+          navLinks.classList.remove('open');
+          menuBtn.classList.remove('open');
+        }
+      });
+    });
+
+  </script>
+
+</body>
+</html>

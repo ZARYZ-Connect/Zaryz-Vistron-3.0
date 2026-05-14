@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link href="{% static 'css/profile.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div class="profile-wrapper">
+    <div class="profile-container">
+        <!-- Profile Header -->
+        <div class="profile-header">
+            <div class="profile-avatar">
+                {{ user.username|first|upper }}
+            </div>
+            <h1 class="profile-name">{{ user.get_full_name|default:user.username }}</h1>
+            <p class="profile-email">
+                <i class="fas fa-envelope"></i>
+                {{ user.email|default:"No email set" }}
+            </p>
+            
+            {% if user.is_superuser %}
+                <span class="role-badge admin">
+                    <i class="fas fa-crown"></i>
+                    <span>Super Admin</span>
+                </span>
+            {% elif user.role == 'admin' %}
+                <span class="role-badge admin">
+                    <i class="fas fa-user-shield"></i>
+                    <span>Administrator</span>
+                </span>
+            {% elif user.role == 'security' %}
+                <span class="role-badge security">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Security Officer</span>
+                </span>
+            {% elif user.role == 'reception' %}
+                <span class="role-badge reception">
+                    <i class="fas fa-concierge-bell"></i>
+                    <span>Reception</span>
+                </span>
+            {% elif user.is_staff %}
+                <span class="role-badge staff">
+                    <i class="fas fa-user-tie"></i>
+                    <span>Staff</span>
+                </span>
+            {% else %}
+                <span class="role-badge user">
+                    <i class="fas fa-user"></i>
+                    <span>{{ user.role|default:"User"|title }}</span>
+                </span>
+            {% endif %}
+        </div>
+
+        <!-- Profile Information -->
+        <div class="profile-info">
+            <div class="info-card">
+                <div class="info-card-icon primary">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <div class="info-card-label">Username</div>
+                <div class="info-card-value">{{ user.username }}</div>
+            </div>
+
+            <div class="info-card">
+                <div class="info-card-icon success">
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <div class="info-card-label">Email</div>
+                <div class="info-card-value">{{ user.email|default:"Not set" }}</div>
+            </div>
+
+            <div class="info-card">
+                <div class="info-card-icon warning">
+                    <i class="fas fa-calendar-alt"></i>
+                </div>
+                <div class="info-card-label">Joined</div>
+                <div class="info-card-value">{{ user.date_joined|date:"M d, Y" }}</div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="profile-actions">
+            {% if user.is_superuser or user.role == 'admin' %}
+                <a href="{% url 'dashboard:admin_dashboard' %}" class="action-btn primary">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
+            {% elif user.role == 'security' or user.role == 'reception' %}
+                <a href="{% url 'security:security_dashboard' %}" class="action-btn primary">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Dashboard</span>
+                </a>
+            {% endif %}
+            
+            <form method="POST" action="{% url 'accounts:logout' %}" style="display: contents;">
+                {% csrf_token %}
+                <button type="submit" class="action-btn danger">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/profile.js' %}"></script>
+{% endblock %}
