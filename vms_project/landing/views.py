@@ -126,6 +126,7 @@ class ContactFormView(View):
 
         # ── Send both emails via the isolated CONTACT_* SMTP connection ──
         # Use a background thread to prevent the SMTP request from blocking the user response
+
         def send_emails_bg():
             try:
                 ack_sent = send_contact_acknowledgement(
@@ -141,18 +142,21 @@ class ContactFormView(View):
                 )
                 if not ack_sent or not alert_sent:
                     logger.warning(
+
                         "ContactFormView: one or more emails failed "
                         "(ack=%s, alert=%s) for %s",
                         ack_sent, alert_sent, data['email'],
                     )
             except Exception:
                 logger.exception(
+
                     "ContactFormView: unexpected error while sending contact emails "
                     "for %s", data['email']
                 )
 
         # Fire and forget the background task
         threading.Thread(target=send_emails_bg, daemon=True).start()
+
 
         return JsonResponse({
             'success': True,

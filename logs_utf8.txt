@@ -1,0 +1,160 @@
+﻿vistron_saas  | [2026-04-08 07:03:01 +0000] [1] [INFO] Starting gunicorn 25.3.0
+vistron_saas  | [2026-04-08 07:03:01 +0000] [1] [INFO] Listening at: http://0.0.0.0:8000 (1)
+vistron_saas  | [2026-04-08 07:03:01 +0000] [1] [INFO] Using worker: sync
+vistron_saas  | [2026-04-08 07:03:01 +0000] [7] [INFO] Booting worker with pid: 7
+vistron_saas  | [2026-04-08 07:03:02 +0000] [1] [INFO] Control socket listening at /root/.gunicorn/gunicorn.ctl
+vistron_saas  | Internal Server Error: /
+vistron_saas  | Traceback (most recent call last):
+vistron_saas  |   File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 105, in _execute
+vistron_saas  |     return self.cursor.execute(sql, params)
+vistron_saas  |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+vistron_saas  | psycopg2.errors.UndefinedTable: relation "organizations_organization" does not exist
+vistron_saas  | LINE 1: ...", "organizations_organization"."created_at" FROM "organizat...
+vistron_saas  |                                                              ^
+vistron_saas  | 
+vistron_saas  | 
+vistron_saas  | The above exception was the direct cause of the following exception:
+vistron_saas  | 
+vistron_saas  | Traceback (most recent call last):
+vistron_saas  |   File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+vistron_saas  |     response = get_response(request)
+vistron_saas  |                ^^^^^^^^^^^^^^^^^^^^^
+vistron_saas  |   File "/app/organizations/middleware.py", line 33, in __call__
+vistron_saas  |     organization = Organization.objects.get(
+vistron_saas  |                    ^^^^^^^^^^^^^^^^^^^^^^^^^
+vistron_saas  |   File "/usr/local/lib/python3.11/site-packages/django/db/models/manager.py", line 87, in manager_method
+vistron_saas  |     return getattr(self.get_queryset(), name)(*args, **kwargs)
+vistron_saas  |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+vistron_saas  |   File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 631, in get
+vistron_saas  |     num = len(clone)
+vistron_saas  |           ^^^^^^^^^^
+vistron_saas  |   File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 368, in __len__
+vistron_saas  |     self._fetch_all()
+vistron_saas  |   File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 1954, in _fetch_all
+vistron_saas  |     self._result_cache = list(self._iterable_class(self))
+vistron_saas  |                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+vistron_saas  |   File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 93, in __iter__
+vistron_saas  |     results = compiler.execute_sql(
+vistron_saas  |               ^^^^^^^^^^^^^^^^^^^^^
+vistron_saas  |   File "/usr/local/lib/python3.11/site-packages/django/db/models/sql/compiler.py", line 1623, in execute_sql
+vistron_saas  |     cursor.execute(sql, params)
+vistron_saas  |   File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 122, in execute
+vistron_saas  |     return super().execute(sql, params)
+vistron_saas  |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+vistron_saas  |   File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 79, in execute
+vistron_saas  |     return self._execute_with_wrappers(
+vistron_saas  |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+vistron_saas  |   File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+vistron_saas  |     return executor(sql, params, many, context)
+vistron_saas  |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+vistron_saas  |   File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 100, in _execute
+vistron_saas  |     with self.db.wrap_database_errors:
+vistron_saas  |   File "/usr/local/lib/python3.11/site-packages/django/db/utils.py", line 91, in __exit__
+vistron_saas  |     raise dj_exc_value.with_traceback(traceback) from exc_value
+vistron_saas  |   File "/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py", line 105, in _execute
+vistron_saas  |     return self.cursor.execute(sql, params)
+vistron_saas  |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+vistron_saas  | django.db.utils.ProgrammingError: relation "organizations_organization" does not exist
+vistron_saas  | LINE 1: ...", "organizations_organization"."created_at" FROM "organizat...
+vistron_saas  |                                                              ^
+vistron_saas  | 
+vistron_saas  | [2026-04-08 07:03:55 +0000] [1] [CRITICAL] WORKER TIMEOUT (pid:7)
+vistron_saas  | [2026-04-08 12:33:55 +0530] [7] [ERROR] Error handling request (no URI read)
+vistron_saas  | Traceback (most recent call last):
+vistron_saas  |   File "/usr/local/lib/python3.11/site-packages/gunicorn/workers/sync.py", line 141, in handle
+vistron_saas  |     req = next(parser)
+vistron_saas  |           ^^^^^^^^^^^^
+vistron_saas  |   File "/usr/local/lib/python3.11/site-packages/gunicorn/http/parser.py", line 56, in __next__
+vistron_saas  |     self.mesg = self.mesg_class(self.cfg, self.unreader, self.source_addr, self.req_count)
+vistron_saas  |                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+vistron_saas  |   File "/usr/local/lib/python3.11/site-packages/gunicorn/http/message.py", line 410, in __init__
+vistron_saas  |     super().__init__(cfg, unreader, peer_addr)
+vistron_saas  |   File "/usr/local/lib/python3.11/site-packages/gunicorn/http/message.py", line 184, in __init__
+vistron_saas  |     unused = self.parse(self.unreader)
+vistron_saas  |              ^^^^^^^^^^^^^^^^^^^^^^^^^
+vistron_saas  |   File "/usr/local/lib/python3.11/site-packages/gunicorn/http/message.py", line 422, in parse
+vistron_saas  |     self.read_into(unreader, buf, stop=True)
+vistron_saas  |   File "/usr/local/lib/python3.11/site-packages/gunicorn/http/message.py", line 558, in read_into
+vistron_saas  |     data = unreader.read()
+vistron_saas  |            ^^^^^^^^^^^^^^^
+vistron_saas  |   File "/usr/local/lib/python3.11/site-packages/gunicorn/http/unreader.py", line 36, in read
+vistron_saas  |     d = self.chunk()
+vistron_saas  |         ^^^^^^^^^^^^
+vistron_saas  |   File "/usr/local/lib/python3.11/site-packages/gunicorn/http/unreader.py", line 65, in chunk
+vistron_saas  |     return self.sock.recv(self.mxchunk)
+vistron_saas  |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+vistron_saas  |   File "/usr/local/lib/python3.11/site-packages/gunicorn/workers/base.py", line 198, in handle_abort
+vistron_saas  |     sys.exit(1)
+vistron_saas  | SystemExit: 1
+vistron_saas  | [2026-04-08 12:33:55 +0530] [7] [INFO] Worker exiting (pid: 7)
+vistron_saas  | [2026-04-08 07:03:55 +0000] [9] [INFO] Booting worker with pid: 9
+vistron_saas  | [2026-04-08 07:03:55 +0000] [1] [INFO] Control socket listening at /root/.gunicorn/gunicorn.ctl
+vistron_saas  | Not Found: /
+vistron_saas  | Not Found: /favicon.ico
+vistron_saas  | [2026-04-08 07:06:07 +0000] [1] [CRITICAL] WORKER TIMEOUT (pid:9)
+vistron_saas  | [2026-04-08 12:36:07 +0530] [9] [ERROR] Error handling request (no URI read)
+vistron_saas  | Traceback (most recent call last):
+vistron_saas  |   File "/usr/local/lib/python3.11/site-packages/gunicorn/workers/sync.py", line 141, in handle
+vistron_saas  |     req = next(parser)
+vistron_saas  |           ^^^^^^^^^^^^
+vistron_saas  |   File "/usr/local/lib/python3.11/site-packages/gunicorn/http/parser.py", line 56, in __next__
+vistron_saas  |     self.mesg = self.mesg_class(self.cfg, self.unreader, self.source_addr, self.req_count)
+vistron_saas  |                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+vistron_saas  |   File "/usr/local/lib/python3.11/site-packages/gunicorn/http/message.py", line 410, in __init__
+vistron_saas  |     super().__init__(cfg, unreader, peer_addr)
+vistron_saas  |   File "/usr/local/lib/python3.11/site-packages/gunicorn/http/message.py", line 184, in __init__
+vistron_saas  |     unused = self.parse(self.unreader)
+vistron_saas  |              ^^^^^^^^^^^^^^^^^^^^^^^^^
+vistron_saas  |   File "/usr/local/lib/python3.11/site-packages/gunicorn/http/message.py", line 422, in parse
+vistron_saas  |     self.read_into(unreader, buf, stop=True)
+vistron_saas  |   File "/usr/local/lib/python3.11/site-packages/gunicorn/http/message.py", line 558, in read_into
+vistron_saas  |     data = unreader.read()
+vistron_saas  |            ^^^^^^^^^^^^^^^
+vistron_saas  |   File "/usr/local/lib/python3.11/site-packages/gunicorn/http/unreader.py", line 36, in read
+vistron_saas  |     d = self.chunk()
+vistron_saas  |         ^^^^^^^^^^^^
+vistron_saas  |   File "/usr/local/lib/python3.11/site-packages/gunicorn/http/unreader.py", line 65, in chunk
+vistron_saas  |     return self.sock.recv(self.mxchunk)
+vistron_saas  |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+vistron_saas  |   File "/usr/local/lib/python3.11/site-packages/gunicorn/workers/base.py", line 198, in handle_abort
+vistron_saas  |     sys.exit(1)
+vistron_saas  | SystemExit: 1
+vistron_saas  | [2026-04-08 12:36:07 +0530] [9] [INFO] Worker exiting (pid: 9)
+vistron_saas  | [2026-04-08 07:06:08 +0000] [17] [INFO] Booting worker with pid: 17
+vistron_saas  | [2026-04-08 07:06:08 +0000] [1] [INFO] Control socket listening at /root/.gunicorn/gunicorn.ctl
+vistron_saas  | Not Found: /
+vistron_saas  | [2026-04-08 07:06:40 +0000] [1] [CRITICAL] WORKER TIMEOUT (pid:17)
+vistron_saas  | [2026-04-08 12:36:40 +0530] [17] [ERROR] Error handling request (no URI read)
+vistron_saas  | Traceback (most recent call last):
+vistron_saas  |   File "/usr/local/lib/python3.11/site-packages/gunicorn/workers/sync.py", line 141, in handle
+vistron_saas  |     req = next(parser)
+vistron_saas  |           ^^^^^^^^^^^^
+vistron_saas  |   File "/usr/local/lib/python3.11/site-packages/gunicorn/http/parser.py", line 56, in __next__
+vistron_saas  |     self.mesg = self.mesg_class(self.cfg, self.unreader, self.source_addr, self.req_count)
+vistron_saas  |                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+vistron_saas  |   File "/usr/local/lib/python3.11/site-packages/gunicorn/http/message.py", line 410, in __init__
+vistron_saas  |     super().__init__(cfg, unreader, peer_addr)
+vistron_saas  |   File "/usr/local/lib/python3.11/site-packages/gunicorn/http/message.py", line 184, in __init__
+vistron_saas  |     unused = self.parse(self.unreader)
+vistron_saas  |              ^^^^^^^^^^^^^^^^^^^^^^^^^
+vistron_saas  |   File "/usr/local/lib/python3.11/site-packages/gunicorn/http/message.py", line 422, in parse
+vistron_saas  |     self.read_into(unreader, buf, stop=True)
+vistron_saas  |   File "/usr/local/lib/python3.11/site-packages/gunicorn/http/message.py", line 558, in read_into
+vistron_saas  |     data = unreader.read()
+vistron_saas  |            ^^^^^^^^^^^^^^^
+vistron_saas  |   File "/usr/local/lib/python3.11/site-packages/gunicorn/http/unreader.py", line 36, in read
+vistron_saas  |     d = self.chunk()
+vistron_saas  |         ^^^^^^^^^^^^
+vistron_saas  |   File "/usr/local/lib/python3.11/site-packages/gunicorn/http/unreader.py", line 65, in chunk
+vistron_saas  |     return self.sock.recv(self.mxchunk)
+vistron_saas  |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+vistron_saas  |   File "/usr/local/lib/python3.11/site-packages/gunicorn/workers/base.py", line 198, in handle_abort
+vistron_saas  |     sys.exit(1)
+vistron_saas  | SystemExit: 1
+vistron_saas  | [2026-04-08 12:36:40 +0530] [17] [INFO] Worker exiting (pid: 17)
+vistron_saas  | [2026-04-08 07:06:40 +0000] [19] [INFO] Booting worker with pid: 19
+vistron_saas  | [2026-04-08 07:06:40 +0000] [1] [INFO] Control socket listening at /root/.gunicorn/gunicorn.ctl
+vistron_saas  | Not Found: /static/css/landing.css
+vistron_saas  | Not Found: /static/img/logo.png
+vistron_saas  | Not Found: /static/img/dashboard-preview.png
+vistron_saas  | Not Found: /static/img/logo.png

@@ -1,0 +1,12 @@
+# Typography Migration Checklist
+
+- [x] base.html
+- [x] landing.css
+- [x] index.html
+- [ ] videos.html
+- [ ] contact.html
+- [ ] features.html
+- [ ] blog_list.html
+- [ ] blog_detail.html
+- [ ] privacy.html
+- [ ] pricing.html
