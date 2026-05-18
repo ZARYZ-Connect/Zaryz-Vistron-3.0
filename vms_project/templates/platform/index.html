@@ -56,11 +56,10 @@
                 <span>ZARYZ VISTRON</span>
             </a>
         </div>
-        <a href="/" class="nav-link"><i class="fas fa-home"></i><span>Home</span></a>
-        <a href="/blog/" class="nav-link" data-no-smooth><i class="fas fa-book-open"></i><span>Blogs</span></a>
-        <a href="/videos/" class="nav-link" data-no-smooth><i class="fas fa-play-circle"></i><span>Videos</span></a>
+        <a href="/" class="nav-link active-custom"><i class="fas fa-home"></i><span>Home</span></a>
+        <a href="/blog/" class="nav-link"><i class="fas fa-book-open"></i><span>Blogs</span></a>
+        <a href="/videos/" class="nav-link"><i class="fas fa-play-circle"></i><span>Videos</span></a>
         <a href="/features/" class="nav-link"><i class="fas fa-star"></i><span>Features</span></a>
-
         <a href="/contact/" class="nav-link"><i class="fas fa-envelope"></i><span>Contact</span></a>
       </nav>
 
@@ -1214,11 +1213,7 @@ function toggleMoreFAQs() {
       navbar.classList.toggle('scrolled', isScrolled);
     });
 
-    /* ── Mobile menu ── */
-    function toggleMenu() {
-      document.getElementById('nav-links').classList.toggle('open');
-      document.getElementById('menu-toggle').classList.toggle('open');
-    }
+
 
     /* ── Scroll reveals ── */
     const reveals = document.querySelectorAll('.reveal-up');
@@ -1272,18 +1267,23 @@ function toggleMoreFAQs() {
       }
     }
 
-    // Elite UX: Auto-close menu & Force smooth native scrolling
+    /* ── Elite UX: Handle nav-link clicks ── */
+    // Smooth-scroll only for in-page anchor links (#section).
+    // External page links (/blog/, /videos/, etc.) are left to navigate normally.
     document.querySelectorAll('.nav-link').forEach(link => {
       link.addEventListener('click', (e) => {
-        const targetId = link.getAttribute('href');
-        if (targetId && targetId.startsWith('#')) {
+        const href = link.getAttribute('href');
+
+        // Only intercept hash anchors (in-page scroll)
+        if (href && href.startsWith('#')) {
           e.preventDefault();
-          const targetSection = document.querySelector(targetId);
+          const targetSection = document.querySelector(href);
           if (targetSection) {
             targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
           }
         }
-        
+
+        // Always close mobile drawer after any nav-link click
         const navLinks = document.getElementById('nav-links');
         const menuBtn = document.getElementById('menu-toggle');
         if (navLinks && navLinks.classList.contains('open')) {
@@ -1291,6 +1291,18 @@ function toggleMoreFAQs() {
           menuBtn.classList.remove('open');
         }
       });
+    });
+
+    /* ── Close mobile menu on outside click ── */
+    document.addEventListener('click', (e) => {
+      const navLinks = document.getElementById('nav-links');
+      const menuBtn = document.getElementById('menu-toggle');
+      if (navLinks && navLinks.classList.contains('open')) {
+        if (!navLinks.contains(e.target) && !menuBtn.contains(e.target)) {
+          navLinks.classList.remove('open');
+          menuBtn.classList.remove('open');
+        }
+      }
     });
 
   </script>

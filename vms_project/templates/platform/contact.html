@@ -90,11 +90,10 @@
             </a>
         </div>
         <a href="/" class="nav-link"><i class="fas fa-home"></i><span>Home</span></a>
-        <a href="/blog/" class="nav-link" data-no-smooth><i class="fas fa-book-open"></i><span>Blogs</span></a>
-        <a href="/videos/" class="nav-link" data-no-smooth><i class="fas fa-play-circle"></i><span>Videos</span></a>
+        <a href="/blog/" class="nav-link"><i class="fas fa-book-open"></i><span>Blogs</span></a>
+        <a href="/videos/" class="nav-link"><i class="fas fa-play-circle"></i><span>Videos</span></a>
         <a href="/features/" class="nav-link"><i class="fas fa-star"></i><span>Features</span></a>
-
-        <a href="/contact/" class="nav-link"><i class="fas fa-envelope"></i><span>Contact</span></a>
+        <a href="/contact/" class="nav-link active-custom"><i class="fas fa-envelope"></i><span>Contact</span></a>
       </nav>
 
       <div class="nav-actions">
@@ -254,7 +253,17 @@
         }
     }
 
-
+    /* ── Close mobile menu on outside click ── */
+    document.addEventListener('click', (e) => {
+        const navLinks = document.getElementById('nav-links');
+        const menuBtn = document.getElementById('menu-toggle');
+        if (navLinks && navLinks.classList.contains('open')) {
+            if (!navLinks.contains(e.target) && !menuBtn.contains(e.target)) {
+                navLinks.classList.remove('open');
+                menuBtn.classList.remove('open');
+            }
+        }
+    });
 
     /* ── Navbar scroll effect ── */
     window.addEventListener('scroll', () => {
@@ -284,9 +293,7 @@
             if (feedback) { feedback.textContent = ''; }
 
             try {
-                // Minimum 1.5s loading time for UX (shows the loading animation)
                 const minDelay = new Promise(resolve => setTimeout(resolve, 1500));
-                
                 const fetchPromise = fetch('/contact/', {
                     method: 'POST',
                     headers: {
@@ -304,7 +311,6 @@
                     const popup = document.getElementById('successPopup');
                     if (popup) {
                         popup.style.display = 'flex';
-                        // trigger reflow for animation
                         void popup.offsetWidth;
                         popup.classList.add('show');
                     }
@@ -327,16 +333,6 @@
             }
         });
     })();
-
-    /* ── Mobile Menu Toggle ── */
-    function toggleMenu() {
-        const navLinks = document.getElementById('nav-links');
-        const menuBtn = document.getElementById('menu-toggle');
-        if (navLinks && menuBtn) {
-            navLinks.classList.toggle('open');
-            menuBtn.classList.toggle('open');
-        }
-    }
 
     function closeSuccessPopup() {
         const popup = document.getElementById('successPopup');

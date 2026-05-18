@@ -83,10 +83,9 @@ urlpatterns = [
     # ---------------------------------------------------
     # MARKETING & LANDING
     # ---------------------------------------------------
-    path('site/', include('landing.urls')),
+    path('', include('landing.urls')),
     path("features/", features_page),
     path("pricing/", pricing_page),
-    path("contact/", ContactFormView.as_view()),
     path("home/", platform_only(lambda request: render(request, "platform/index.html"))),
     
     # ---------------------------------------------------

@@ -40,10 +40,9 @@
             </a>
         </div>
         <a href="/" class="nav-link"><i class="fas fa-home"></i><span>Home</span></a>
-        <a href="/blog/" class="nav-link" data-no-smooth><i class="fas fa-book-open"></i><span>Blogs</span></a>
-        <a href="/videos/" class="nav-link" data-no-smooth><i class="fas fa-play-circle"></i><span>Videos</span></a>
+        <a href="/blog/" class="nav-link active-custom"><i class="fas fa-book-open"></i><span>Blogs</span></a>
+        <a href="/videos/" class="nav-link"><i class="fas fa-play-circle"></i><span>Videos</span></a>
         <a href="/features/" class="nav-link"><i class="fas fa-star"></i><span>Features</span></a>
-
         <a href="/contact/" class="nav-link"><i class="fas fa-envelope"></i><span>Contact</span></a>
       </nav>
 
@@ -201,6 +200,24 @@
                 menuBtn.classList.toggle('open');
             }
         }
+
+        /* ── Navbar scroll ── */
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            navbar.classList.toggle('scrolled', window.scrollY > 40);
+        }, { passive: true });
+
+        /* ── Close mobile menu on outside click ── */
+        document.addEventListener('click', (e) => {
+            const navLinks = document.getElementById('nav-links');
+            const menuBtn = document.getElementById('menu-toggle');
+            if (navLinks && navLinks.classList.contains('open')) {
+                if (!navLinks.contains(e.target) && !menuBtn.contains(e.target)) {
+                    navLinks.classList.remove('open');
+                    menuBtn.classList.remove('open');
+                }
+            }
+        });
     </script>
 </body>
 </html>
